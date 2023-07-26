@@ -10,6 +10,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
@@ -26,6 +27,8 @@ import { useMutation } from "@tanstack/react-query";
 import { TambahCutiPayload } from "@/lib/validators/admin/tambahCuti";
 import axios from "axios";
 import { Icons } from "@/components/Icons";
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   namaCuti: z.string({
@@ -39,6 +42,8 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export default function FormTambahCuti() {
+  const router = useRouter();
+
   const { mutate: submitDataCuti, isLoading } = useMutation({
     mutationFn: async (data: FormData) => {
       const payload: TambahCutiPayload = {
@@ -58,7 +63,15 @@ export default function FormTambahCuti() {
       return responseData;
     },
     onSuccess: () => {
+      // router.push("/admin/data-cuti");
       window.location.href = "/admin/data-cuti";
+    },
+    onError: () => {
+      toast({
+        title: "Gagal menyimpan!",
+        description: "Data cuti gagal disimpan, coba lagi nanti.",
+        variant: "destructive",
+      });
     },
   });
 
@@ -123,14 +136,15 @@ export default function FormTambahCuti() {
                 </FormItem>
               )}
             />
-            <Separator orientation="horizontal" />
+          </CardContent>
+          <CardFooter>
             <Button disabled={isLoading} type="submit">
               {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
               )}{" "}
               Submit
             </Button>
-          </CardContent>
+          </CardFooter>
         </Card>
       </form>
     </Form>

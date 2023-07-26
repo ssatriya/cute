@@ -8,8 +8,8 @@ export async function GET() {
 
     const data = response.map((cuti: any) => ({
       id: cuti.id,
-      namaCuti: cuti.nama_cuti,
-      lamaCuti: cuti.lama_cuti,
+      namaCuti: cuti.namaCuti,
+      lamaCuti: cuti.lamaCuti,
     }));
 
     return NextResponse.json({ result: data });

@@ -10,8 +10,8 @@ export async function POST(req: Request) {
 
     await db.jabatan.create({
       data: {
-        nama_jabatan: namaJabatan,
-        id_bagian: idBagian,
+        namaJabatan: namaJabatan,
+        idBagian: idBagian,
       },
     });
 
@@ -19,31 +19,31 @@ export async function POST(req: Request) {
   } catch (error) {}
 }
 
-export async function GET() {
-  try {
-    const response = await db.jabatan.findMany({
-      select: {
-        id: true,
-        nama_jabatan: true,
-        bagianId: {
-          select: {
-            nama_bagian: true,
-          },
-        },
-      },
-    });
+// export async function GET() {
+//   try {
+//     const response = await db.jabatan.findMany({
+//       select: {
+//         id: true,
+//         nama_jabatan: true,
+//         bagianId: {
+//           select: {
+//             nama_bagian: true,
+//           },
+//         },
+//       },
+//     });
 
-    const data = response.map((j) => ({
-      id: j.id,
-      namaJabatan: j.nama_jabatan,
-      namaBagian: j.bagianId.nama_bagian,
-    }));
+//     const data = response.map((j) => ({
+//       id: j.id,
+//       namaJabatan: j.nama_jabatan,
+//       namaBagian: j.bagianId.nama_bagian,
+//     }));
 
-    return NextResponse.json({
-      result: data,
-    });
-  } catch (error) {}
-}
+//     return NextResponse.json({
+//       result: data,
+//     });
+//   } catch (error) {}
+// }
 
 export async function DELETE(req: Request) {
   try {
@@ -54,9 +54,11 @@ export async function DELETE(req: Request) {
       return new Response("Id is required", { status: 404 });
     }
 
+    const numberId = parseInt(id, 10);
+
     await db.jabatan.delete({
       where: {
-        id: +id,
+        id: numberId,
       },
     });
 

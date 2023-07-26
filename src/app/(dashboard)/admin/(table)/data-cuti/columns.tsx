@@ -6,7 +6,7 @@ import ActionButton from "@/components/ActionButton";
 
 export type CutiType = {
   id: number;
-  jenisCuti: string;
+  namaCuti: string;
   lamaCuti: number;
 };
 

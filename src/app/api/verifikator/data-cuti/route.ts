@@ -17,15 +17,41 @@ export async function GET(req: Request) {
       },
       select: {
         id: true,
-        id_jenis_cuti: true,
+        idJenisCuti: true,
         nip: true,
+        namaLengkap: true,
+        pemohonId: {
+          select: {
+            jabatanId: {
+              select: {
+                namaJabatan: true,
+              },
+            },
+          },
+        },
+        keterangan: true,
+        lamaCuti: true,
+        tanggalMulai: true,
+        tanggalSelesai: true,
+        alamatSelamaCuti: true,
       },
     });
 
+    if (!response) {
+      return new Response("Cuti tidak ditemukan.", { status: 404 });
+    }
+
     const data = {
-      idCuti: response?.id,
-      idJenisCuti: response?.id_jenis_cuti,
-      nip: response?.nip,
+      idCuti: response.id,
+      idJenisCuti: response.idJenisCuti,
+      nip: response.nip,
+      namaLengkap: response.namaLengkap,
+      namaJabatan: response.pemohonId.jabatanId?.namaJabatan,
+      keteranganCuti: response.keterangan,
+      lamaCuti: response.lamaCuti,
+      tanggalMulai: response.tanggalMulai,
+      tanggalSelesai: response.tanggalSelesai,
+      alamatSelamatCuti: response.alamatSelamaCuti,
     };
 
     return NextResponse.json({ result: data });

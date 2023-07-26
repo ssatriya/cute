@@ -8,19 +8,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
-import { columns } from "@/app/(dashboard)/admin/(table)/data-cuti/columns";
+import {
+  columns,
+  CutiType,
+} from "@/app/(dashboard)/admin/(table)/data-cuti/columns";
 import { DataTable } from "@/components/ui/DataTable";
+import { db } from "@/lib/db";
 
-async function getData() {
+async function getData(): Promise<CutiType[]> {
   try {
-    const response = await fetch("http://localhost:3000/api/admin/cuti", {
-      cache: "no-store",
-    });
-    const { result } = await response.json();
+    const response = await db.jenisCuti.findMany();
 
-    return result;
+    const data = response.map((cuti) => ({
+      id: cuti.id,
+      namaCuti: cuti.namaCuti,
+      lamaCuti: cuti.lamaCuti,
+    }));
+
+    return data;
   } catch (error) {
-    return {};
+    return [];
   }
 }
 

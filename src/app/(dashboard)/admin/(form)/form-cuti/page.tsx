@@ -5,7 +5,7 @@ import DashboardShell from "@/components/layout/DashboardShell";
 export default function FormCuti() {
   return (
     <DashboardShell>
-      <DashboardHeader heading="Data Cuti" />
+      <DashboardHeader heading="Tambah Data Cuti" />
       <div className="grid gap-8">
         <FormTambahCuti />
       </div>

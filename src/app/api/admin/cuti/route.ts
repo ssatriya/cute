@@ -12,8 +12,8 @@ export async function POST(req: Request) {
 
     await db.jenisCuti.create({
       data: {
-        nama_cuti: namaCuti,
-        lama_cuti: +lamaCuti,
+        namaCuti: namaCuti,
+        lamaCuti: +lamaCuti,
       },
     });
 
@@ -27,21 +27,21 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
-  try {
-    const response = await db.jenisCuti.findMany();
+// export async function GET() {
+//   try {
+//     const response = await db.jenisCuti.findMany();
 
-    const data = response.map((cuti) => ({
-      id: cuti.id,
-      namaCuti: cuti.nama_cuti,
-      lamaCuti: cuti.lama_cuti,
-    }));
+//     const data = response.map((cuti) => ({
+//       id: cuti.id,
+//       namaCuti: cuti.nama_cuti,
+//       lamaCuti: cuti.lama_cuti,
+//     }));
 
-    return NextResponse.json({ result: data });
-  } catch (error: any) {
-    return new Response("Something went wrong.", { status: 500 });
-  }
-}
+//     return NextResponse.json({ result: data });
+//   } catch (error: any) {
+//     return new Response("Something went wrong.", { status: 500 });
+//   }
+// }
 
 export async function DELETE(req: Request) {
   try {
@@ -52,9 +52,11 @@ export async function DELETE(req: Request) {
       return new Response("Id is required.", { status: 404 });
     }
 
+    const numberId = parseInt(id, 10);
+
     await db.jenisCuti.delete({
       where: {
-        id: +id,
+        id: numberId,
       },
     });
 

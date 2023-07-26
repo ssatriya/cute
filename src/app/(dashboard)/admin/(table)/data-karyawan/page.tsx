@@ -13,14 +13,35 @@ import {
   columns,
 } from "@/app/(dashboard)/admin/(table)/data-karyawan/columns";
 import { DataTable } from "@/components/ui/DataTable";
+import { db } from "@/lib/db";
 
 async function getData(): Promise<KaryawanType[]> {
   try {
-    const response = await fetch("http://localhost:3000/api/admin/karyawan", {
-      cache: "no-store",
+    const response = await db.user.findMany({
+      select: {
+        id: true,
+        nip: true,
+        namaLengkap: true,
+        email: true,
+        role: true,
+        jabatanId: {
+          select: {
+            namaJabatan: true,
+          },
+        },
+      },
     });
-    const { result } = await response.json();
-    return result;
+
+    const data = response.map((k) => ({
+      id: k.id,
+      nip: k.nip || "",
+      namaLengkap: k.namaLengkap || "",
+      email: k.email || "",
+      role: k.role || "",
+      jabatan: k.jabatanId?.namaJabatan || "",
+    }));
+
+    return data;
   } catch (error: any) {
     return [];
   }

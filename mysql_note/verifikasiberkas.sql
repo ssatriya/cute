@@ -1,38 +1,64 @@
+
+-- Pasang di verifikasi berkas untuk trigger status verifikasi berkas
 BEGIN IF (
-  new.surat_cuti = 1 
-  AND new.formulir_cuti = 1 
-  AND new.berita_acara = 1 
-  AND new.id_jenis_cuti = 1
+  new.suratCuti = 1 
+  AND new.formulirCuti = 1 
+  AND new.beritaAcara = 1 
+  AND new.idJenisCuti = 1
 ) THEN 
 set 
-  new.status_verifikasi = 1;
+  new.statusVerifikasi = 'diterima';
 ELSEIF (
-  new.surat_cuti = 2 
-  OR new.formulir_cuti = 2 
-  OR new.berita_acara = 2
+  new.suratCuti = 2 
+  OR new.formulirCuti = 2 
+  OR new.beritaAcara = 2
 ) THEN 
 set 
-  new.status_verifikasi = 2;
+  new.statusVerifikasi = 'proses';
 ELSEIF (
-  new.surat_cuti = 1 
-  AND new.formulir_cuti = 1 
-  AND new.berita_acara = 1 
-  AND new.berkas_cuti = 1 
-  AND new.id_jenis_cuti > 1
+  new.suratCuti = 1 
+  AND new.formulirCuti = 1 
+  AND new.beritaAcara = 1 
+  AND new.berkasCuti = 1 
+  AND new.idJenisCuti > 1
 ) THEN 
 set 
-  new.status_verifikasi = 1;
+  new.statusVerifikasi = 'diterima';
 ELSEIF (
-  new.surat_cuti = 1 
-  AND new.formulir_cuti = 1 
-  AND new.berita_acara = 1 
-  AND new.berkas_cuti = 2 
-  AND new.id_jenis_cuti > 1
+  new.suratCuti = 1 
+  AND new.formulirCuti = 1 
+  AND new.beritaAcara = 1 
+  AND new.berkasCuti = 2 
+  AND new.idJenisCuti > 1
 ) THEN 
 set 
-  new.status_verifikasi = 2;
+  new.statusVerifikasi = 'proses';
 ELSE 
 set 
-  new.status_verifikasi = 0;
+  new.statusVerifikasi = 'ditolak';
 END IF;
 END
+
+
+
+-- pasang di verifikasi berkas untuk trigger status akhir di tabel cuti
+BEGIN
+	IF NEW.statusVerifikasi = 'ditolak' THEN
+		UPDATE cuti
+		SET cuti.statusAkhir = 'ditolak'
+		WHERE cuti.id = NEW.idCuti;
+	END IF;
+END;
+
+-- Pasang di verifikasi kepala untuk trigger status akhir di cuti berdasarkan statusverifikasi kepala
+BEGIN
+	IF NEW.statusVerifikasi = 'ditolak' THEN
+		UPDATE cuti
+		SET cuti.statusAkhir = 'ditolak'
+		WHERE cuti.id = NEW.idCuti;
+	ELSEIF NEW.statusVerifikasi = 'diterima' THEN
+		UPDATE cuti
+		SET cuti.statusAkhir = 'diterima'
+		WHERE cuti.id = NEW.idCuti;
+	END IF;
+END;

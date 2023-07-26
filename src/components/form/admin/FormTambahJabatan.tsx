@@ -10,6 +10,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
@@ -150,15 +151,15 @@ export default function FormTambahJabatan() {
                 </FormItem>
               )}
             />
-            <Separator orientation="horizontal" />
-
+          </CardContent>
+          <CardFooter>
             <Button disabled={isLoading} type="submit">
               {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
               )}{" "}
               Submit
             </Button>
-          </CardContent>
+          </CardFooter>
         </Card>
       </form>
     </Form>

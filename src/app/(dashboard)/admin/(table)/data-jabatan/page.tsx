@@ -13,14 +13,28 @@ import {
   JabatanType,
   columns,
 } from "@/app/(dashboard)/admin/(table)/data-jabatan/columns";
+import { db } from "@/lib/db";
 
 async function getData(): Promise<JabatanType[]> {
   try {
-    const response = await fetch("http://localhost:3000/api/admin/jabatan", {
-      cache: "no-store",
+    const response = await db.jabatan.findMany({
+      select: {
+        id: true,
+        namaJabatan: true,
+        bagianId: {
+          select: {
+            namaBagian: true,
+          },
+        },
+      },
     });
-    const { result } = await response.json();
-    return result;
+
+    const data = response.map((j) => ({
+      id: j.id,
+      namaJabatan: j.namaJabatan,
+      namaBagian: j.bagianId.namaBagian,
+    }));
+    return data;
   } catch (error: any) {
     return [];
   }

@@ -56,15 +56,15 @@ export default function ActionButton({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
+          <Button variant="ghost" className="w-8 h-8 p-0">
             <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
+            <MoreHorizontal className="w-4 h-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>Edit</DropdownMenuItem>
           <DropdownMenuItem
-            className="flex cursor-pointer items-center text-destructive focus:text-destructive"
+            className="flex items-center cursor-pointer text-destructive focus:text-destructive"
             onSelect={() => setShowDeleteAlert(true)}
           >
             Hapus
@@ -99,9 +99,9 @@ export default function ActionButton({
               className="bg-red-600 focus:ring-red-600"
             >
               {isDeleteLoading ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
               ) : (
-                <Icons.trash className="mr-2 h-4 w-4" />
+                <Icons.trash className="w-4 h-4 mr-2" />
               )}
               <span>Delete</span>
             </AlertDialogAction>

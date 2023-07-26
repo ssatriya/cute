@@ -13,14 +13,31 @@ import {
   columns,
 } from "@/app/(dashboard)/admin/(table)/data-bagian/columns";
 import { DataTable } from "@/components/ui/DataTable";
+import { db } from "@/lib/db";
 
 async function getData(): Promise<BagianType[]> {
   try {
-    const response = await fetch("http://localhost:3000/api/admin/bagian", {
-      cache: "no-store",
+    const response = await db.bagian.findMany({
+      select: {
+        id: true,
+        namaBagian: true,
+        atasanId: {
+          select: {
+            namaLengkap: true,
+            nip: true,
+          },
+        },
+      },
     });
-    const { result } = await response.json();
-    return result;
+
+    const data = response.map((b) => ({
+      id: b.id,
+      namaBagian: b.namaBagian,
+      atasan: b.atasanId.namaLengkap!,
+      nipAtasan: b.atasanId.nip!,
+    }));
+
+    return data;
   } catch (error: any) {
     return [];
   }
@@ -36,7 +53,7 @@ export default async function TableBagian() {
       </DashboardHeader>
       <Card>
         <CardHeader>
-          <CardTitle>Data Setiap Bagian</CardTitle>
+          <CardTitle>Data Bagian</CardTitle>
           <CardDescription>Daftar semua data bagian di kantor</CardDescription>
         </CardHeader>
         <CardContent>

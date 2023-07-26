@@ -15,6 +15,11 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
+import { Separator } from "./ui/Separator";
+import { Icons } from "./Icons";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { Loader2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface AuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -37,9 +42,27 @@ export default function AuthForm({ className, ...props }: AuthFormProps) {
     mode: "onChange",
   });
 
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  // const { toast } = useToast();
+
+  const loginWithGoogle = async () => {
+    setIsLoading(true);
+    try {
+      await signIn("google");
+    } catch (error) {
+      toast({
+        title: "There was a problem.",
+        description: "There was an error logging in with Google",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <Form {...form}>
+      {/* <Form {...form}>
         <form className="grid gap-3" noValidate>
           <FormField
             control={form.control}
@@ -73,7 +96,24 @@ export default function AuthForm({ className, ...props }: AuthFormProps) {
           />
           <Button className="mt-2">Login</Button>
         </form>
-      </Form>
+      </Form> */}
+
+      {/* <Separator orientation="horizontal" /> */}
+      <div className={(cn("flex justify-center"), className)} {...props}>
+        <Button
+          onClick={loginWithGoogle}
+          isLoading={isLoading}
+          size="sm"
+          className="w-full"
+        >
+          {isLoading ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <Icons.google className="w-4 h-4 mr-2" />
+          )}
+          Google
+        </Button>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import {
   Document,
@@ -7,6 +9,26 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
+
+interface IBeritaSerahTerima {
+  alamatSelamaCuti: string;
+  berkas: string;
+  id: number;
+  idJenisCuti: number;
+  idPemohon: number;
+  idPengganti: number;
+  keterangan: string;
+  lamaCuti: number;
+  namaLengkap: string;
+  nip: string;
+  persetujuanPengganti: number;
+  statusAkhir: string;
+  tahapVerifikasi: number;
+  tanggalArray: string;
+  tanggalMulai: string;
+  tanggalPengajuan: string;
+  tanggalSelesai: string;
+}
 
 const BeritaSerahTerima = () => {
   const styles = StyleSheet.create({
@@ -71,11 +93,11 @@ const BeritaSerahTerima = () => {
         <View>
           <View style={styles.detail}>
             <Text>Nama</Text>
-            <Text style={styles.textDetailRight}>: Yusuf Donny</Text>
+            <Text style={styles.textDetailRight}>: nama</Text>
           </View>
           <View style={styles.detail}>
             <Text>NIP</Text>
-            <Text style={styles.textDetailRight}>: 08123322</Text>
+            <Text style={styles.textDetailRight}>: nip</Text>
           </View>
           <View style={styles.detail}>
             <Text>Pangkat/Golongan</Text>

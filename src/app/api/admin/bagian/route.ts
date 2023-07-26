@@ -7,12 +7,12 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { namaBagian, nipAtasanLangsung } = TambahBagianValidator.parse(body);
+    const { namaBagian, idAtasan } = TambahBagianValidator.parse(body);
 
     await db.bagian.create({
       data: {
-        nama_bagian: namaBagian,
-        kepala_bagian: nipAtasanLangsung,
+        namaBagian: namaBagian,
+        idAtasan: idAtasan,
       },
     });
     return new Response("Success", { status: 201 });
@@ -31,8 +31,8 @@ export async function GET() {
 
     const data = response.map((b) => ({
       id: b.id,
-      namaBagian: b.nama_bagian,
-      kepalaBagian: b.kepala_bagian,
+      namaBagian: b.namaBagian,
+      kepalaBagian: b.nipAtasan,
     }));
 
     return NextResponse.json({
@@ -50,8 +50,10 @@ export async function DELETE(req: Request) {
       return new Response("Id is required.", { status: 404 });
     }
 
+    const numberId = parseInt(id, 10);
+
     await db.bagian.delete({
-      where: { id: +id },
+      where: { id: numberId },
     });
 
     return new Response("Success", { status: 200 });

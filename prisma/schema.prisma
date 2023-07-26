@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -10,10 +11,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// For Authentication
+model Bagian {
+  id         Int       @id @default(autoincrement())
+  namaBagian String
+  nipAtasan  String?
+  atasanId   User      @relation(fields: [idAtasan], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idAtasan   Int
+  Jabatan    Jabatan[]
+}
+
+model Jabatan {
+  id Int @id @default(autoincrement())
+
+  namaJabatan String
+  bagianId    Bagian @relation(fields: [idBagian], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idBagian    Int
+  Pengguna    User[]
+}
+
+model JenisCuti {
+  id Int @id @default(autoincrement())
+
+  namaCuti         String
+  lamaCuti         Int
+  Cuti             Cuti[]
+  VerifikasiBerkas VerifikasiBerkas[]
+  VerifikasiAtasan VerifikasiAtasan[]
+  VerifikasiKepala VerifikasiKepala[]
+}
+
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
+  id Int @id @default(autoincrement())
+
+  userId            Int
   type              String
   provider          String
   providerAccountId String
@@ -31,85 +61,40 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id Int @id @default(autoincrement())
+
   sessionToken String   @unique
-  userId       String
+  userId       Int
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
-
-// 
-
-model Bagian {
-  id            Int       @id @default(autoincrement())
-  nama_bagian   String
-  kepala_bagian String
-  Jabatan       Jabatan[]
-}
-
-model Jabatan {
-  id           Int        @id @default(autoincrement())
-  nama_jabatan String
-  bagianId     Bagian     @relation(fields: [id_bagian], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_bagian    Int
-  Pengguna     Pengguna[]
-}
-
-model JenisCuti {
-  id               Int                @id @default(autoincrement())
-  nama_cuti        String
-  lama_cuti        Int
-  Cuti             Cuti[]
-  VerifikasiBerkas VerifikasiBerkas[]
-}
-
 model User {
-  id            String    @id @default(cuid())
+  id            Int       @id @default(autoincrement())
   name          String?
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  accounts      Account[]
-  sessions      Session[]
-}
 
-model Pengguna {
-  id                Int                @id @default(autoincrement())
-  nip               String
-  nama              String
-  jabatanId         Jabatan            @relation(fields: [id_jabatan], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_jabatan        Int
-  tempat_lahir      String
-  tanggal_lahir     DateTime
-  jenis_kelamin     JenisKelamin
-  email             String             @unique
-  password          String             @unique
-  foto              String             @db.Text
-  role              RolePengguna
-  idPenggantiOnCuti Cuti[]             @relation("idPegawaiPengganti")
-  idPenggunaOnCuti  Cuti[]             @relation("idPengguna")
+  nip               String?            @unique
+  namaLengkap       String?
+  jabatanId         Jabatan?           @relation(fields: [idJabatan], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idJabatan         Int?
+  tempatLahir       String?
+  tanggalLahir      DateTime?
+  jenisKelamin      JenisKelamin?
+  role              RolePengguna?      @default(karyawan)
+  tandaTangan       String?            @db.Text
+  setup             Int                @default(0)
+  idPenggantiOnCuti Cuti[]             @relation("idPengganti")
+  idPemohonOnCuti   Cuti[]             @relation("idPemohon")
   VerifikasiBerkas  VerifikasiBerkas[]
-}
+  VerifikasiAtasan  VerifikasiAtasan[]
 
-enum JenisKelamin {
-  PRIA
-  WANITA
-}
-
-enum RolePengguna {
-  KARYAWAN
-  ATASAN
-  VERIFIKATOR
-  KEPALA
-  ADMIN
+  accounts         Account[]
+  sessions         Session[]
+  VerifikasiKepala VerifikasiKepala[]
+  Bagian           Bagian[]
 }
 
 // 
@@ -117,47 +102,128 @@ enum RolePengguna {
 model Cuti {
   id                   Int                @id @default(autoincrement())
   nip                  String
-  nama                 String
-  jenisCutiId          JenisCuti          @relation(fields: [id_jenis_cuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_jenis_cuti        Int
-  lama_cuti            Int
-  tanggal_pengajuan    DateTime
-  tanggal_mulai        DateTime
-  tanggal_selesai      DateTime
-  tanggal_array        Json
+  namaLengkap          String
+  jenisCutiId          JenisCuti          @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idJenisCuti          Int
+  lamaCuti             Int
+  tanggalPengajuan     DateTime
+  tanggalMulai         DateTime
+  tanggalSelesai       DateTime
+  tanggalArray         Json
   keterangan           String
-  alamat_selama_cuti   String
-  berkas               String             @db.Text
-  penggantiId          Pengguna           @relation("idPegawaiPengganti", fields: [id_pegawai_pengganti], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_pegawai_pengganti Int
-  penggunaId           Pengguna           @relation("idPengguna", fields: [id_pengguna], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_pengguna          Int
-  status               StatusCuti         @default(PROSES)
+  alamatSelamaCuti     String
+  berkas               String?            @db.Text
+  penggantiId          User               @relation("idPengganti", fields: [idPengganti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idPengganti          Int
+  pemohonId            User               @relation("idPemohon", fields: [idPemohon], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idPemohon            Int
+  statusAkhir          StatusCuti         @default(proses)
+  tahapVerifikasi      Int                @default(0)
+  persetujuanPengganti Int?
   VerifikasiBerkas     VerifikasiBerkas[]
-}
-
-enum StatusCuti {
-  PROSES
-  DITERIMA
-  DITOLAK
+  VerifikasiAtasan     VerifikasiAtasan[]
+  VerifikasiKepala     VerifikasiKepala[]
 }
 
 // 
 
 model VerifikasiBerkas {
-  id                    Int       @id @default(autoincrement())
-  jenisCutiId           JenisCuti @relation(fields: [id_jenis_cuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_jenis_cuti         Int
-  cutiId                Cuti      @relation(fields: [id_cuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_cuti               Int
-  nip                   String
-  penggunaId            Pengguna  @relation(fields: [id_pengguna], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  id_pengguna           Int
-  tanggal_verifikasi    DateTime
-  keterangan_verifikasi String
-  surat_cuti            Int
-  formulir_cuti         Int
-  berita_acara          Int
-  berkas_cuti           Int
-  status_verifikasi     Int?
+  id                   Int               @id @default(autoincrement())
+  jenisCutiId          JenisCuti         @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idJenisCuti          Int
+  cutiId               Cuti              @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idCuti               Int
+  nipVerifikator       String
+  verifikatorId        User              @relation(fields: [idVerifikator], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idVerifikator        Int
+  tanggalVerifikasi    DateTime
+  keteranganVerifikasi String
+  suratCuti            Int
+  formulirCuti         Int
+  beritaAcara          Int
+  berkasCuti           Int
+  statusVerifikasi     StatusVerifikasi?
+}
+
+model VerifikasiAtasan {
+  id                   Int              @id @default(autoincrement())
+  jenisCutiId          JenisCuti        @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idJenisCuti          Int
+  cutiId               Cuti             @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idCuti               Int
+  nipAtasan            String
+  atasanId             User             @relation(fields: [idAtasan], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idAtasan             Int
+  tanggalVerifikasi    DateTime
+  keteranganVerifikasi String
+  statusVerifikasi     StatusVerifikasi
+}
+
+model VerifikasiKepala {
+  id                   Int              @id @default(autoincrement())
+  jenisCutiId          JenisCuti        @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idJenisCuti          Int
+  cutiId               Cuti             @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idCuti               Int
+  nipKepala            String
+  kepalaId             User             @relation(fields: [idKepala], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idKepala             Int
+  tanggalVerifikasi    DateTime
+  keteranganVerifikasi String
+  statusVerifikasi     StatusVerifikasi
+}
+
+view sisacutin {
+  userId      Int     @unique @default(0)
+  nip         String?
+  namaLengkap String?
+  idJenisCuti Int     @default(0)
+  namaCuti    String? @db.VarChar(197)
+  lamaCuti    Int     @default(0)
+  sisaCuti    Int     @default(0)
+}
+
+view sisacutin1 {
+  userId      Int     @unique @default(0)
+  nip         String?
+  namaLengkap String?
+  idJenisCuti Int     @default(0)
+  namaCuti    String? @db.VarChar(198)
+  lamaCuti    Int     @default(0)
+  sisaCuti    Int     @default(0)
+}
+
+view sisacutin2 {
+  userId      Int     @unique @default(0)
+  nip         String?
+  namaLengkap String?
+  idJenisCuti Int     @default(0)
+  namaCuti    String? @db.VarChar(198)
+  lamaCuti    Int     @default(0)
+  sisaCuti    Int     @default(0)
+}
+
+enum StatusCuti {
+  proses
+  diterima
+  ditolak
+}
+
+enum StatusVerifikasi {
+  proses
+  diterima
+  ditolak
+}
+
+enum JenisKelamin {
+  pria
+  wanita
+}
+
+enum RolePengguna {
+  karyawan
+  atasan
+  verifikator
+  kepala
+  admin
 }

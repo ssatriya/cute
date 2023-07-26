@@ -6,7 +6,8 @@ import ActionButton from "@/components/ActionButton";
 export type BagianType = {
   id: number;
   namaBagian: string;
-  kepalaBagian: string;
+  atasan: string;
+  nipAtasan: string;
 };
 
 export const columns: ColumnDef<BagianType>[] = [
@@ -19,8 +20,12 @@ export const columns: ColumnDef<BagianType>[] = [
     header: "Nama Bagian",
   },
   {
-    accessorKey: "kepalaBagian",
-    header: "Kepala Bagian",
+    accessorKey: "atasan",
+    header: "Atasan Langsung",
+  },
+  {
+    accessorKey: "nipAtasan",
+    header: "NIP",
   },
   {
     accessorKey: "aksi",

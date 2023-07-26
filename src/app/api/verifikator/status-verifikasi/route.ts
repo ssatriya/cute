@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { addDays, subDays } from "date-fns";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -6,39 +7,41 @@ export async function GET() {
     const response = await db.verifikasiBerkas.findMany({
       select: {
         id: true,
-        nip: true,
-        penggunaId: {
+        nipVerifikator: true,
+        verifikatorId: {
           select: {
-            nama: true,
+            namaLengkap: true,
           },
         },
         cutiId: {
           select: {
-            tanggal_pengajuan: true,
-            tanggal_mulai: true,
-            lama_cuti: true,
+            tanggalPengajuan: true,
+            tanggalMulai: true,
+            lamaCuti: true,
             jenisCutiId: {
               select: {
-                nama_cuti: true,
+                namaCuti: true,
               },
             },
             keterangan: true,
           },
         },
-        status_verifikasi: true,
+        tanggalVerifikasi: true,
+        statusVerifikasi: true,
       },
     });
 
     const data = response.map((verifikasi) => ({
       id: verifikasi.id,
-      nip: verifikasi.nip,
-      nama: verifikasi.penggunaId.nama,
-      tanggalPengajuan: verifikasi.cutiId.tanggal_pengajuan,
-      tanggalMulai: verifikasi.cutiId.tanggal_mulai,
-      lamaCuti: verifikasi.cutiId.lama_cuti,
-      jenisCuti: verifikasi.cutiId.jenisCutiId.nama_cuti,
+      nip: verifikasi.nipVerifikator,
+      nama: verifikasi.verifikatorId.namaLengkap,
+      tanggalPengajuan: verifikasi.cutiId.tanggalPengajuan,
+      tanggalMulai: subDays(verifikasi.cutiId.tanggalMulai, 1),
+      lamaCuti: verifikasi.cutiId.lamaCuti,
+      jenisCuti: verifikasi.cutiId.jenisCutiId.namaCuti,
       keteranganCuti: verifikasi.cutiId.keterangan,
-      statusVerifikasi: verifikasi.status_verifikasi,
+      statusVerifikasi: verifikasi.statusVerifikasi,
+      tanggalVerifikasi: addDays(verifikasi.tanggalVerifikasi, 1),
     }));
 
     return NextResponse.json({

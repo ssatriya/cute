@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { subDays } from "date-fns";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -7,42 +8,30 @@ export async function GET() {
       select: {
         id: true,
         nip: true,
-        nama: true,
-        tanggal_pengajuan: true,
-        tanggal_mulai: true,
-        lama_cuti: true,
+        namaLengkap: true,
+        tanggalPengajuan: true,
+        tanggalMulai: true,
+        lamaCuti: true,
         keterangan: true,
         jenisCutiId: {
           select: {
-            nama_cuti: true,
+            namaCuti: true,
           },
         },
       },
       where: {
-        VerifikasiBerkas: {
-          every: {
-            status_verifikasi: 0,
-          },
-        },
+        tahapVerifikasi: 0,
       },
     });
 
     const data = response.map((cuti) => ({
       id: cuti.id,
       nip: cuti.nip,
-      nama: cuti.nama,
-      tanggalPengajuan: new Date(cuti.tanggal_pengajuan).toLocaleDateString(
-        "id-ID",
-        { weekday: "short", day: "numeric", month: "long", year: "numeric" }
-      ),
-      mulaiCuti: new Date(cuti.tanggal_pengajuan).toLocaleDateString("id-ID", {
-        weekday: "short",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      }),
-      lamaCuti: cuti.lama_cuti,
-      jenisCuti: cuti.jenisCutiId.nama_cuti,
+      nama: cuti.namaLengkap,
+      tanggalPengajuan: cuti.tanggalPengajuan,
+      mulaiCuti: subDays(cuti.tanggalMulai, 1),
+      lamaCuti: cuti.lamaCuti,
+      jenisCuti: cuti.jenisCutiId.namaCuti,
       keteranganCuti: cuti.keterangan,
     }));
 

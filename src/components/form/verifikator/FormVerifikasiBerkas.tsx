@@ -22,6 +22,18 @@ import { verifikasiBerkasPayload } from "@/lib/validators/verifikator/verifikasi
 import axios from "axios";
 import { Icons } from "@/components/Icons";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
+import Link from "next/link";
+
+interface FormVerifikasiBerkasProps {
+  cuti: {
+    idCuti: number;
+    idJenisCuti: number;
+    nip: string;
+    berkas: string;
+  };
+  session: Omit<Session, "expires">;
+}
 
 const formSchema = z.object({
   berkasCuti: z.string(),
@@ -33,26 +45,14 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-function FormVerifikasiBerkas({ id }: { id: number }) {
-  const router = useRouter();
-
-  const { data: dataCuti } = useQuery({
-    queryKey: ["dataCuti", id],
-    queryFn: async () => {
-      const { data } = await axios.get("/api/verifikator/data-cuti", {
-        params: { id: id },
-      });
-      return data;
-    },
-  });
-
+function FormVerifikasiBerkas({ cuti, session }: FormVerifikasiBerkasProps) {
   const { mutate: submitDataVerifikasiBerkas, isLoading } = useMutation({
     mutationFn: async (data: FormData) => {
       const payload: verifikasiBerkasPayload = {
-        idCuti: dataCuti.result.idCuti,
-        idJenisCuti: dataCuti.result.idJenisCuti,
-        nip: dataCuti.result.nip,
-        idPengguna: "14",
+        idCuti: cuti.idCuti,
+        idJenisCuti: cuti.idJenisCuti,
+        nipVerifikator: session.user.nip!,
+        idVerifikator: session.user.id,
         berkasCuti: +data.berkasCuti,
         tanggalVerifikasi: new Date().toDateString(),
         suratPermintaanCuti: +data.suratPermintaanCuti,

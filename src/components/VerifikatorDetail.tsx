@@ -2,7 +2,22 @@ import React from "react";
 import { Card, CardContent } from "./ui/Card";
 import { Icons } from "./Icons";
 
-export default function VerifikatorDetail() {
+interface VerifikatorDetailProps {
+  cuti: {
+    idCuti: number;
+    idJenisCuti: number;
+    nip: string;
+    namaLengkap: string;
+    namaJabatan: string;
+    keteranganCuti: string;
+    lamaCuti: number;
+    tanggalMulai: string;
+    tanggalSelesai: string;
+    alamatSelamatCuti: string;
+  };
+}
+
+export default function VerifikatorDetail({ cuti }: VerifikatorDetailProps) {
   return (
     <Card>
       <CardContent className="text-sm">
@@ -28,18 +43,18 @@ export default function VerifikatorDetail() {
                   Nama
                 </td>
                 <td className="p-1" width="40%">
-                  Yusuf Donny
+                  {cuti.namaLengkap}
                 </td>
                 <td className="p-1" width="15%">
                   NIP
                 </td>
                 <td className="p-1" width="30%">
-                  123123
+                  {cuti.nip}
                 </td>
               </tr>
               <tr className="border">
                 <td className="p-1">Jabatan</td>
-                <td className="p-1">TKHL</td>
+                <td className="p-1">{cuti.namaJabatan}</td>
                 <td className="p-1">Masa Kerja</td>
                 <td className="p-1">24 Tahun 00 Bulan</td>
               </tr>
@@ -61,33 +76,33 @@ export default function VerifikatorDetail() {
                   1. Cuti Tahunan
                 </td>
                 <td className="p-1" width="10%" align="center">
-                  <Icons.close />
+                  {cuti.idJenisCuti === 1 ? <Icons.check /> : <Icons.close />}
                 </td>
                 <td className="p-1" width="40%">
                   2. Cuti Besar
                 </td>
                 <td className="p-1" width="10%" align="center">
-                  <Icons.close />
+                  {cuti.idJenisCuti === 2 ? <Icons.check /> : <Icons.close />}
                 </td>
               </tr>
               <tr className="border">
                 <td className="p-1">3. Cuti Sakit</td>
                 <td className="p-1" align="center">
-                  <Icons.check />
+                  {cuti.idJenisCuti === 3 ? <Icons.check /> : <Icons.close />}
                 </td>
                 <td className="p-1">4. Cuti Melahirkan</td>
                 <td className="p-1" align="center">
-                  <Icons.close />
+                  {cuti.idJenisCuti === 4 ? <Icons.check /> : <Icons.close />}
                 </td>
               </tr>
               <tr className="border">
                 <td className="p-1">5. Cuti Karena Alasan Penting</td>
                 <td className="p-1" align="center">
-                  <Icons.close />
+                  {cuti.idJenisCuti === 5 ? <Icons.check /> : <Icons.close />}
                 </td>
                 <td className="p-1">6. Cuti di Luar Tanggungan Negara</td>
                 <td className="p-1" align="center">
-                  <Icons.close />
+                  {cuti.idJenisCuti === 6 ? <Icons.check /> : <Icons.close />}
                 </td>
               </tr>
             </tbody>
@@ -100,7 +115,7 @@ export default function VerifikatorDetail() {
                 </td>
               </tr>
               <tr className="border">
-                <td className="p-1">Keterangan</td>
+                <td className="p-1">{cuti.keteranganCuti}</td>
               </tr>
             </tbody>
           </table>
@@ -116,13 +131,13 @@ export default function VerifikatorDetail() {
                   Selama
                 </td>
                 <td className="p-1" width="30%">
-                  5 hari
+                  {cuti.lamaCuti} hari
                 </td>
                 <td className="p-1" width="20%">
-                  Mulai Tanggal
+                  Mulai Tanggal {cuti.tanggalMulai}
                 </td>
                 <td className="p-1" width="30%">
-                  tanggal
+                  sampai tanggal {cuti.tanggalSelesai}
                 </td>
               </tr>
             </tbody>
@@ -204,7 +219,7 @@ export default function VerifikatorDetail() {
               </tr>
               <tr className="border">
                 <td className="p-1" width="50%" rowSpan={6} valign="top">
-                  alamat
+                  {cuti.alamatSelamatCuti}
                 </td>
                 <td className="p-1" width="16.6%">
                   TELP
@@ -228,12 +243,12 @@ export default function VerifikatorDetail() {
               </tr>
               <tr className="border">
                 <td className="p-1" colSpan={2} align="center">
-                  (Yusuf Donny)
+                  ({cuti.namaLengkap})
                 </td>
               </tr>
               <tr className="border">
                 <td className="p-1" colSpan={2} align="center">
-                  NIP. 123123
+                  NIP. {cuti.nip}
                 </td>
               </tr>
             </tbody>

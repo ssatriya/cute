@@ -4,13 +4,12 @@ import ActionButton from "@/components/ActionButton";
 import { ColumnDef } from "@tanstack/react-table";
 
 export type KaryawanType = {
-  id: string;
+  id: number;
   nip: string;
-  nama: string;
+  namaLengkap: string;
   role: string;
   jabatan: string;
   email: string;
-  // status: string;
 };
 
 export const columns: ColumnDef<KaryawanType>[] = [
@@ -19,13 +18,9 @@ export const columns: ColumnDef<KaryawanType>[] = [
     header: "NIP",
   },
   {
-    accessorKey: "nama",
+    accessorKey: "namaLengkap",
     header: "Nama",
   },
-  // {
-  //   accessorKey: "bagian",
-  //   header: "Bagian",
-  // },
   {
     accessorKey: "jabatan",
     header: "Jabatan",

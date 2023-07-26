@@ -8,8 +8,8 @@ export async function POST(req: Request) {
     const {
       idCuti,
       idJenisCuti,
-      nip,
-      idPengguna,
+      nipVerifikator,
+      idVerifikator,
       tanggalVerifikasi,
       beritaAcaraCuti,
       berkasCuti,
@@ -18,18 +18,27 @@ export async function POST(req: Request) {
       keteranganVerifikasiBerkas,
     } = verifikasiBerkasValidator.parse(body);
 
-    const response = await db.verifikasiBerkas.create({
+    await db.verifikasiBerkas.create({
       data: {
-        id_cuti: idCuti,
-        id_jenis_cuti: idJenisCuti,
-        nip: nip,
-        id_pengguna: +idPengguna,
-        tanggal_verifikasi: new Date(tanggalVerifikasi),
-        berita_acara: beritaAcaraCuti,
-        berkas_cuti: berkasCuti,
-        formulir_cuti: formulirCuti,
-        surat_cuti: suratPermintaanCuti,
-        keterangan_verifikasi: keteranganVerifikasiBerkas,
+        idCuti: idCuti,
+        idJenisCuti: idJenisCuti,
+        nipVerifikator: nipVerifikator,
+        idVerifikator: +idVerifikator,
+        tanggalVerifikasi: new Date(tanggalVerifikasi),
+        beritaAcara: beritaAcaraCuti,
+        berkasCuti: berkasCuti,
+        formulirCuti: formulirCuti,
+        suratCuti: suratPermintaanCuti,
+        keteranganVerifikasi: keteranganVerifikasiBerkas,
+      },
+    });
+
+    await db.cuti.update({
+      where: {
+        id: idCuti,
+      },
+      data: {
+        tahapVerifikasi: 2,
       },
     });
 

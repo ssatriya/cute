@@ -7,8 +7,56 @@ import {
   StyleSheet,
   Image,
 } from "@react-pdf/renderer";
+import { format } from "date-fns";
 
-const SuratPermintaanCuti = () => {
+interface PDFSuratPermintaanCutiProps {
+  data: {
+    nip: string;
+    namaLengkap: string;
+    tandaTangan: string;
+    tanggalPengajuan: Date;
+    keterangan: string;
+    alamatSelamaCuti: string;
+    lamaCuti: number;
+    tanggalMulai: Date;
+    namaKepala: string;
+    tandaTanganKepala: string;
+    nipKepala: string;
+    namaAtasan: string;
+    tandaTanganAtasan: string;
+    nipAtasan: string;
+    namaJabatan: string;
+    dataCuti: {
+      cutiTahunan?: {
+        namaCuti: string;
+        sisaCuti: number;
+        lamaCuti: number;
+      };
+      cutiBesar?: {
+        namaCuti: string;
+        sisaCuti: number;
+        lamaCuti: number;
+      };
+      cutiSakit?: {
+        namaCuti: string;
+        sisaCuti: number;
+        lamaCuti: number;
+      };
+      cutiBersalin?: {
+        namaCuti: string;
+        sisaCuti: number;
+        lamaCuti: number;
+      };
+      cutiAlasanPenting?: {
+        namaCuti: string;
+        sisaCuti: number;
+        lamaCuti: number;
+      };
+    };
+  };
+}
+
+const SuratPermintaanCuti = ({ data }: PDFSuratPermintaanCutiProps) => {
   const styles = StyleSheet.create({
     imageHeader: {
       width: 556,
@@ -43,7 +91,7 @@ const SuratPermintaanCuti = () => {
       justifyContent: "space-between",
     },
     textDetailRight: {
-      width: "40%",
+      width: "50%",
     },
     paragraph1: {
       marginTop: 15,
@@ -57,14 +105,17 @@ const SuratPermintaanCuti = () => {
       justifyContent: "flex-end",
       alignItems: "flex-start",
       marginTop: 40,
-      marginRight: 100,
+      // marginRight: 100,
     },
     signColumn: {
       flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      marginLeft: "80",
     },
     signImage: {
-      marginTop: 20,
-      marginBottom: 20,
+      width: "180",
+      marginLeft: "30",
     },
     // ============================
     body: {
@@ -193,7 +244,13 @@ const SuratPermintaanCuti = () => {
     tableCellCenter: {
       margin: "auto",
     },
+    tandaTangan: {
+      width: "170",
+      marginLeft: "60",
+    },
   });
+
+  const formatTanggal = format(new Date(data.tanggalPengajuan), "MM/dd/yyyy");
 
   return (
     <Document>
@@ -201,7 +258,7 @@ const SuratPermintaanCuti = () => {
         {/* <Image style={styles.imageHeader} src={``} /> */}
         <View style={styles.group1}>
           <Text>Perihal : Permintaan Cuti Tahunan</Text>
-          <Text style={styles.textDate}>Banjarbaru, 11 Juni 2023</Text>
+          <Text style={styles.textDate}>Banjarbaru, {formatTanggal}</Text>
         </View>
         <View style={styles.group2}>
           <View>
@@ -216,11 +273,11 @@ const SuratPermintaanCuti = () => {
         <View>
           <View style={styles.detail}>
             <Text>Nama</Text>
-            <Text style={styles.textDetailRight}>: Yusuf Donny</Text>
+            <Text style={styles.textDetailRight}>: {data.namaLengkap}</Text>
           </View>
           <View style={styles.detail}>
             <Text>NIP</Text>
-            <Text style={styles.textDetailRight}>: 12093123</Text>
+            <Text style={styles.textDetailRight}>: {data.nip}</Text>
           </View>
           <View style={styles.detail}>
             <Text>Pangkat/Gol. Ruangan</Text>
@@ -228,7 +285,7 @@ const SuratPermintaanCuti = () => {
           </View>
           <View style={styles.detail}>
             <Text>Jabatan</Text>
-            <Text style={styles.textDetailRight}>: Staf</Text>
+            <Text style={styles.textDetailRight}>: {data.namaJabatan}</Text>
           </View>
           <View style={styles.detail}>
             <Text>Satuan Organisasi</Text>
@@ -238,7 +295,7 @@ const SuratPermintaanCuti = () => {
           </View>
           <View style={styles.detail}>
             <Text>Alasan Cuti</Text>
-            <Text style={styles.textDetailRight}>: Istirahat Dirumah</Text>
+            <Text style={styles.textDetailRight}>:{data.keterangan}</Text>
           </View>
           <View style={styles.detail}>
             <Text>Nomor Telepon</Text>
@@ -249,24 +306,25 @@ const SuratPermintaanCuti = () => {
           <View style={styles.paragraph1}>
             <Text>
               Dengan ini mengajukan permintaan cuti tahunan untuk tahun 2023
-              selama 4 (empat) hari kerja, terhitung mulai tanggal 05 Juli 2022.
+              selama {data.lamaCuti} (placeholder angka terbilang) hari kerja,
+              terhitung mulai tanggal 05 Juli 2022.
             </Text>
           </View>
           <View style={styles.paragraph2}>
             <Text>
-              Selama menjalankan cuti alamat saya adalah di Jl. Mentaos Timur,
-              No. 18, RT/RW 007/003, Banjarbaru Utara. Demikianlah permintaan
-              ini saya buat untuk dapat dipertimbangkan sebagaimana mestinya.
+              Selama menjalankan cuti alamat saya adalah di{" "}
+              {data.alamatSelamaCuti}. Demikianlah permintaan ini saya buat
+              untuk dapat dipertimbangkan sebagaimana mestinya.
             </Text>
           </View>
         </View>
         <View style={styles.sign}>
           <View style={styles.signColumn}>
             <Text>Hormat saya,</Text>
-            {/* <Image  /> */}
-            <Text style={styles.signImage}>Sign placeholder</Text>
-            <Text>Yusuf Donny Satriyo</Text>
-            <Text>NIP. 1213123</Text>
+            <Image style={styles.signImage} src={data.tandaTangan} />
+            {/* <Text style={styles.signImage}>Sign placeholder</Text> */}
+            <Text>{data.namaLengkap}</Text>
+            <Text>NIP. {data.nip}</Text>
           </View>
         </View>
         {/* ======================== */}
@@ -304,17 +362,24 @@ const SuratPermintaanCuti = () => {
               </Text>
             </View>
             <View style={styles.tableColDividedSpanAllWithoutBorderBottom}>
-              <Text style={styles.tableCellBig}>TTD</Text>
+              {/* <Text style={styles.tableCellBig}>TTD</Text> */}
+              <Image style={styles.signImage} src={data.tandaTanganAtasan} />
             </View>
             <View style={styles.tableColDividedSpanAllWithoutBorderBottom}>
-              <Text style={styles.tableCellBig}>TTD</Text>
+              {/* <Text style={styles.tableCellBig}>TTD</Text> */}
+              <Image style={styles.signImage} src={data.tandaTanganAtasan} />
             </View>
           </View>
           <View style={styles.tableRow}>
             <View style={styles.tableColNormal}>
               <View style={styles.tableCellFlex}>
                 <Text>1. Cuti Tahunan </Text>
-                <Text>0 hari</Text>
+                <Text>
+                  {data.dataCuti.cutiTahunan?.lamaCuti
+                    ? data.dataCuti.cutiTahunan?.lamaCuti
+                    : 0}{" "}
+                  hari
+                </Text>
               </View>
             </View>
             <View style={styles.tableColDividedSpanAllWithoutBorderBottom}>
@@ -328,7 +393,12 @@ const SuratPermintaanCuti = () => {
             <View style={styles.tableColNormal}>
               <View style={styles.tableCellFlex}>
                 <Text>2. Cuti Besar </Text>
-                <Text>0 hari</Text>
+                <Text>
+                  {data.dataCuti.cutiBesar?.lamaCuti
+                    ? data.dataCuti.cutiBesar?.lamaCuti
+                    : 0}{" "}
+                  hari
+                </Text>
               </View>
             </View>
             <View style={styles.tableColDividedSpanAllWithoutBorderBottom}>
@@ -342,42 +412,59 @@ const SuratPermintaanCuti = () => {
             <View style={styles.tableColNormal}>
               <View style={styles.tableCellFlex}>
                 <Text>3. Cuti Sakit </Text>
-                <Text>0 hari</Text>
+                <Text>
+                  {data.dataCuti.cutiSakit?.lamaCuti
+                    ? data.dataCuti.cutiSakit?.lamaCuti
+                    : 0}{" "}
+                  hari
+                </Text>
               </View>
             </View>
             <View style={styles.tableColDividedSpanAllWithBorderBottom}>
               {/* <Text style={styles.tableCell}>TTD</Text> */}
+              {/* <Image style={styles.signImage} src={data.tandaTanganAtasan} /> */}
             </View>
             <View style={styles.tableColDividedSpanAllWithBorderBottom}>
               {/* <Text style={styles.tableCell}>TTD</Text> */}
+              {/* <Image style={styles.signImage} src={data.tandaTanganAtasan} /> */}
             </View>
           </View>
           <View style={styles.tableRow}>
             <View style={styles.tableColNormal}>
               <View style={styles.tableCellFlex}>
                 <Text>4. Cuti Bersalin </Text>
-                <Text>0 hari</Text>
+                <Text>
+                  {data.dataCuti.cutiBersalin?.lamaCuti
+                    ? data.dataCuti.cutiBersalin?.lamaCuti
+                    : 0}{" "}
+                  hari
+                </Text>
               </View>
             </View>
             <View style={styles.tableColDivided}>
-              <Text style={styles.tableCell}>Nama</Text>
+              <Text style={styles.tableCell}>{data.namaAtasan}</Text>
             </View>
             <View style={styles.tableColDivided}>
-              <Text style={styles.tableCell}>Nama</Text>
+              <Text style={styles.tableCell}>{data.namaAtasan}</Text>
             </View>
           </View>
           <View style={styles.tableRow}>
             <View style={styles.tableColNormal}>
               <View style={styles.tableCellFlex}>
                 <Text>5. Cuti Alasan Penting </Text>
-                <Text>0 hari</Text>
+                <Text>
+                  {data.dataCuti.cutiAlasanPenting?.lamaCuti
+                    ? data.dataCuti.cutiAlasanPenting?.lamaCuti
+                    : 0}{" "}
+                  hari
+                </Text>
               </View>
             </View>
             <View style={styles.tableColDivided}>
-              <Text style={styles.tableCell}>NIP</Text>
+              <Text style={styles.tableCell}>NIP {data.nipAtasan}</Text>
             </View>
             <View style={styles.tableColDivided}>
-              <Text style={styles.tableCell}>NIP</Text>
+              <Text style={styles.tableCell}>NIP {data.nipAtasan}</Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -404,11 +491,13 @@ const SuratPermintaanCuti = () => {
           <View style={styles.tableRow}>
             <View style={styles.tableColNormal}>
               <Text style={styles.tableCellAlignLeft}>
-                Sisa Cuti Tahunan: 12 hari
+                Sisa Cuti Tahunan: {data.dataCuti.cutiTahunan?.sisaCuti} hari
               </Text>
             </View>
             <View style={styles.tableColSpanAll}>
-              <Text style={styles.tableCellCenter}>TTD</Text>
+              {/* {data.tandaTanganKepala} */}
+              <Image style={styles.signImage} src={data.tandaTanganKepala} />
+              <Text style={styles.tableCellCenter}></Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -434,7 +523,7 @@ const SuratPermintaanCuti = () => {
               <Text>&nbsp;</Text>
             </View>
             <View style={styles.tableColHeaderSpan}>
-              <Text style={styles.tableCellCenter}>Nama</Text>
+              <Text style={styles.tableCellCenter}>{data.namaKepala}</Text>
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -442,7 +531,7 @@ const SuratPermintaanCuti = () => {
               <Text>&nbsp;</Text>
             </View>
             <View style={styles.tableColHeaderSpan}>
-              <Text style={styles.tableCellCenter}>NIP</Text>
+              <Text style={styles.tableCellCenter}>NIP {data.nipKepala}</Text>
             </View>
           </View>
         </View>
