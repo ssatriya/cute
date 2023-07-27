@@ -20,9 +20,9 @@ export async function GET(req: Request) {
         idJenisCuti: true,
         nip: true,
         namaLengkap: true,
-        pemohonId: {
+        pemohon: {
           select: {
-            jabatanId: {
+            jabatan: {
               select: {
                 namaJabatan: true,
               },
@@ -46,7 +46,7 @@ export async function GET(req: Request) {
       idJenisCuti: response.idJenisCuti,
       nip: response.nip,
       namaLengkap: response.namaLengkap,
-      namaJabatan: response.pemohonId.jabatanId?.namaJabatan,
+      namaJabatan: response.pemohon.jabatan?.namaJabatan,
       keteranganCuti: response.keterangan,
       lamaCuti: response.lamaCuti,
       tanggalMulai: response.tanggalMulai,

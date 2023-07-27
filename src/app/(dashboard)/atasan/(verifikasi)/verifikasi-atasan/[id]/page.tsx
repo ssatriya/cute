@@ -27,12 +27,12 @@ export default async function VerifikasiAtasan({
 
   const numberId = parseInt(id, 10);
 
-  const response = await db.cuti.findUnique({
+  const response = await db.cuti.findUniqueOrThrow({
     select: {
       id: true,
       namaLengkap: true,
       nip: true,
-      jenisCutiId: {
+      jenisCuti: {
         select: {
           namaCuti: true,
           id: true,
@@ -42,7 +42,7 @@ export default async function VerifikasiAtasan({
       tanggalMulai: true,
       tanggalSelesai: true,
       keterangan: true,
-      penggantiId: {
+      pengganti: {
         select: {
           namaLengkap: true,
           nip: true,
@@ -54,21 +54,18 @@ export default async function VerifikasiAtasan({
     },
   });
 
-  if (!response) {
-    return <p>Cuti tidak ditemukan</p>;
-  }
   const data = {
     idCuti: response.id,
     namaLengkap: response.namaLengkap,
     nip: response.nip,
-    jenisCuti: response.jenisCutiId.namaCuti,
-    idJenisCuti: response.jenisCutiId.id,
+    jenisCuti: response.jenisCuti.namaCuti,
+    idJenisCuti: response.jenisCuti.id,
     lamaCuti: response.lamaCuti,
     tanggalMulai: format(new Date(response.tanggalMulai), "MM/dd/yyyy"),
     tanggalSelesai: format(new Date(response.tanggalSelesai), "MM/dd/yyyy"),
     keteranganCuti: response.keterangan,
-    namaPengganti: response.penggantiId.namaLengkap || "",
-    nipPengganti: response.penggantiId.nip || "",
+    namaPengganti: response.pengganti.namaLengkap || "",
+    nipPengganti: response.pengganti.nip || "",
   };
 
   return (

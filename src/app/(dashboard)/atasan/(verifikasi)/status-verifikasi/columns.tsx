@@ -15,7 +15,7 @@ export type StatusVerifikasiAtasan = {
   lamaCuti: number;
   jenisCuti: string;
   keteranganCuti: string;
-  statusVerifikasi: number;
+  statusVerifikasi: string;
   tanggalVerifikasi: string;
 };
 

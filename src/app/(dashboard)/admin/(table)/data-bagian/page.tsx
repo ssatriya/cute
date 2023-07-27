@@ -14,6 +14,11 @@ import {
 } from "@/app/(dashboard)/admin/(table)/data-bagian/columns";
 import { DataTable } from "@/components/ui/DataTable";
 import { db } from "@/lib/db";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Data Bagian",
+};
 
 async function getData(): Promise<BagianType[]> {
   try {
@@ -21,7 +26,7 @@ async function getData(): Promise<BagianType[]> {
       select: {
         id: true,
         namaBagian: true,
-        atasanId: {
+        atasan: {
           select: {
             namaLengkap: true,
             nip: true,
@@ -33,8 +38,8 @@ async function getData(): Promise<BagianType[]> {
     const data = response.map((b) => ({
       id: b.id,
       namaBagian: b.namaBagian,
-      atasan: b.atasanId.namaLengkap!,
-      nipAtasan: b.atasanId.nip!,
+      atasan: b.atasan.namaLengkap!,
+      nipAtasan: b.atasan.nip!,
     }));
 
     return data;

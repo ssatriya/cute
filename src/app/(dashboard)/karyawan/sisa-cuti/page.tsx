@@ -8,7 +8,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
-import { columns } from "@/app/(dashboard)/karyawan/sisa-cuti/columns";
+import {
+  columns,
+  SisaCutiType,
+} from "@/app/(dashboard)/karyawan/sisa-cuti/columns";
 import { Metadata } from "next/types";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
@@ -16,12 +19,6 @@ import { getCurrentUser } from "@/lib/getCurrentUser";
 export const metadata: Metadata = {
   title: "Sisa Cuti Tahunan",
 };
-
-async function getData() {
-  // const res = await fetch("http://localhost:3000/api/karyawan/data-cuti");
-  // const data = await res.json();
-  // return [];
-}
 
 export default async function SisaCutiKaryawan() {
   const currentUser = await getCurrentUser();
@@ -62,11 +59,25 @@ export default async function SisaCutiKaryawan() {
     }),
   ]);
 
-  // console.log(sisaCutiN, sisaCutiN1, sisaCutiN2);
+  const cutiTersedia =
+    sisaCutiN?.sisaCuti! + sisaCutiN1?.sisaCuti! + sisaCutiN2?.sisaCuti!;
+
+  const data: SisaCutiType[] = [
+    {
+      nama: userData?.namaLengkap!,
+      cutiTersedia: cutiTersedia > 12 ? 12 : cutiTersedia,
+      cutiDiambilN: sisaCutiN?.lamaCuti!,
+      cutiDiambilN1: sisaCutiN1?.lamaCuti!,
+      cutiDiambilN2: sisaCutiN2?.lamaCuti!,
+      sisaCutiN: sisaCutiN?.sisaCuti!,
+      sisaCutiN1: sisaCutiN1?.sisaCuti!,
+      sisaCutiN2: sisaCutiN2?.sisaCuti!,
+    },
+  ];
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Sisa Cuti Tahunan" />
+      <DashboardHeader heading="Sisa Cuti" />
       <Card>
         <CardHeader>
           <CardTitle>Sisa Cuti Tahunan</CardTitle>
@@ -75,7 +86,7 @@ export default async function SisaCutiKaryawan() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* <DataTable columns={columns} data={data} /> */}
+          <DataTable columns={columns} data={data} />
         </CardContent>
       </Card>
     </DashboardShell>

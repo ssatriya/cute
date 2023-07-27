@@ -25,7 +25,7 @@ export default async function TablePengajuanCuti() {
       tanggalMulai: true,
       lamaCuti: true,
       keterangan: true,
-      jenisCutiId: {
+      jenisCuti: {
         select: {
           namaCuti: true,
         },
@@ -44,7 +44,7 @@ export default async function TablePengajuanCuti() {
     tanggalPengajuan: format(cuti.tanggalPengajuan, "MM/dd/yyyy"),
     tanggalMulai: format(subDays(cuti.tanggalMulai, 1), "MM/dd/yyyy"),
     lamaCuti: cuti.lamaCuti,
-    jenisCuti: cuti.jenisCutiId.namaCuti,
+    jenisCuti: cuti.jenisCuti.namaCuti,
     keteranganCuti: cuti.keterangan,
   }));
 

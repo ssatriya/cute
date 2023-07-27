@@ -26,7 +26,7 @@ async function getData(): Promise<DataVerifikasiAtasan[]> {
         tanggalMulai: true,
         lamaCuti: true,
         keterangan: true,
-        jenisCutiId: {
+        jenisCuti: {
           select: {
             namaCuti: true,
           },
@@ -45,7 +45,7 @@ async function getData(): Promise<DataVerifikasiAtasan[]> {
       tanggalPengajuan: format(cuti.tanggalPengajuan, "MM/dd/yyyy"),
       tanggalMulai: format(subDays(cuti.tanggalMulai, 1), "MM/dd/yyyy"),
       lamaCuti: cuti.lamaCuti,
-      jenisCuti: cuti.jenisCutiId.namaCuti,
+      jenisCuti: cuti.jenisCuti.namaCuti,
       keteranganCuti: cuti.keterangan,
     }));
     return data;

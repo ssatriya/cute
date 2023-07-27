@@ -14,6 +14,11 @@ import {
 } from "@/app/(dashboard)/admin/(table)/data-karyawan/columns";
 import { DataTable } from "@/components/ui/DataTable";
 import { db } from "@/lib/db";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Data Karyawan",
+};
 
 async function getData(): Promise<KaryawanType[]> {
   try {
@@ -24,7 +29,7 @@ async function getData(): Promise<KaryawanType[]> {
         namaLengkap: true,
         email: true,
         role: true,
-        jabatanId: {
+        jabatan: {
           select: {
             namaJabatan: true,
           },
@@ -38,7 +43,7 @@ async function getData(): Promise<KaryawanType[]> {
       namaLengkap: k.namaLengkap || "",
       email: k.email || "",
       role: k.role || "",
-      jabatan: k.jabatanId?.namaJabatan || "",
+      jabatan: k.jabatan?.namaJabatan || "",
     }));
 
     return data;

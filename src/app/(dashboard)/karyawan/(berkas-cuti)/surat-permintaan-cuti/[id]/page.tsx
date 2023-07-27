@@ -39,9 +39,9 @@ export default async function BerkasCuti({ params }: BerkasCutiProps) {
       alamatSelamaCuti: true,
       lamaCuti: true,
       tanggalMulai: true,
-      VerifikasiAtasan: {
+      verifikasiAtasan: {
         select: {
-          atasanId: {
+          atasan: {
             select: {
               namaLengkap: true,
               tandaTangan: true,
@@ -50,9 +50,9 @@ export default async function BerkasCuti({ params }: BerkasCutiProps) {
           },
         },
       },
-      VerifikasiKepala: {
+      verifikasiKepala: {
         select: {
-          kepalaId: {
+          kepala: {
             select: {
               namaLengkap: true,
               tandaTangan: true,
@@ -61,7 +61,7 @@ export default async function BerkasCuti({ params }: BerkasCutiProps) {
           },
         },
       },
-      pemohonId: {
+      pemohon: {
         select: {
           tandaTangan: true,
           jabatanId: {
@@ -140,19 +140,19 @@ export default async function BerkasCuti({ params }: BerkasCutiProps) {
         data={{
           nip: response.nip,
           namaLengkap: response.namaLengkap,
-          tandaTangan: response.pemohonId.tandaTangan!,
+          tandaTangan: response.pemohon.tandaTangan!,
           alamatSelamaCuti: response.alamatSelamaCuti,
           keterangan: response.keterangan,
           lamaCuti: response.lamaCuti,
-          namaKepala: response.VerifikasiKepala[0].kepalaId.namaLengkap!,
-          tandaTanganKepala: response.VerifikasiKepala[0].kepalaId.tandaTangan!,
-          nipKepala: response.VerifikasiKepala[0].kepalaId.nip!,
-          namaAtasan: response.VerifikasiAtasan[0].atasanId.namaLengkap!,
-          tandaTanganAtasan: response.VerifikasiAtasan[0].atasanId.tandaTangan!,
-          nipAtasan: response.VerifikasiAtasan[0].atasanId.nip!,
+          namaKepala: response.verifikasiKepala?.kepala.namaLengkap!,
+          tandaTanganKepala: response.verifikasiKepala?.kepala.tandaTangan!,
+          nipKepala: response.verifikasiKepala?.kepala.nip!,
+          namaAtasan: response.verifikasiAtasan?.atasan.namaLengkap!,
+          tandaTanganAtasan: response.verifikasiAtasan?.atasan.tandaTangan!,
+          nipAtasan: response.verifikasiAtasan?.atasan.nip!,
           tanggalMulai: response.tanggalMulai,
           tanggalPengajuan: response.tanggalPengajuan,
-          namaJabatan: response.pemohonId.jabatanId?.namaJabatan!,
+          namaJabatan: response.pemohon.jabatanId?.namaJabatan!,
           dataCuti: dataCuti,
         }}
       />

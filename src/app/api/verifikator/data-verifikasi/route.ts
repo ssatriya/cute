@@ -13,7 +13,7 @@ export async function GET() {
         tanggalMulai: true,
         lamaCuti: true,
         keterangan: true,
-        jenisCutiId: {
+        jenisCuti: {
           select: {
             namaCuti: true,
           },
@@ -31,7 +31,7 @@ export async function GET() {
       tanggalPengajuan: cuti.tanggalPengajuan,
       mulaiCuti: subDays(cuti.tanggalMulai, 1),
       lamaCuti: cuti.lamaCuti,
-      jenisCuti: cuti.jenisCutiId.namaCuti,
+      jenisCuti: cuti.jenisCuti.namaCuti,
       keteranganCuti: cuti.keterangan,
     }));
 

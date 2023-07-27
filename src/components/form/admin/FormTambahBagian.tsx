@@ -68,7 +68,7 @@ export default function FormTambahBagian() {
     },
   });
 
-  const { data: dataAtasan } = useQuery({
+  const { data: dataAtasan, isLoading: isDataAtasanLoading } = useQuery({
     queryKey: ["dataAtasan"],
     queryFn: async () => {
       const {
@@ -77,8 +77,6 @@ export default function FormTambahBagian() {
       return data;
     },
   });
-
-  console.log(dataAtasan);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -133,7 +131,7 @@ export default function FormTambahBagian() {
                   <FormControl>
                     <Select onValueChange={onChange} value={value} name={name}>
                       <FormControl>
-                        {isLoading ? (
+                        {isDataAtasanLoading ? (
                           <Skeleton className="w-full h-10 border" />
                         ) : (
                           <SelectTrigger onBlur={onBlur}>

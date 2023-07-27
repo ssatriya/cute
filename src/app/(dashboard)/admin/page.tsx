@@ -11,6 +11,11 @@ import { Terminal } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import {Metadata} from 'next/types'
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default async function AdminPage() {
   const session = await getAuthSession();
@@ -25,7 +30,7 @@ export default async function AdminPage() {
     select: {
       id: true,
       persetujuanPengganti: true,
-      penggantiId: {
+      pengganti: {
         select: {
           namaLengkap: true,
         },
@@ -49,10 +54,6 @@ export default async function AdminPage() {
       id: numberId,
     },
   });
-
-  // if (userProfil?.setup === 0) {
-  //   return redirect("/admin/pengaturan");
-  // }
 
   return (
     <DashboardShell>

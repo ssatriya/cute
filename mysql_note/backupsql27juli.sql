@@ -15,7 +15,7 @@ model Bagian {
   id         Int       @id @default(autoincrement())
   namaBagian String
   nipAtasan  String?
-  atasan     User      @relation(fields: [idAtasan], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  atasanId   User      @relation(fields: [idAtasan], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idAtasan   Int
   Jabatan    Jabatan[]
 }
@@ -24,7 +24,7 @@ model Jabatan {
   id Int @id @default(autoincrement())
 
   namaJabatan String
-  bagian      Bagian @relation(fields: [idBagian], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  bagianId    Bagian @relation(fields: [idBagian], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idBagian    Int
   Pengguna    User[]
 }
@@ -78,7 +78,7 @@ model User {
 
   nip               String?            @unique
   namaLengkap       String?
-  jabatan           Jabatan?           @relation(fields: [idJabatan], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  jabatanId         Jabatan?           @relation(fields: [idJabatan], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idJabatan         Int?
   tempatLahir       String?
   tanggalLahir      DateTime?
@@ -100,10 +100,10 @@ model User {
 // 
 
 model Cuti {
-  id                   Int        @id @default(autoincrement())
+  id                   Int                @id @default(autoincrement())
   nip                  String
   namaLengkap          String
-  jenisCuti            JenisCuti  @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  jenisCutiId          JenisCuti          @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idJenisCuti          Int
   lamaCuti             Int
   tanggalPengajuan     DateTime
@@ -112,30 +112,29 @@ model Cuti {
   tanggalArray         Json
   keterangan           String
   alamatSelamaCuti     String
-  berkas               String?    @db.Text
-  pengganti            User       @relation("idPengganti", fields: [idPengganti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  berkas               String?            @db.Text
+  penggantiId          User               @relation("idPengganti", fields: [idPengganti], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idPengganti          Int
-  pemohon              User       @relation("idPemohon", fields: [idPemohon], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  pemohonId            User               @relation("idPemohon", fields: [idPemohon], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idPemohon            Int
-  statusAkhir          StatusCuti @default(proses)
-  tahapVerifikasi      Int        @default(0)
+  statusAkhir          StatusCuti         @default(proses)
+  tahapVerifikasi      Int                @default(0)
   persetujuanPengganti Int?
-
-  verifikasiBerkas VerifikasiBerkas?
-  verifikasiAtasan VerifikasiAtasan?
-  verifikasiKepala VerifikasiKepala?
+  VerifikasiBerkas     VerifikasiBerkas[]
+  VerifikasiAtasan     VerifikasiAtasan[]
+  VerifikasiKepala     VerifikasiKepala[]
 }
 
 // 
 
 model VerifikasiBerkas {
   id                   Int               @id @default(autoincrement())
-  jenisCuti            JenisCuti         @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  jenisCutiId          JenisCuti         @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idJenisCuti          Int
-  cuti                 Cuti              @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  idCuti               Int               @unique
+  cutiId               Cuti              @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idCuti               Int
   nipVerifikator       String
-  verifikator          User              @relation(fields: [idVerifikator], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  verifikatorId        User              @relation(fields: [idVerifikator], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idVerifikator        Int
   tanggalVerifikasi    DateTime
   keteranganVerifikasi String
@@ -148,12 +147,12 @@ model VerifikasiBerkas {
 
 model VerifikasiAtasan {
   id                   Int              @id @default(autoincrement())
-  jenisCuti            JenisCuti        @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  jenisCutiId          JenisCuti        @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idJenisCuti          Int
-  cuti                 Cuti             @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  idCuti               Int              @unique
+  cutiId               Cuti             @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idCuti               Int
   nipAtasan            String
-  atasan               User             @relation(fields: [idAtasan], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  atasanId             User             @relation(fields: [idAtasan], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idAtasan             Int
   tanggalVerifikasi    DateTime
   keteranganVerifikasi String
@@ -162,12 +161,12 @@ model VerifikasiAtasan {
 
 model VerifikasiKepala {
   id                   Int              @id @default(autoincrement())
-  jenisCuti            JenisCuti        @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  jenisCutiId          JenisCuti        @relation(fields: [idJenisCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idJenisCuti          Int
-  cuti                 Cuti             @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  idCuti               Int              @unique
+  cutiId               Cuti             @relation(fields: [idCuti], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  idCuti               Int
   nipKepala            String
-  kepala               User             @relation(fields: [idKepala], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  kepalaId             User             @relation(fields: [idKepala], references: [id], onDelete: Cascade, onUpdate: Cascade)
   idKepala             Int
   tanggalVerifikasi    DateTime
   keteranganVerifikasi String

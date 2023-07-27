@@ -22,7 +22,7 @@ export default async function VerifikatorPage() {
     select: {
       id: true,
       persetujuanPengganti: true,
-      penggantiId: {
+      pengganti: {
         select: {
           namaLengkap: true,
         },
@@ -51,7 +51,7 @@ export default async function VerifikatorPage() {
     <DashboardShell>
       <DashboardHeader heading="Dashboard" />
       <ProfilAlert path="verifikator" />
-      {pengganti && <PersetujuanAlert pengganti={pengganti} />}
+      {pengganti && <PersetujuanAlert id={pengganti.id} />}
     </DashboardShell>
   );
 }

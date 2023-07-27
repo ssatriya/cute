@@ -31,7 +31,11 @@ export default async function ProfilKaryawan() {
       <div className="grid gap-8">
         {userProfil && (
           <FormPengaturanProfil
-            user={{ id: userProfil?.id, role: userProfil?.role }}
+            user={{
+              id: userProfil?.id,
+              role: userProfil?.role,
+              setup: userProfil.setup,
+            }}
           />
         )}
       </div>

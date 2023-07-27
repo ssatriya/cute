@@ -14,6 +14,11 @@ import {
 } from "@/app/(dashboard)/admin/(table)/data-cuti/columns";
 import { DataTable } from "@/components/ui/DataTable";
 import { db } from "@/lib/db";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Data Cuti",
+};
 
 async function getData(): Promise<CutiType[]> {
   try {

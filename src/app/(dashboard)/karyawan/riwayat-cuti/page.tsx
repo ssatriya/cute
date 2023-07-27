@@ -43,7 +43,7 @@ export default async function page() {
       tanggalPengajuan: true,
       tanggalMulai: true,
       lamaCuti: true,
-      jenisCutiId: {
+      jenisCuti: {
         select: {
           namaCuti: true,
         },
@@ -62,7 +62,7 @@ export default async function page() {
     tanggalPengajuan: cuti.tanggalPengajuan,
     tanggalMulai: cuti.tanggalMulai,
     lamaCuti: cuti.lamaCuti,
-    jenisCuti: cuti.jenisCutiId.namaCuti,
+    jenisCuti: cuti.jenisCuti.namaCuti,
     statusAkhir: cuti.statusAkhir,
   }));
 

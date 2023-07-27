@@ -15,13 +15,19 @@ import {
 } from "@/app/(dashboard)/admin/(table)/data-jabatan/columns";
 import { db } from "@/lib/db";
 
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Data Jabatan",
+};
+
 async function getData(): Promise<JabatanType[]> {
   try {
     const response = await db.jabatan.findMany({
       select: {
         id: true,
         namaJabatan: true,
-        bagianId: {
+        bagian: {
           select: {
             namaBagian: true,
           },
@@ -32,7 +38,7 @@ async function getData(): Promise<JabatanType[]> {
     const data = response.map((j) => ({
       id: j.id,
       namaJabatan: j.namaJabatan,
-      namaBagian: j.bagianId.namaBagian,
+      namaBagian: j.bagian.namaBagian,
     }));
     return data;
   } catch (error: any) {

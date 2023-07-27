@@ -180,11 +180,11 @@ const SuratPermintaanCuti = ({ data }: PDFSuratPermintaanCutiProps) => {
     },
     tableColDividedSpanAllWithoutBorderBottom: {
       width: "32.5%",
-      height: "auto",
+      // height: "100%",
       borderStyle: "solid",
       borderColor: "#000",
       borderRightWidth: 1,
-      borderBottomWidth: 0,
+      borderBottomWidth: 1,
     },
 
     tableColDividedSpanAllWithBorderBottom: {
@@ -363,11 +363,11 @@ const SuratPermintaanCuti = ({ data }: PDFSuratPermintaanCutiProps) => {
             </View>
             <View style={styles.tableColDividedSpanAllWithoutBorderBottom}>
               {/* <Text style={styles.tableCellBig}>TTD</Text> */}
-              <Image style={styles.signImage} src={data.tandaTanganAtasan} />
+              {/* <Image style={styles.signImage} src={data.tandaTanganAtasan} /> */}
             </View>
             <View style={styles.tableColDividedSpanAllWithoutBorderBottom}>
               {/* <Text style={styles.tableCellBig}>TTD</Text> */}
-              <Image style={styles.signImage} src={data.tandaTanganAtasan} />
+              {/* <Image style={styles.signImage} src={data.tandaTanganAtasan} /> */}
             </View>
           </View>
           <View style={styles.tableRow}>
@@ -422,11 +422,11 @@ const SuratPermintaanCuti = ({ data }: PDFSuratPermintaanCutiProps) => {
             </View>
             <View style={styles.tableColDividedSpanAllWithBorderBottom}>
               {/* <Text style={styles.tableCell}>TTD</Text> */}
-              {/* <Image style={styles.signImage} src={data.tandaTanganAtasan} /> */}
+              <Image style={styles.signImage} src={data.tandaTanganAtasan} />
             </View>
             <View style={styles.tableColDividedSpanAllWithBorderBottom}>
               {/* <Text style={styles.tableCell}>TTD</Text> */}
-              {/* <Image style={styles.signImage} src={data.tandaTanganAtasan} /> */}
+              <Image style={styles.signImage} src={data.tandaTanganAtasan} />
             </View>
           </View>
           <View style={styles.tableRow}>

@@ -11,23 +11,23 @@ export async function getStatusVerifikasiAtasan(): Promise<
       select: {
         id: true,
         nipAtasan: true,
-        atasanId: {
+        atasan: {
           select: {
             namaLengkap: true,
           },
         },
-        cutiId: {
+        cuti: {
           select: {
             tanggalPengajuan: true,
             tanggalMulai: true,
             lamaCuti: true,
-            jenisCutiId: {
+            jenisCuti: {
               select: {
                 namaCuti: true,
               },
             },
             keterangan: true,
-            pemohonId: {
+            pemohon: {
               select: {
                 namaLengkap: true,
                 nip: true,
@@ -42,19 +42,16 @@ export async function getStatusVerifikasiAtasan(): Promise<
 
     const data = response.map((verifikasi) => ({
       id: verifikasi.id,
-      nip: verifikasi.cutiId.pemohonId.nip!,
-      namaLengkap: verifikasi.cutiId.pemohonId.namaLengkap!,
-      tanggalPengajuan: format(
-        verifikasi.cutiId.tanggalPengajuan,
-        "MM/dd/yyyy"
-      ),
+      nip: verifikasi.cuti.pemohon.nip!,
+      namaLengkap: verifikasi.cuti.pemohon.namaLengkap!,
+      tanggalPengajuan: format(verifikasi.cuti.tanggalPengajuan, "MM/dd/yyyy"),
       tanggalMulai: format(
-        subDays(verifikasi.cutiId.tanggalMulai, 1),
+        subDays(verifikasi.cuti.tanggalMulai, 1),
         "MM/dd/yyyy"
       ),
-      lamaCuti: verifikasi.cutiId.lamaCuti,
-      jenisCuti: verifikasi.cutiId.jenisCutiId.namaCuti,
-      keteranganCuti: verifikasi.cutiId.keterangan,
+      lamaCuti: verifikasi.cuti.lamaCuti,
+      jenisCuti: verifikasi.cuti.jenisCuti.namaCuti,
+      keteranganCuti: verifikasi.cuti.keterangan,
       statusVerifikasi: verifikasi.statusVerifikasi!,
       tanggalVerifikasi: format(
         addDays(verifikasi.tanggalVerifikasi, 1),
@@ -79,7 +76,7 @@ export async function getDataPengajuanCuti(): Promise<DataVerifikasiAtasan[]> {
         tanggalMulai: true,
         lamaCuti: true,
         keterangan: true,
-        jenisCutiId: {
+        jenisCuti: {
           select: {
             namaCuti: true,
           },
@@ -97,7 +94,7 @@ export async function getDataPengajuanCuti(): Promise<DataVerifikasiAtasan[]> {
       tanggalPengajuan: format(cuti.tanggalPengajuan, "MM/dd/yyyy"),
       tanggalMulai: format(subDays(cuti.tanggalMulai, 1), "MM/dd/yyyy"),
       lamaCuti: cuti.lamaCuti,
-      jenisCuti: cuti.jenisCutiId.namaCuti,
+      jenisCuti: cuti.jenisCuti.namaCuti,
       keteranganCuti: cuti.keterangan,
     }));
 

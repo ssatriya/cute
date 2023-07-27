@@ -32,7 +32,7 @@ export default async function VerifikasiBerkas({
 
   const numberId = parseInt(id, 10);
 
-  const response = await db.cuti.findUnique({
+  const response = await db.cuti.findUniqueOrThrow({
     where: {
       id: numberId,
     },
@@ -41,9 +41,9 @@ export default async function VerifikasiBerkas({
       idJenisCuti: true,
       nip: true,
       namaLengkap: true,
-      pemohonId: {
+      pemohon: {
         select: {
-          jabatanId: {
+          jabatan: {
             select: {
               namaJabatan: true,
             },
@@ -59,16 +59,12 @@ export default async function VerifikasiBerkas({
     },
   });
 
-  if (!response) {
-    return <p>Cuti tidak ditemukan</p>;
-  }
-
   const data = {
     idCuti: response.id,
     idJenisCuti: response.idJenisCuti,
     nip: response.nip,
     namaLengkap: response.namaLengkap,
-    namaJabatan: response.pemohonId.jabatanId!.namaJabatan,
+    namaJabatan: response.pemohon.jabatan?.namaJabatan!,
     keteranganCuti: response.keterangan,
     lamaCuti: response.lamaCuti,
     tanggalMulai: format(response.tanggalMulai, "MM/dd/yyyy"),

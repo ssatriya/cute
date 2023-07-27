@@ -8,17 +8,17 @@ export async function GET() {
       select: {
         id: true,
         nipVerifikator: true,
-        verifikatorId: {
+        verifikator: {
           select: {
             namaLengkap: true,
           },
         },
-        cutiId: {
+        cuti: {
           select: {
             tanggalPengajuan: true,
             tanggalMulai: true,
             lamaCuti: true,
-            jenisCutiId: {
+            jenisCuti: {
               select: {
                 namaCuti: true,
               },
@@ -34,12 +34,12 @@ export async function GET() {
     const data = response.map((verifikasi) => ({
       id: verifikasi.id,
       nip: verifikasi.nipVerifikator,
-      nama: verifikasi.verifikatorId.namaLengkap,
-      tanggalPengajuan: verifikasi.cutiId.tanggalPengajuan,
-      tanggalMulai: subDays(verifikasi.cutiId.tanggalMulai, 1),
-      lamaCuti: verifikasi.cutiId.lamaCuti,
-      jenisCuti: verifikasi.cutiId.jenisCutiId.namaCuti,
-      keteranganCuti: verifikasi.cutiId.keterangan,
+      nama: verifikasi.verifikator.namaLengkap,
+      tanggalPengajuan: verifikasi.cuti.tanggalPengajuan,
+      tanggalMulai: subDays(verifikasi.cuti.tanggalMulai, 1),
+      lamaCuti: verifikasi.cuti.lamaCuti,
+      jenisCuti: verifikasi.cuti.jenisCuti.namaCuti,
+      keteranganCuti: verifikasi.cuti.keterangan,
       statusVerifikasi: verifikasi.statusVerifikasi,
       tanggalVerifikasi: addDays(verifikasi.tanggalVerifikasi, 1),
     }));

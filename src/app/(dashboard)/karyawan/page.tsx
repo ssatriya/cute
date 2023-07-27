@@ -59,7 +59,7 @@ export default async function KaryawanPage() {
     <DashboardShell>
       <DashboardHeader heading="Dashboard" />
       <ProfilAlert path="karyawan" />
-      {pengganti && <PersetujuanAlert pengganti={pengganti} />}
+      {pengganti && <PersetujuanAlert id={pengganti.id} />}
     </DashboardShell>
   );
 }

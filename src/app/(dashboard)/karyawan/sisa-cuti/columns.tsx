@@ -3,7 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 
 export type SisaCutiType = {
-  id: number;
   nama: string;
   cutiTersedia: number;
   cutiDiambilN: number;
