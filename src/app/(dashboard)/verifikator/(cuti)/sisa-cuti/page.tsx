@@ -8,6 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Sisa Cuti",
+};
 
 export default function columns() {
   return (
@@ -15,7 +20,7 @@ export default function columns() {
       <DashboardHeader heading="Sisa Cuti" />
       <Card>
         <CardHeader>
-          <CardTitle>Sisa Cuti</CardTitle>
+          <CardTitle>Sisa Cuti Tahunan</CardTitle>
           <CardDescription>
             Sisa cuti tahunan Anda pada tahun berjalan
           </CardDescription>

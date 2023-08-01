@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,8 +11,55 @@ import {
   DialogTrigger,
 } from "./ui/Dialog";
 import { Badge } from "./ui/Badge";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { queryClient } from "./Providers";
 
-export default function DialogBadge({ status }: { status: string }) {
+interface DataCuti {
+  alamatSelamaCuti: string;
+  berkas: string;
+  id: number;
+  idJenisCuti: number;
+  idPemohon: number;
+  idPengganti: number;
+  keterangan: string;
+  lamaCuti: number;
+  namaLengkap: string;
+  nip: string;
+  persetujuanPengganti: number;
+  statusAkhir: string;
+  tahapVerifikasi: number;
+  tanggalArray: string;
+  tanggalMulai: string;
+  tanggalPengajuan: string;
+  tanggalSelesai: string;
+}
+
+export default function DialogBadge({
+  status,
+  id,
+  title,
+}: {
+  status: string;
+  id: number;
+  title: string;
+}) {
+  // const [dataC, setData] = React.useState<DataCuti | undefined>(undefined);
+  const [enable, setEnable] = useState<boolean>(false);
+
+  const { data: dataCuti, isLoading } = useQuery({
+    queryKey: ["dataCuti", id],
+    queryFn: async (): Promise<DataCuti> => {
+      const {
+        data: { data },
+      } = await axios.get("/api/data-cuti", {
+        params: { id: id },
+      });
+      return data;
+    },
+    enabled: enable,
+  });
+
   let statusText: React.JSX.Element = (
     <Badge className="cursor-pointer" variant="outline">
       Proses
@@ -32,23 +81,55 @@ export default function DialogBadge({ status }: { status: string }) {
     );
   }
 
+  let content = <p>Loading...</p>;
+
+  if (dataCuti) {
+    content = (
+      <div className="flex justify-between max-w-lg gap-10">
+        <div>
+          <p>Nama lengkap</p>
+          <p>Jenis cuti</p>
+          <p>Tanggal pengajuan</p>
+          <p>Tanggal mulai</p>
+          <p>Tanggal selesai</p>
+          <p>Lama cuti</p>
+          <p>Keterangan</p>
+        </div>
+        <div className="flex gap-5">
+          <div>
+            <p>:</p>
+            <p>:</p>
+            <p>:</p>
+            <p>:</p>
+            <p>:</p>
+            <p>:</p>
+            <p>:</p>
+          </div>
+          <div>
+            <p>{dataCuti && dataCuti.namaLengkap}</p>
+            <p>{dataCuti && dataCuti.idJenisCuti}</p>
+            <p>{dataCuti && dataCuti.tanggalPengajuan}</p>
+            <p>{dataCuti && dataCuti.tanggalMulai}</p>
+            <p>{dataCuti && dataCuti.tanggalSelesai}</p>
+            <p>{dataCuti && dataCuti.lamaCuti} hari</p>
+            <p>{dataCuti && dataCuti.keterangan}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center">
       <Dialog>
-        <DialogTrigger>{statusText}</DialogTrigger>
+        <DialogTrigger onClick={() => setEnable(true)}>
+          {statusText}
+        </DialogTrigger>
         <DialogContent className="sm:max-w-[650px]">
           <DialogHeader>
-            <DialogTitle>Detail verifikasi</DialogTitle>
-            <DialogDescription>
-              Make changes to your profile here. Click save when you`&apos;`re
-              done.
-            </DialogDescription>
+            <DialogTitle className="mb-4">{title}</DialogTitle>
+            <DialogDescription asChild>{content}</DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid items-center grid-cols-4 gap-4"></div>
-            <div className="grid items-center grid-cols-4 gap-4"></div>
-          </div>
-          <DialogFooter></DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

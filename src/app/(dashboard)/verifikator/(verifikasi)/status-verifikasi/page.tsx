@@ -13,6 +13,11 @@ import {
   columns,
 } from "@/app/(dashboard)/verifikator/(verifikasi)/status-verifikasi/columns";
 import { getStatusVerifikasiBerkas } from "@/lib/actions/verifikator";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Status Verifikasi",
+};
 
 export default async function StatusVerifikasiBerkas() {
   const data = await getStatusVerifikasiBerkas();

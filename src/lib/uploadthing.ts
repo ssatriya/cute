@@ -6,7 +6,7 @@ import type { OurFileRouter } from "@/app/api/uploadthing/core";
 export const { uploadFiles, useUploadThing } =
   generateReactHelpers<OurFileRouter>();
 
-const generatePermittedFileTypes = (config?: ExpandedRouteConfig) => {
+export const generatePermittedFileTypes = (config?: ExpandedRouteConfig) => {
   const fileTypes = config ? Object.keys(config) : [];
 
   const maxFileCount = config

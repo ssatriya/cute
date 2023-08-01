@@ -4,6 +4,7 @@ import DashboardHeader from "@/components/layout/DashboardHeader";
 import DashboardShell from "@/components/layout/DashboardShell";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import { format } from "date-fns";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -20,6 +21,7 @@ export default async function VerifikasiAtasan({
   const id = params.id;
 
   const session = await getAuthSession();
+  const currentUser = await getCurrentUser();
 
   if (!session) {
     redirect("/");
@@ -54,6 +56,16 @@ export default async function VerifikasiAtasan({
     },
   });
 
+  const dataAtasan = await db.user.findUniqueOrThrow({
+    select: {
+      id: true,
+      nip: true,
+    },
+    where: {
+      id: Number(currentUser?.id),
+    },
+  });
+
   const data = {
     idCuti: response.id,
     namaLengkap: response.namaLengkap,
@@ -73,7 +85,10 @@ export default async function VerifikasiAtasan({
       <DashboardHeader heading="Verifikasi Pengajuan Cuti" />
       <div className="grid gap-8">
         <DetailPengajuanCuti cuti={data} />
-        <FormVerifikasiAtasan cuti={data} session={session} />
+        <FormVerifikasiAtasan
+          cuti={data}
+          atasanDetail={{ id: dataAtasan.id, nip: dataAtasan.nip! }}
+        />
       </div>
     </DashboardShell>
   );

@@ -4,6 +4,11 @@ import DashboardShell from "@/components/layout/DashboardShell";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import React from "react";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Pengaturan",
+};
 
 export default async function ProfilKaryawan() {
   const session = await getAuthSession();

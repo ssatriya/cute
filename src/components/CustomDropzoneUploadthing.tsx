@@ -6,6 +6,7 @@ import { generateClientDropzoneAccept } from "uploadthing/client";
 
 import {
   allowedContentTextLabelGenerator,
+  generatePermittedFileTypes,
   useUploadThing,
 } from "@/lib/uploadthing";
 import { Button } from "./ui/Button";
@@ -28,7 +29,7 @@ interface CustomUploadthingProps {
   }[];
 }
 
-export function CustomUploadthing({
+export function CustomDropzoneUploadthing({
   setFileData,
   fileData,
 }: CustomUploadthingProps) {
@@ -57,7 +58,7 @@ export function CustomUploadthing({
     [setFiles, setPaths]
   );
 
-  const fileTypes = ["image", "blob"];
+  // const fileTypes = ["image", "blob"];
 
   const { startUpload, isUploading, permittedFileInfo } = useUploadThing(
     "mediaPost",
@@ -67,13 +68,19 @@ export function CustomUploadthing({
           setFiles([]);
           setPaths([]);
           setFileData(res);
+
+          return toast({
+            title: "File berhasil diupload",
+            description: "Silahkan lanjutkan pengisian permohonan cuti Anda.",
+            variant: "default",
+          });
         }
       },
       onUploadError: (error) => {
         return toast({
-          title: "Gagal mengunggah file.",
+          title: "File gagal diupload",
           description:
-            "File gagal diunggah, pastikan ukurang dibawah 4MB dan coba lagi nanti.",
+            "Pastikan ukuran file dibawah 4MB untuk setiap file dan coba lagi nanti.",
           variant: "destructive",
         });
       },
@@ -81,6 +88,10 @@ export function CustomUploadthing({
       //   setProgressValue(progress);
       // },
     }
+  );
+
+  const { fileTypes, multiple } = generatePermittedFileTypes(
+    permittedFileInfo?.config
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

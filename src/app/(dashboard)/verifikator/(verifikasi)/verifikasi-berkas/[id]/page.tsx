@@ -8,6 +8,11 @@ import { format } from "date-fns";
 import { redirect } from "next/navigation";
 
 import React from "react";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Verifikasi Berkas",
+};
 
 interface VerifikasiBerkasProps {
   params: {

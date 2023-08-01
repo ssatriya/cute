@@ -66,8 +66,11 @@ export const columns: ColumnDef<RiwayatType>[] = [
     },
     cell: ({ row }) => {
       const status: string = row.getValue("statusAkhir");
+      const id = row.original.id;
 
-      return <DialogBadge status={status} />;
+      return (
+        <DialogBadge status={status} id={id} title="Detail Pengajuan Cuti" />
+      );
     },
   },
   {

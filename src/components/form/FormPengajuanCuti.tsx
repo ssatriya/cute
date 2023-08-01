@@ -48,12 +48,19 @@ import { Textarea } from "@/components/ui/Textarea";
 import { Icons } from "@/components/Icons";
 import { Session } from "next-auth";
 import { useUploadThing } from "@/lib/uploadthing";
-import { CustomUploadthing } from "../CustomUploadthing";
+import { CustomDropzoneUploadthing } from "../CustomDropzoneUploadthing";
 import { Skeleton } from "../ui/Skeleton";
+import { DevTool } from "@hookform/devtools";
+import { encryptId } from "@/lib/crypto";
+
+const arrZ = z.object({
+  fileKey: z.string(),
+  fileUrl: z.string(),
+});
 
 const formSchema = z.object({
   jenisCuti: z.string({
-    required_error: "Jenis cuti harus dipilih.",
+    required_error: "Jenis cuti harus dipilih",
   }),
   tanggalCuti: z.object(
     {
@@ -61,17 +68,17 @@ const formSchema = z.object({
       to: z.date(),
     },
     {
-      required_error: "Mohon isi waktu cuti.",
+      required_error: "Tanggal awal dan akhir cuti harus dipilih",
     }
   ),
   keteranganCuti: z.string({
-    required_error: "Mohon masukan alasan cuti Anda.",
+    required_error: "Keterangan cuti harus diisi",
   }),
   alamatSelamaCuti: z.string({
-    required_error: "Mohon masukan alamat Anda selama cuti.",
+    required_error: "Alamat selama cuti harus diisi",
   }),
   pegawaiPengganti: z.string({
-    required_error: "Jenis cuti harus dipilih.",
+    required_error: "Pegawai pengganti harus diisi",
   }),
   berkas: z.any(),
 });
@@ -152,8 +159,11 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
         variant: "destructive",
       });
     },
-    onSuccess: (data) => {
-      // router.push("/karyawan");
+    onSuccess: ({ data }) => {
+      // router.push("/karyawan/riwayat-cuti");
+      const encryptedId = encryptId(String(data.id));
+      console.log(encryptedId);
+      console.log(`http://localhost:3000/pegawai-pengganti/${encryptedId}`);
     },
   });
 
@@ -305,11 +315,11 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
               control={form.control}
               name="berkas"
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, name } }) => (
+              render={({ field: { onChange, onBlur, name, value } }) => (
                 <FormItem>
                   <FormLabel>Berkas</FormLabel>
                   <FormControl>
-                    <CustomUploadthing
+                    <CustomDropzoneUploadthing
                       setFileData={(fileData) =>
                         setFileData((prev) => prev.concat(fileData))
                       }

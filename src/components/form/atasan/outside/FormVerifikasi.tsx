@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
@@ -25,6 +26,7 @@ import {
 } from "@/components/ui/Select";
 import { Separator } from "@/components/ui/Separator";
 import { Textarea } from "@/components/ui/Textarea";
+import { VerifikasiAtasanPayload } from "@/lib/validators/atasan/verifikasiAtasan";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -33,7 +35,6 @@ import { Session } from "next-auth";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
-import { VerifikasiKepalaPayload } from "@/lib/validators/kepala/verifikasiKepala";
 
 const formSchema = z.object({
   statusVerifikasiCuti: z.string(),
@@ -42,7 +43,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-interface FormVerifikasiKepalaProps {
+interface FormVerifikasiAtasanProps {
   cuti: {
     idCuti: number;
     idJenisCuti: number;
@@ -56,30 +57,30 @@ interface FormVerifikasiKepalaProps {
     namaPengganti: string;
     nipPengganti: string;
   };
-  kepalaDetail: {
+  atasan: {
     id: number;
     nip: string;
   };
 }
 
-export default function FormVerifikasiKepala({
+export default function FormVerifikasi({
   cuti,
-  kepalaDetail,
-}: FormVerifikasiKepalaProps) {
+  atasan,
+}: FormVerifikasiAtasanProps) {
   const router = useRouter();
 
-  const { mutate: submitVerifikasiKepala, isLoading } = useMutation({
+  const { mutate: submitVerifikasiAtasan, isLoading } = useMutation({
     mutationFn: async (data: FormData) => {
-      const payload: Omit<VerifikasiKepalaPayload, "tanggalVerifikasi"> = {
+      const payload: Omit<VerifikasiAtasanPayload, "tanggalVerifikasi"> = {
         idCuti: cuti.idCuti,
         idJenisCuti: cuti.idJenisCuti,
-        nipKepala: kepalaDetail.nip,
-        idKepala: kepalaDetail.id,
+        nipAtasan: atasan.nip,
+        idAtasan: atasan.id,
         keteranganVerifikasi: data.keteranganVerifikasi,
         statusVerifikasi: data.statusVerifikasiCuti,
       };
       const { data: returnData } = await axios.post(
-        "/api/kepala/verifikasi",
+        "/api/atasan/verifikasi",
         payload,
         {
           headers: {
@@ -98,8 +99,10 @@ export default function FormVerifikasiKepala({
     },
     onSuccess: () => {
       // Not work yet, uncomment later
-      // router.push('/kepala/status-verifikasi')
-      window.location.href = "/kepala/status-verifikasi";
+      // router.push('/atasan/status-verifikasi')
+      //   window.location.href = "/atasan/status-verifikasi";
+
+      console.log("outside ok");
     },
   });
 
@@ -113,7 +116,7 @@ export default function FormVerifikasiKepala({
   });
 
   const onSubmit = async (data: FormData) => {
-    submitVerifikasiKepala(data);
+    submitVerifikasiAtasan(data);
   };
 
   return (
@@ -122,7 +125,7 @@ export default function FormVerifikasiKepala({
         <Card>
           <CardHeader>
             <CardTitle>Verifikasi Cuti</CardTitle>
-            <CardDescription>Verifikasi akhir permohonan cuti</CardDescription>
+            <CardDescription>Verifikasi permohonan cuti</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
@@ -168,15 +171,15 @@ export default function FormVerifikasiKepala({
                 </FormItem>
               )}
             />
-
-            <Separator orientation="horizontal" />
+          </CardContent>
+          <CardFooter>
             <Button disabled={isLoading} type="submit">
               {isLoading && (
                 <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
               )}{" "}
               Submit
             </Button>
-          </CardContent>
+          </CardFooter>
         </Card>
       </form>
     </Form>

@@ -1,26 +1,20 @@
 import DetailPengajuanCuti from "@/components/DetailPengajuanCuti";
-import FormPegawaiPengganti from "@/components/form/FormPegawaiPengganti";
-import DashboardHeader from "@/components/layout/DashboardHeader";
-import DashboardShell from "@/components/layout/DashboardShell";
-import { getAuthSession } from "@/lib/auth";
+import FormVerifikasiAtasan from "@/components/form/atasan/FormVerifikasiAtasan";
+import SiteFooter from "@/components/layout/SiteFooter";
+import { decryptId } from "@/lib/crypto";
 import { db } from "@/lib/db";
-import { getCurrentUser } from "@/lib/getCurrentUser";
 import { format } from "date-fns";
 import React from "react";
 
-interface PersetujuanPenggantiProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function PersetujuanPengganti({
+export default async function VerifikasiKepala({
   params,
-}: PersetujuanPenggantiProps) {
-  const paramsId = parseInt(params.id, 10);
-  const currentUser = await getCurrentUser();
+}: {
+  params: { id: string };
+}) {
+  const encryptedParams = params.id;
+  const id = decryptId(encryptedParams);
 
-  const userId = parseInt(currentUser!.id, 10);
+  const paramsInt = parseInt(id, 10);
 
   const response = await db.cuti.findUniqueOrThrow({
     select: {
@@ -45,7 +39,7 @@ export default async function PersetujuanPengganti({
       },
     },
     where: {
-      id: paramsId,
+      id: paramsInt,
     },
   });
 
@@ -63,20 +57,17 @@ export default async function PersetujuanPengganti({
     nipPengganti: response.pengganti.nip || "",
   };
 
+  const kepala = {};
+
   return (
-    <DashboardShell>
-      <DashboardHeader heading="Form Persetujuan" />
+    <div className="grid items-center justify-center w-full min-h-screen">
       <DetailPengajuanCuti cuti={data} />
-      {currentUser?.namaLengkap && currentUser.role && (
-        <FormPegawaiPengganti
-          user={{
-            id: userId,
-            namaLengkap: currentUser.namaLengkap,
-            role: currentUser.role,
-          }}
-          idCuti={paramsId}
-        />
-      )}
-    </DashboardShell>
+      {/* database tdk ada relasi dengan kepala || sementara hardcoded */}
+      <FormVerifikasiAtasan
+        cuti={data}
+        atasanDetail={{ id: 5, nip: "111222" }}
+      />
+      <SiteFooter />
+    </div>
   );
 }

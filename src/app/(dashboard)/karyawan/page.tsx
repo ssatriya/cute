@@ -9,11 +9,6 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import React from "react";
 import { Metadata } from "next/types";
-import { Card, CardContent, CardHeader } from "@/components/ui/Card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
-import { HeartHandshake, Terminal } from "lucide-react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
 import PersetujuanAlert from "@/components/PersetujuanAlert";
 import ProfilAlert from "@/components/ProfilAlert";
 

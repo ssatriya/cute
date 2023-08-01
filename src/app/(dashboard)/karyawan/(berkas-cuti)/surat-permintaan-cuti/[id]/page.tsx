@@ -64,12 +64,12 @@ export default async function BerkasCuti({ params }: BerkasCutiProps) {
       pemohon: {
         select: {
           tandaTangan: true,
-          jabatanId: {
+          jabatan: {
             select: {
               namaJabatan: true,
-              bagianId: {
+              bagian: {
                 select: {
-                  atasanId: {
+                  atasan: {
                     select: {
                       id: true,
                       namaLengkap: true,
@@ -152,7 +152,7 @@ export default async function BerkasCuti({ params }: BerkasCutiProps) {
           nipAtasan: response.verifikasiAtasan?.atasan.nip!,
           tanggalMulai: response.tanggalMulai,
           tanggalPengajuan: response.tanggalPengajuan,
-          namaJabatan: response.pemohon.jabatanId?.namaJabatan!,
+          namaJabatan: response.pemohon.jabatan?.namaJabatan!,
           dataCuti: dataCuti,
         }}
       />

@@ -8,6 +8,11 @@ import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import * as React from "react";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default async function VerifikatorPage() {
   const session = await getAuthSession();

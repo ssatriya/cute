@@ -4,6 +4,7 @@ import DashboardHeader from "@/components/layout/DashboardHeader";
 import DashboardShell from "@/components/layout/DashboardShell";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getCurrentUser } from "@/lib/getCurrentUser";
 import { format } from "date-fns";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -19,14 +20,25 @@ export default async function VerifikasiKepala({
 }: VerifikasiKepalaProps) {
   const id = params.id;
   const session = await getAuthSession();
+  const currentUser = await getCurrentUser();
 
-  if (!session) {
+  if (!session || !currentUser) {
     redirect("/");
   }
 
   const numberId = parseInt(id, 10);
 
-  const response = await db.cuti.findUnique({
+  const dataKepala = await db.user.findUniqueOrThrow({
+    select: {
+      id: true,
+      nip: true,
+    },
+    where: {
+      id: Number(currentUser.id),
+    },
+  });
+
+  const response = await db.cuti.findUniqueOrThrow({
     select: {
       id: true,
       namaLengkap: true,
@@ -53,9 +65,6 @@ export default async function VerifikasiKepala({
     },
   });
 
-  if (!response) {
-    return <p>Cuti tidak ditemukan</p>;
-  }
   const data = {
     idCuti: response.id,
     namaLengkap: response.namaLengkap,
@@ -75,7 +84,10 @@ export default async function VerifikasiKepala({
       <DashboardHeader heading="Verifikasi Pengajuan Cuti" />
       <div className="grid gap-8">
         <DetailPengajuanCuti cuti={data} />
-        <FormVerifikasiKepala cuti={data} session={session} />
+        <FormVerifikasiKepala
+          cuti={data}
+          kepalaDetail={{ id: dataKepala.id, nip: dataKepala.nip! }}
+        />
       </div>
     </DashboardShell>
   );

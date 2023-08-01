@@ -24,6 +24,7 @@ import { Icons } from "@/components/Icons";
 import { useRouter } from "next/navigation";
 import { Session } from "next-auth";
 import Link from "next/link";
+import { encryptId } from "@/lib/crypto";
 
 interface FormVerifikasiBerkasProps {
   cuti: {
@@ -71,10 +72,14 @@ function FormVerifikasiBerkas({ cuti, session }: FormVerifikasiBerkasProps) {
       );
       return responseData;
     },
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       // Not re-render yet but uncomment later
       // router.push('/verifikator/status-verifikasi')
-      window.location.href = "/verifikator/status-verifikasi";
+      // window.location.href = "/verifikator/status-verifikasi";
+
+      const encryptedId = encryptId(String(data.id));
+      console.log(encryptedId);
+      console.log(`http://localhost:3000/verifikasi-atasan/${encryptedId}`);
     },
   });
 

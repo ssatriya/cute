@@ -26,7 +26,6 @@ import {
 import { Button } from "@/components/ui/Button";
 
 import { Input } from "@/components/ui/Input";
-import { Separator } from "@radix-ui/react-separator";
 import { tandaTanganPenggantiPayload } from "@/lib/validators/karyawan/tangaTanganPengganti";
 import { Icons } from "@/components/Icons";
 import { useRouter } from "next/navigation";

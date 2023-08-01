@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 import { db } from "@/lib/db";
 import { verifikasiBerkasValidator } from "@/lib/validators/verifikator/verifikasiBerkas";
 
@@ -18,7 +20,7 @@ export async function POST(req: Request) {
       keteranganVerifikasiBerkas,
     } = verifikasiBerkasValidator.parse(body);
 
-    await db.verifikasiBerkas.create({
+    const response = await db.verifikasiBerkas.create({
       data: {
         idCuti: idCuti,
         idJenisCuti: idJenisCuti,
@@ -42,7 +44,8 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response("Success", { status: 201 });
+    return NextResponse.json({ data: response, status: 201 });
+    // return new Response("Success", { status: 201 });
   } catch (error: any) {
     return new Response("Failed", { status: 400 });
   }

@@ -5,6 +5,7 @@ import {
   intervalToDuration,
   addDays,
   eachDayOfInterval,
+  eachWeekendOfInterval,
 } from "date-fns";
 import { mkdir, stat, writeFile } from "fs/promises";
 import mime from "mime";
@@ -12,6 +13,7 @@ import * as z from "zod";
 
 import { PengajuanCutiValidator } from "@/lib/validators/karyawan/pengajuanCuti";
 import { db } from "@/lib/db";
+import Holidays from "date-holidays";
 
 // export async function POST(req: Request) {
 //   const formData = await req.formData();
@@ -182,26 +184,48 @@ export async function POST(req: Request) {
     berkas,
   } = PengajuanCutiValidator.parse(transformedData);
 
-  const date1 = addDays(new Date(tanggalMulai), 1);
-  const date2 = addDays(new Date(tanggalSelesai), 1);
+  // ===
+  const dateFrom = new Date(tanggalMulai);
+  const dateTo = new Date(tanggalSelesai);
 
-  const hitungLamaCuti = intervalToDuration({
-    start: date1,
-    end: date2,
+  const addDateFrom = addDays(dateFrom, 1);
+  const addDateTo = addDays(dateTo, 1);
+
+  const intervalDate = eachDayOfInterval({
+    start: dateFrom,
+    end: dateTo,
   });
 
-  if (!hitungLamaCuti.days)
-    return new Response("Lama cuti tidak boleh 0.", { status: 400 });
-  if (+hitungLamaCuti.days + 1 <= 1)
-    return new Response("Lama cuti tidak boleh kurang dari 3 hari.", {
-      status: 400,
-    });
-  const lamaCuti = +hitungLamaCuti.days + 1;
-
-  const arrayTanggalCuti = eachDayOfInterval({
-    start: date1,
-    end: date2,
+  const weekendArray = eachWeekendOfInterval({
+    start: dateFrom,
+    end: dateTo,
   });
+
+  // +1 day operation
+  const addDaysInterval = intervalDate.map((day) => day.toDateString());
+
+  const addDaysWeekend = weekendArray.map((day) => day.toDateString());
+
+  let newWeekendArray: Date[] = [];
+  addDaysInterval.map((day, index) => {
+    if (addDaysWeekend[index] !== day) {
+      newWeekendArray.push(new Date(day));
+    }
+  });
+
+  const holidays = new Holidays("ID");
+
+  let holidaysArr: Date[] = [];
+  newWeekendArray.map((day) => {
+    if (!holidays.isHoliday(day)) {
+      holidaysArr.push(day);
+    }
+  });
+
+  const finalDateArr = holidaysArr.map((date) => addDays(date, 1));
+  const lamaCuti = finalDateArr.length;
+
+  //
 
   try {
     const response = await db.cuti.create({
@@ -212,9 +236,9 @@ export async function POST(req: Request) {
         idJenisCuti: jenisCuti,
         lamaCuti: lamaCuti,
         tanggalPengajuan: tanggalPengajuan!,
-        tanggalMulai: date1,
-        tanggalSelesai: date2,
-        tanggalArray: JSON.stringify(arrayTanggalCuti),
+        tanggalMulai: addDateFrom,
+        tanggalSelesai: addDateTo,
+        tanggalArray: JSON.stringify(finalDateArr),
         keterangan: keteranganCuti,
         alamatSelamaCuti: alamatSelamaCuti,
         berkas: berkas,
@@ -222,9 +246,8 @@ export async function POST(req: Request) {
       },
     });
 
-    return new Response("Success", { status: 201 });
+    return NextResponse.json({ data: response, status: 201 });
   } catch (e) {
-    console.error("Error while trying to upload a file\n", e);
     return NextResponse.json(
       { error: "Something went wrong." },
       { status: 500 }

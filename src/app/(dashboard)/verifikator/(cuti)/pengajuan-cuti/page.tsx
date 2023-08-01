@@ -3,6 +3,11 @@ import DashboardHeader from "@/components/layout/DashboardHeader";
 import DashboardShell from "@/components/layout/DashboardShell";
 import { getAuthSession } from "@/lib/auth";
 import React from "react";
+import { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Pengajuan Cuti",
+};
 
 export default async function page() {
   const session = await getAuthSession();

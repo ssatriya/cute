@@ -56,12 +56,15 @@ interface FormVerifikasiAtasanProps {
     namaPengganti: string;
     nipPengganti: string;
   };
-  session: Omit<Session, "expires">;
+  atasanDetail: {
+    id: number;
+    nip: string;
+  };
 }
 
 export default function FormVerifikasiAtasan({
   cuti,
-  session,
+  atasanDetail,
 }: FormVerifikasiAtasanProps) {
   const router = useRouter();
 
@@ -70,8 +73,8 @@ export default function FormVerifikasiAtasan({
       const payload: Omit<VerifikasiAtasanPayload, "tanggalVerifikasi"> = {
         idCuti: cuti.idCuti,
         idJenisCuti: cuti.idJenisCuti,
-        nipAtasan: session.user.nip!,
-        idAtasan: +session.user.id!,
+        nipAtasan: atasanDetail.nip,
+        idAtasan: atasanDetail.id,
         keteranganVerifikasi: data.keteranganVerifikasi,
         statusVerifikasi: data.statusVerifikasiCuti,
       };
