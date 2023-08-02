@@ -2,14 +2,14 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { MainNavItem } from "@/types";
+import { MainNavItem, SidebarNavItem } from "@/types";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { Icons } from "../Icons";
 import MobileNav from "./MobileNav";
 
 interface MainNavProps {
-  items?: MainNavItem[];
+  items?: SidebarNavItem[];
   children?: React.ReactNode;
 }
 
