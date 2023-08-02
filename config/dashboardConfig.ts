@@ -4,8 +4,20 @@ export const dashboardConfig: DashboardConfig = {
   mainNav: [],
   mainNavKaryawan: [
     {
-      title: "Settings",
-      href: "/settings",
+      title: "Dashboard",
+      href: "/karyawan",
+    },
+    {
+      title: "Pengajuan Cuti",
+      href: "/karyawan/pengajuan-cuti",
+    },
+    {
+      title: "Riwayat Cuti",
+      href: "/karyawan/riwayat-cuti",
+    },
+    {
+      title: "Sisa Cuti",
+      href: "/karyawan/sisa-cuti",
     },
   ],
   sidebarNavKaryawan: [

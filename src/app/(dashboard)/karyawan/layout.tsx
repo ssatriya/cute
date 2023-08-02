@@ -21,7 +21,7 @@ export default async function KaryawanLayout({
     <div className="flex flex-col min-h-screen space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">
         <div className="container flex items-center justify-between h-16 py-4">
-          <MainNav items={dashboardConfig.mainNav} />
+          <MainNav items={dashboardConfig.mainNavKaryawan} />
           <UserNav
             user={{
               email: session.user.email,
