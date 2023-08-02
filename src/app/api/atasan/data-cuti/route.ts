@@ -58,5 +58,7 @@ export async function GET(req: Request) {
     };
 
     return NextResponse.json({ result: data });
-  } catch (error) {}
+  } catch (error: any) {
+    return new Response("Something went wrong", { status: 500 });
+  }
 }
