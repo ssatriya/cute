@@ -16,7 +16,9 @@ export async function POST(req: Request) {
     });
 
     return new Response("Success", { status: 201 });
-  } catch (error) {}
+  } catch (error) {
+    return new Response("Somthing went wrong", { status: 500 });
+  }
 }
 
 // export async function GET() {

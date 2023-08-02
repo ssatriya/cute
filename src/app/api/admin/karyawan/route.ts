@@ -169,5 +169,7 @@ export async function GET() {
     });
 
     return NextResponse.json({ data: response });
-  } catch (error: any) {}
+  } catch (error: any) {
+    return new Response("Somthing went wrong", { status: 500 });
+  }
 }

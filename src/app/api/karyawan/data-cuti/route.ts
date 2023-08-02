@@ -13,5 +13,7 @@ export async function GET() {
     }));
 
     return NextResponse.json({ result: data });
-  } catch (error) {}
+  } catch (error) {
+    return new Response("Somthing went wrong", { status: 500 });
+  }
 }
