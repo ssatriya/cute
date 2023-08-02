@@ -10,7 +10,7 @@ export default async function AtasanPage() {
   const session = await getAuthSession();
 
   if (!session) {
-    redirect("/");
+    return <p>Not authorized</p>;
   }
 
   const numberId = parseInt(session.user.id, 10);

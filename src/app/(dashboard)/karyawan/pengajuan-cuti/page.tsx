@@ -14,7 +14,7 @@ export default async function page() {
   const session = await getAuthSession();
 
   if (!session) {
-    return null;
+    return <p>Not authorized</p>;
   }
 
   return (

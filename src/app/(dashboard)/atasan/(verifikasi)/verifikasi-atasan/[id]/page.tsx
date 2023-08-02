@@ -24,7 +24,7 @@ export default async function VerifikasiAtasan({
   const currentUser = await getCurrentUser();
 
   if (!session) {
-    redirect("/");
+    return <p>Not authorized</p>;
   }
 
   const numberId = parseInt(id, 10);

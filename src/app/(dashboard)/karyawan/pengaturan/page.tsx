@@ -14,7 +14,7 @@ export default async function ProfilKaryawan() {
   const session = await getAuthSession();
 
   if (!session) {
-    return;
+    return <p>Not authorized</p>;
   }
 
   const numberId = parseInt(session.user.id, 10);

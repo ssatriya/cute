@@ -26,7 +26,7 @@ export default async function VerifikasiBerkas({
   const session = await getAuthSession();
 
   if (!session) {
-    redirect("/");
+    return <p>Not authorized</p>;
   }
 
   const id = params.id;

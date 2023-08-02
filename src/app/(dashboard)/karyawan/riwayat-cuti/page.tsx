@@ -23,7 +23,7 @@ export default async function page() {
   const session = await getAuthSession();
 
   if (!session) {
-    return redirect("/");
+    return <p>Not authorized</p>;
   }
 
   const sessionId = parseInt(session?.user.id, 10);

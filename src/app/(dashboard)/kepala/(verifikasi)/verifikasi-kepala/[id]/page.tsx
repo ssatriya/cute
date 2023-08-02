@@ -23,7 +23,7 @@ export default async function VerifikasiKepala({
   const currentUser = await getCurrentUser();
 
   if (!session || !currentUser) {
-    redirect("/");
+    return <p>Not authorized</p>;
   }
 
   const numberId = parseInt(id, 10);

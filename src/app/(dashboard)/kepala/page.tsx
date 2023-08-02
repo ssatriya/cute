@@ -9,7 +9,7 @@ export default async function VerifikatorPage() {
   const session = await getAuthSession();
 
   if (!session) {
-    redirect("/");
+    return <p>Not authorized</p>;
   }
 
   const numberId = parseInt(session.user.id, 10);
