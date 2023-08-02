@@ -2,10 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Badge } from "@/components/ui/Badge";
-import { StatusCuti } from "@prisma/client";
 import ActionButtonCog from "@/components/ActionButtonCog";
-import { firstWordCapitalize } from "@/lib/stringFormatter";
 import DialogBadge from "@/components/DialogBadge";
 
 export type RiwayatType = {

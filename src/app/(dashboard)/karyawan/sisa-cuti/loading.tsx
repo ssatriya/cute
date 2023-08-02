@@ -1,11 +1,6 @@
 import DashboardHeader from "@/components/layout/DashboardHeader";
 import DashboardShell from "@/components/layout/DashboardShell";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/Card";
+import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { Skeleton } from "@/components/ui/Skeleton";
 import React from "react";
 

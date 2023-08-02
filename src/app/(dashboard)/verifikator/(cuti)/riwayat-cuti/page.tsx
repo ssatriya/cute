@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/Card";
 import DashboardShell from "@/components/layout/DashboardShell";
 import DashboardHeader from "@/components/layout/DashboardHeader";
-import { DataTable } from "@/components/ui/DataTable";
+
 import { Metadata } from "next/types";
 
 export const metadata: Metadata = {

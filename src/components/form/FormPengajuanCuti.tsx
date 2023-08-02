@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -34,7 +34,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
-import { Input } from "@/components/ui/Input";
 import {
   Select,
   SelectContent,
@@ -47,10 +46,8 @@ import { CalendarIcon } from "lucide-react";
 import { Textarea } from "@/components/ui/Textarea";
 import { Icons } from "@/components/Icons";
 import { Session } from "next-auth";
-import { useUploadThing } from "@/lib/uploadthing";
 import { CustomDropzoneUploadthing } from "../CustomDropzoneUploadthing";
-import { Skeleton } from "../ui/Skeleton";
-import { DevTool } from "@hookform/devtools";
+
 import { encryptId } from "@/lib/crypto";
 
 const arrZ = z.object({

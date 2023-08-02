@@ -2,7 +2,7 @@ import DetailPengajuanCuti from "@/components/DetailPengajuanCuti";
 import FormPegawaiPengganti from "@/components/form/FormPegawaiPengganti";
 import DashboardHeader from "@/components/layout/DashboardHeader";
 import DashboardShell from "@/components/layout/DashboardShell";
-import { getAuthSession } from "@/lib/auth";
+
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { format } from "date-fns";

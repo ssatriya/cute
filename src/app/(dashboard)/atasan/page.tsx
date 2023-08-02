@@ -1,16 +1,9 @@
-import PengaturanAlert from "@/components/PengaturanAlert";
 import PersetujuanAlert from "@/components/PersetujuanAlert";
 import ProfilAlert from "@/components/ProfilAlert";
-import FormPegawaiPengganti from "@/components/form/FormPegawaiPengganti";
-import FormPengaturanProfil from "@/components/form/FormPengaturanProfil";
 import DashboardHeader from "@/components/layout/DashboardHeader";
 import DashboardShell from "@/components/layout/DashboardShell";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/Alert";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { cn } from "@/lib/utils";
-import { HeartHandshake, Terminal } from "lucide-react";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function AtasanPage() {

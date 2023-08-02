@@ -1,21 +1,10 @@
 import FormPegawaiPengganti from "@/components/form/FormPegawaiPengganti";
 import SiteFooter from "@/components/layout/SiteFooter";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
 import { decryptId } from "@/lib/crypto";
 import { db } from "@/lib/db";
 import { format } from "date-fns";
 import React from "react";
 
-async function decrypt(id: string) {
-  const decryptedId = decryptId(id);
-  return encodeURIComponent(decryptedId);
-}
 export default async function PegawaiPengganti({
   params,
 }: {

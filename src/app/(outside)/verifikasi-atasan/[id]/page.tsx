@@ -1,6 +1,6 @@
 import DetailPengajuanCuti from "@/components/DetailPengajuanCuti";
 import FormVerifikasiAtasan from "@/components/form/atasan/FormVerifikasiAtasan";
-import FormVerifikasi from "@/components/form/atasan/outside/FormVerifikasi";
+
 import SiteFooter from "@/components/layout/SiteFooter";
 import { decryptId } from "@/lib/crypto";
 import { db } from "@/lib/db";

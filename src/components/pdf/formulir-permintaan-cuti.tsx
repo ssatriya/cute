@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-  Document,
-  Page,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-} from "@react-pdf/renderer";
+import { Document, Page, View, Text, StyleSheet } from "@react-pdf/renderer";
 
 const FormulirPermintaanCuti = () => {
   const styles = StyleSheet.create({

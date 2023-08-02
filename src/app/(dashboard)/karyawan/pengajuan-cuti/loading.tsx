@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/Card";
-import { Label } from "@/components/ui/Label";
+
 import { Skeleton } from "@/components/ui/Skeleton";
 import React from "react";
 

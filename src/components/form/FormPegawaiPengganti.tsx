@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/Card";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Session } from "next-auth";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";

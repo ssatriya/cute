@@ -1,4 +1,3 @@
-import { DataTable } from "@/components/ui/DataTable";
 import DashboardShell from "@/components/layout/DashboardShell";
 import DashboardHeader from "@/components/layout/DashboardHeader";
 import {

@@ -19,15 +19,8 @@ export const metadata: Metadata = {
   title: "Riwayat Cuti",
 };
 
-async function getData() {
-  const res = await fetch("http://localhost:3000/api/karyawan/data-cuti");
-  const data = await res.json();
-  return data;
-}
-
 export default async function page() {
   const session = await getAuthSession();
-  const data2 = await getData();
 
   if (!session) {
     return redirect("/");

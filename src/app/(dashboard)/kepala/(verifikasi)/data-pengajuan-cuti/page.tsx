@@ -8,10 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { DataTable } from "@/components/ui/DataTable";
-import {
-  DataVerifikasiKepala,
-  columns,
-} from "@/app/(dashboard)/kepala/(verifikasi)/data-pengajuan-cuti/columns";
+import { columns } from "@/app/(dashboard)/kepala/(verifikasi)/data-pengajuan-cuti/columns";
 import { db } from "@/lib/db";
 import { format, subDays } from "date-fns";
 
