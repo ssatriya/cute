@@ -321,6 +321,7 @@ const SuratPermintaanCuti = ({ data }: PDFSuratPermintaanCutiProps) => {
         <View style={styles.sign}>
           <View style={styles.signColumn}>
             <Text>Hormat saya,</Text>
+            {/* eslint-disable-next-line */}
             <Image style={styles.signImage} src={data.tandaTangan} />
             {/* <Text style={styles.signImage}>Sign placeholder</Text> */}
             <Text>{data.namaLengkap}</Text>
@@ -422,10 +423,12 @@ const SuratPermintaanCuti = ({ data }: PDFSuratPermintaanCutiProps) => {
             </View>
             <View style={styles.tableColDividedSpanAllWithBorderBottom}>
               {/* <Text style={styles.tableCell}>TTD</Text> */}
+              {/* eslint-disable-next-line */}
               <Image style={styles.signImage} src={data.tandaTanganAtasan} />
             </View>
             <View style={styles.tableColDividedSpanAllWithBorderBottom}>
               {/* <Text style={styles.tableCell}>TTD</Text> */}
+              {/* eslint-disable-next-line */}
               <Image style={styles.signImage} src={data.tandaTanganAtasan} />
             </View>
           </View>
@@ -496,6 +499,7 @@ const SuratPermintaanCuti = ({ data }: PDFSuratPermintaanCutiProps) => {
             </View>
             <View style={styles.tableColSpanAll}>
               {/* {data.tandaTanganKepala} */}
+              {/* eslint-disable-next-line */}
               <Image style={styles.signImage} src={data.tandaTanganKepala} />
               <Text style={styles.tableCellCenter}></Text>
             </View>

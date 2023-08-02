@@ -25,8 +25,7 @@ export default async function AdminLayout({
           <UserNav
             user={{
               email: session.user.email,
-              nama: session.user.name,
-              role: session.user.role?.toLowerCase(),
+              name: session.user.name,
               settingPath: "/admin/pengaturan",
             }}
             nextAuthUser={{
