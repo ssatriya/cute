@@ -82,9 +82,16 @@ export const columns: ColumnDef<StatusVerifikasiAtasan>[] = [
       );
     },
     cell: ({ row }) => {
+      const id = Number(row.original.id);
       const status: string = row.getValue("statusVerifikasi");
 
-      return <DialogBadge status={status} />;
+      return (
+        <DialogBadge
+          status={status}
+          id={id}
+          title="Detil status verifikasi atasan"
+        />
+      );
     },
   },
 ];
