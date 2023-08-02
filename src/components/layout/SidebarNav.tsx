@@ -2,13 +2,13 @@
 
 import { usePathname } from "next/navigation";
 
-import { MainNavItem } from "@/types";
+import { MainNavItem, SidebarNavItem } from "@/types";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Icons } from "../Icons";
 
 interface DashboardNavProps {
-  items: MainNavItem[];
+  items: SidebarNavItem[];
 }
 
 export default function DashboardNav({ items }: DashboardNavProps) {
