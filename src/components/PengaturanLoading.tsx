@@ -1,15 +1,8 @@
 "use client";
 
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/Card";
-import { FormControl, FormItem, FormLabel } from "./ui/Form";
+import { Card, CardContent, CardFooter, CardHeader } from "./ui/Card";
+
 import { Skeleton } from "./ui/Skeleton";
 
 export default function PengaturanLoading() {

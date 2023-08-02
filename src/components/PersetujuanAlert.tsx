@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/Alert";
 import { HeartHandshake } from "lucide-react";
-import { cn } from "@/lib/utils";
+
 import Link from "next/link";
 
 interface PersetujuanAlertProps {

@@ -79,7 +79,7 @@ function FormVerifikasiBerkas({ cuti, session }: FormVerifikasiBerkasProps) {
 
       const encryptedId = encryptId(String(data.id));
       console.log(encryptedId);
-      console.log(`http://localhost:3000/verifikasi-atasan/${encryptedId}`);
+      // console.log(`http://localhost:3000/verifikasi-atasan/${encryptedId}`);
     },
   });
 

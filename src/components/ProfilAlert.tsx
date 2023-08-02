@@ -4,7 +4,6 @@ import React from "react";
 import { Alert, AlertDescription, AlertTitle } from "./ui/Alert";
 import { Terminal } from "lucide-react";
 import Link from "next/link";
-import Holidays from "date-holidays";
 
 export default function ProfilAlert({ path }: { path: string }) {
   return (

@@ -7,24 +7,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
-import { toast } from "@/hooks/use-toast";
-import axios from "axios";
+
 import { FileDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "./ui/Dialog";
-import { PDFViewer } from "@react-pdf/renderer";
-import SuratPermintaanCuti from "./pdf/surat-permintaan-cuti";
-import BeritaSerahTerima from "./pdf/berita-serah-terima";
-import FormulirPermintaanCuti from "./pdf/formulir-permintaan-cuti";
-import Providers from "./Providers";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 interface ActionButtonProps {
   rowId: number;
@@ -38,14 +24,6 @@ export default function ActionButtonCog({
   deleteEndPoint,
 }: ActionButtonProps) {
   const router = useRouter();
-  const [showPermintaanDialog, setShowPermintaanDialog] =
-    React.useState<boolean>(false);
-
-  const [showBeritaSerahTerimaDialog, setShowBeritaSerahTerimaDialog] =
-    React.useState<boolean>(false);
-
-  const [showFormulirPermintaanDialog, setShowFormulirPermintaan] =
-    React.useState<boolean>(false);
 
   return (
     <>
