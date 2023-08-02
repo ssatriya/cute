@@ -6,6 +6,7 @@ import { MainNavItem } from "@/types";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { Icons } from "../Icons";
+import MobileNav from "./MobileNav";
 
 interface MainNavProps {
   items?: MainNavItem[];
@@ -48,6 +49,9 @@ export default function MainNav({ items, children }: MainNavProps) {
         {showMobileMenu ? <Icons.close /> : <Icons.logo />}
         <span className="font-bold">Menu</span>
       </button>
+      {showMobileMenu && items && (
+        <MobileNav items={items}>{children}</MobileNav>
+      )}
     </div>
   );
 }
