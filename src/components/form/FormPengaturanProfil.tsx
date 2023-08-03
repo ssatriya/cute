@@ -374,6 +374,7 @@ export default function FormPengaturanProfil({
                               penColor="black"
                               ref={(data) => setSignature(data)}
                               backgroundColor="#ffffff"
+                              clearOnResize={false}
                               canvasProps={{
                                 className:
                                   "border rounded-lg absolute w-full h-full",
