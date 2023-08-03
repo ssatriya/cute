@@ -2,8 +2,8 @@ import MainNav from "@/components/layout/MainNav";
 import DashboardNav from "@/components/layout/SidebarNav";
 import SiteFooter from "@/components/layout/SiteFooter";
 import UserNav from "@/components/layout/UserNav";
-import { Separator } from "@/components/ui/Separator";
-import { dashboardConfig } from "../../../../config/dashboardConfig";
+import MobileNav from "@/components/layout/MobileNav";
+import { dashboardNavConfig } from "../../../../config/kepala/dashboardNavConfig";
 import React from "react";
 import { getAuthSession } from "@/lib/auth";
 
@@ -22,7 +22,7 @@ export default async function KepalaLayout({
     <div className="flex flex-col min-h-screen space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">
         <div className="container flex items-center justify-between h-16 py-4">
-          <MainNav items={dashboardConfig.mainNav} />
+          <MainNav items={dashboardNavConfig.mainNav} />
           <UserNav
             user={{
               email: session.user.email,
@@ -38,10 +38,13 @@ export default async function KepalaLayout({
         </div>
       </header>
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] flex-col md:flex">
-          <DashboardNav items={dashboardConfig.sidebarNavKepala} />
-          <Separator orientation="horizontal" className="my-4" />
-          <DashboardNav items={dashboardConfig.sidebarNavKepalaAsUser} />
+        <aside className="hidden w-[200px] flex-col gap-4 md:flex">
+          <MobileNav
+            nav={dashboardNavConfig.sidebarNav}
+            navUser={dashboardNavConfig.sidebarNavUser}
+          />
+          <DashboardNav items={dashboardNavConfig.sidebarNav} />
+          <DashboardNav items={dashboardNavConfig.sidebarNavUser} />
         </aside>
         <main className="flex flex-col flex-1 w-full overflow-hidden">
           {children}

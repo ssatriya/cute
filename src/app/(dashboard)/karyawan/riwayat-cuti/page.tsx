@@ -60,17 +60,16 @@ export default async function page() {
   }));
 
   return (
-    <DashboardShell>
-      <DashboardHeader heading="Riwayat Cuti" />
-      <Card>
-        <CardHeader>
-          <CardTitle>Riwayat Pengajuan Cuti</CardTitle>
-          <CardDescription>Daftar cuti yang pernah diajukan</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DataTable columns={columns} data={data} />
-        </CardContent>
-      </Card>
-    </DashboardShell>
+    <div className="flex-col flex-1 h-full p-8 space-y-8 overflow-x-hidden border rounded-md md:flex">
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Riwayat Cuti</h2>
+          <p className="text-muted-foreground">
+            Daftar pengajuan cuti yang pernah dibuat
+          </p>
+        </div>
+      </div>
+      <DataTable columns={columns} data={data} />
+    </div>
   );
 }

@@ -10,7 +10,7 @@ import {
 import { Skeleton } from "@/components/ui/Skeleton";
 import React from "react";
 
-export default function PengajuanCutiLoading() {
+export default function PengajuanCutiKaryawanLoading() {
   return (
     <DashboardShell>
       <DashboardHeader heading="Pengajuan Cuti" />
@@ -21,6 +21,10 @@ export default function PengajuanCutiLoading() {
             <Skeleton className="w-[260px] h-5" />
           </CardHeader>
           <CardContent className="mt-1">
+            <div className="my-[22px]">
+              <Skeleton className="w-32 h-[17px]" />
+              <Skeleton className="w-full h-10 mt-[11px]" />
+            </div>
             <div className="grid grid-cols-1 lg:grid lg:grid-cols-2 lg:gap-6">
               <div className="">
                 <Skeleton className="w-16 h-[17px]" />

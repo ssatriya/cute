@@ -66,7 +66,6 @@ export default function FormPengaturanProfil({
   user,
 }: FormPengarutanProfilProps) {
   const router = useRouter();
-  const { theme } = useTheme();
 
   const [signature, setSignature] = React.useState<ReactSignatureCanvas | null>(
     null
@@ -366,14 +365,15 @@ export default function FormPengaturanProfil({
                     <FormLabel>Tanda tangan</FormLabel>
                     <div className="flex flex-col items-start gap-4 lg:flex lg:items-center lg:flex-row lg:gap-4">
                       <FormControl>
-                        <div className="relative w-[80%] h-[150px] md:w-[350px]">
+                        <div className="relative h-[150px] w-full xs:w-[350px]">
                           {isLoading ? (
                             <Skeleton className="absolute w-full h-full border rounded-lg" />
                           ) : (
                             <SignatureCanvas
                               onBegin={onBlur}
-                              penColor={theme === "dark" ? "white" : "black"}
+                              penColor="black"
                               ref={(data) => setSignature(data)}
+                              backgroundColor="#ffffff"
                               canvasProps={{
                                 className:
                                   "border rounded-lg absolute w-full h-full",

@@ -19,22 +19,15 @@ export type SidebarNavItem = {
       items?: never;
     }
   | {
-      href?: string;
+      href: string;
       items: NavLink[];
     }
 );
 
 export type DashboardConfig = {
   mainNav: MainNavItem[];
-  mainNavKaryawan: MainNavItem[];
-  sidebarNavKaryawan: SidebarNavItem[];
-  sidebarNavAtasan: SidebarNavItem[];
-  sidebarNavAdmin: SidebarNavItem[];
-  siebarNavVerifikator: SidebarNavItem[];
-  sidebarNavAtasan: SidebarNavItem[];
-  siebarNavVerifikatorAsUser: SidebarNavItem[];
-  sidebarNavKepala: SidebarNavItem[];
-  sidebarNavKepalaAsUser: SidebarNavItem[];
+  sidebarNav: SidebarNavItem[];
+  sidebarNavUser?: SidebarNavItem[];
 };
 
 // Metadata

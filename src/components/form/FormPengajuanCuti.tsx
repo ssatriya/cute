@@ -49,6 +49,7 @@ import { Session } from "next-auth";
 import { CustomDropzoneUploadthing } from "../CustomDropzoneUploadthing";
 
 import { encryptId } from "@/lib/crypto";
+import id from "date-fns/locale/id";
 
 const arrZ = z.object({
   fileKey: z.string(),
@@ -59,15 +60,17 @@ const formSchema = z.object({
   jenisCuti: z.string({
     required_error: "Jenis cuti harus dipilih",
   }),
-  tanggalCuti: z.object(
-    {
-      from: z.date(),
-      to: z.date(),
-    },
-    {
-      required_error: "Tanggal awal dan akhir cuti harus dipilih",
-    }
-  ),
+  // tanggalCuti: z.object(
+  //   {
+  //     from: z.date(),
+  //     to: z.date(),
+  //   },
+  //   {
+  //     required_error: "Tanggal awal dan akhir cuti harus dipilih",
+  //   }
+  // ),
+  tanggalMulai: z.date(),
+  tanggalSelesai: z.date(),
   keteranganCuti: z.string({
     required_error: "Keterangan cuti harus diisi",
   }),
@@ -86,10 +89,12 @@ interface FormPengajuanCutiProps extends Omit<Session, "expires"> {}
 
 export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
   const router = useRouter();
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: undefined,
-    to: undefined,
-  });
+  // const [date, setDate] = useState<DateRange | undefined>({
+  //   from: undefined,
+  //   to: undefined,
+  // });
+  const [dateFrom, setDateFrom] = React.useState<Date>();
+  const [dateTo, setDateTo] = React.useState<Date>();
 
   const { data: dataJenisCuti, isLoading: isLoadingJenisCuti } = useQuery({
     queryKey: ["jenisCuti"],
@@ -126,8 +131,8 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
       const formData = new FormData();
 
       formData.append("jenisCuti", data.jenisCuti),
-        formData.append("tanggalMulai", data.tanggalCuti.from.toISOString());
-      formData.append("tanggalSelesai", data.tanggalCuti.to.toISOString());
+        formData.append("tanggalMulai", data.tanggalMulai.toISOString());
+      formData.append("tanggalSelesai", data.tanggalSelesai.toISOString());
       formData.append("keteranganCuti", data.keteranganCuti);
       formData.append("alamatSelamaCuti", data.alamatSelamaCuti);
       formData.append("berkas", JSON.stringify(fileData));
@@ -177,89 +182,138 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Formulir Pengajuan Cuti</CardTitle>
+            <CardTitle className="text-xl xs:text-2xl">
+              Formulir Pengajuan Cuti
+            </CardTitle>
             <CardDescription>
               Isi formulir dengan data yang diperlukan
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="jenisCuti"
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, value, name } }) => (
+                <FormItem>
+                  <FormLabel>Jenis cuti</FormLabel>
+                  <Select
+                    onValueChange={onChange}
+                    defaultValue={value}
+                    name={name}
+                  >
+                    <FormControl>
+                      <SelectTrigger onBlur={onBlur}>
+                        <span
+                          style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                          className="font-normal text-muted-foreground"
+                        >
+                          <SelectValue placeholder="Pilih jenis cuti" />
+                        </span>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {dataJenisCuti &&
+                        dataJenisCuti.result.map((cuti: any) => (
+                          <SelectItem key={cuti.id} value={String(cuti.id)}>
+                            {cuti.namaCuti}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <div className="grid grid-cols-1 space-y-4 2xl:grid 2xl:grid-cols-2 2xl:gap-6 2xl:space-y-0">
               <FormField
                 control={form.control}
-                name="jenisCuti"
+                name="tanggalMulai"
                 rules={{ required: true }}
                 render={({ field: { onChange, onBlur, value, name } }) => (
                   <FormItem>
-                    <FormLabel>Jenis cuti</FormLabel>
-                    <Select
-                      onValueChange={onChange}
-                      defaultValue={value}
-                      name={name}
-                    >
-                      <FormControl>
-                        <SelectTrigger onBlur={onBlur}>
-                          <SelectValue placeholder="Pilih jenis cuti" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {dataJenisCuti &&
-                          dataJenisCuti.result.map((cuti: any) => (
-                            <SelectItem key={cuti.id} value={String(cuti.id)}>
-                              {cuti.namaCuti}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="tanggalCuti"
-                rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value, name } }) => (
-                  <FormItem>
-                    <FormLabel>Pilih tanggal</FormLabel>
+                    <FormLabel>Tanggal mulai</FormLabel>
                     <div>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
-                            id="date"
                             variant={"outline"}
                             className={cn(
                               "w-full justify-start text-left font-normal",
-                              !date && "text-muted-foreground"
+                              !dateFrom && "text-muted-foreground"
                             )}
                           >
                             <CalendarIcon className="w-4 h-4 mr-2" />
-                            {date?.from ? (
-                              date.to ? (
-                                <>
-                                  {format(date.from, "LLL dd, y")} -{" "}
-                                  {format(date.to, "LLL dd, y")}
-                                </>
-                              ) : (
-                                format(date.from, "LLL dd, y")
-                              )
+                            {dateFrom ? (
+                              format(dateFrom, "PPP", { locale: id })
                             ) : (
-                              <span>Pick a date</span>
+                              <span>Pilih tanggal mulai</span>
                             )}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
+                        <PopoverContent className="w-auto p-0">
                           <Calendar
-                            initialFocus
-                            mode="range"
-                            defaultMonth={date?.from}
-                            selected={date}
+                            mode="single"
+                            selected={dateFrom}
                             onSelect={(selected) => {
                               // @ts-ignore
                               onChange(selected);
-                              setDate(selected);
+                              setDateFrom(selected);
                             }}
-                            numberOfMonths={2}
+                            initialFocus
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="tanggalSelesai"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value, name } }) => (
+                  <FormItem>
+                    <FormLabel>Tanggal selesai</FormLabel>
+                    <div>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full justify-start text-left font-normal",
+                              !dateTo && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="w-4 h-4 mr-2" />
+                            {dateTo ? (
+                              format(dateTo, "PPP", { locale: id })
+                            ) : (
+                              <span>Pilih tanggal selesai</span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={dateTo}
+                            // onSelect={(selected) => {
+                            //   // @ts-ignore
+                            //   onChange(selected);
+                            //   setDate(selected);
+                            // }}
+                            onSelect={(selected) => {
+                              // @ts-ignore
+                              onChange(selected);
+                              setDateTo(selected);
+                            }}
+                            disabled={(date) => date < dateFrom!}
+                            initialFocus
                           />
                         </PopoverContent>
                       </Popover>

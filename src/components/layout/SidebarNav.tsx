@@ -6,12 +6,14 @@ import { MainNavItem, SidebarNavItem } from "@/types";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Icons } from "../Icons";
+import MobileNav from "./MobileNav";
 
 interface DashboardNavProps {
-  items: SidebarNavItem[];
+  items?: SidebarNavItem[];
+  children?: React.ReactNode;
 }
 
-export default function DashboardNav({ items }: DashboardNavProps) {
+export default function DashboardNav({ items, children }: DashboardNavProps) {
   const path = usePathname();
 
   if (!items?.length) {

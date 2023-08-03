@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { Skeleton } from "@/components/ui/Skeleton";
 import React from "react";
 
-export default function RiwayatCutiLoading() {
+export default function RiwayatCutiKaryawanLoading() {
   return (
     <DashboardShell>
       <DashboardHeader heading="Riwayat Cuti" />

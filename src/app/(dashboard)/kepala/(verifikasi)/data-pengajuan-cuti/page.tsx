@@ -11,6 +11,7 @@ import { DataTable } from "@/components/ui/DataTable";
 import { columns } from "@/app/(dashboard)/kepala/(verifikasi)/data-pengajuan-cuti/columns";
 import { db } from "@/lib/db";
 import { format, subDays } from "date-fns";
+import DashboardTableShell from "@/components/layout/DashboardTableShell";
 
 export default async function TablePengajuanCuti() {
   const response = await db.cuti.findMany({
@@ -46,17 +47,11 @@ export default async function TablePengajuanCuti() {
   }));
 
   return (
-    <DashboardShell>
-      <DashboardHeader heading="Data Pengajuan Cuti Verifikator"></DashboardHeader>
-      <Card>
-        <CardHeader>
-          <CardTitle>Data Pengajuan Cuti</CardTitle>
-          <CardDescription>Daftar semua pengajuan cuti</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DataTable columns={columns} data={data} />
-        </CardContent>
-      </Card>
-    </DashboardShell>
+    <DashboardTableShell
+      title="Data Pengajuan Cuti"
+      description="Daftar pengajuan yang belum diverifikasi"
+    >
+      <DataTable columns={columns} data={data} />
+    </DashboardTableShell>
   );
 }

@@ -15,6 +15,7 @@ import {
 import { DataTable } from "@/components/ui/DataTable";
 import { db } from "@/lib/db";
 import { Metadata } from "next/types";
+import DashboardTableShell from "@/components/layout/DashboardTableShell";
 
 export const metadata: Metadata = {
   title: "Data Cuti",
@@ -40,19 +41,12 @@ export default async function TableCuti() {
   const data = await getData();
 
   return (
-    <DashboardShell>
-      <DashboardHeader heading="Data Cuti">
-        <DataAddButton buttonName="Tambah Data" url="/admin/form-cuti" />
-      </DashboardHeader>
-      <Card>
-        <CardHeader>
-          <CardTitle>Data Jenis Cuti</CardTitle>
-          <CardDescription>Daftar jenis cuti yang tersedia</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DataTable columns={columns} data={data} />
-        </CardContent>
-      </Card>
-    </DashboardShell>
+    <DashboardTableShell
+      title="Data Jenis Cuti"
+      description="Daftar jenis cuti yang tersedia"
+      buttonPath="/admin/form-cuti"
+    >
+      <DataTable columns={columns} data={data} />
+    </DashboardTableShell>
   );
 }

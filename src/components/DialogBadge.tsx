@@ -60,21 +60,21 @@ export default function DialogBadge({
   });
 
   let statusText: React.JSX.Element = (
-    <Badge className="cursor-pointer" variant="outline">
+    <Badge className="rounded-md cursor-pointer" variant="outline">
       Proses
     </Badge>
   );
 
   if (status === "ditolak") {
     statusText = (
-      <Badge className="cursor-pointer" variant="destructive">
+      <Badge className="rounded-md cursor-pointer" variant="destructive">
         Ditolak
       </Badge>
     );
   }
   if (status === "diterima") {
     statusText = (
-      <Badge className="cursor-pointer" variant="default">
+      <Badge className="rounded-md cursor-pointer" variant="default">
         Diterima
       </Badge>
     );

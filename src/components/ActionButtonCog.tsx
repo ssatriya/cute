@@ -29,9 +29,12 @@ export default function ActionButtonCog({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="w-8 h-8 p-0">
-            <span className="sr-only">Open menu</span>
+          <Button
+            variant="ghost"
+            className="w-8 h-8 p-0 data-[state=open]:bg-muted"
+          >
             <FileDown className="w-4 h-4" />
+            <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

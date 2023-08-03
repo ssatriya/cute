@@ -16,6 +16,7 @@ import {
 import { db } from "@/lib/db";
 
 import { Metadata } from "next/types";
+import DashboardTableShell from "@/components/layout/DashboardTableShell";
 
 export const metadata: Metadata = {
   title: "Data Jabatan",
@@ -50,19 +51,12 @@ export default async function TableJabatan() {
   const data = await getData();
 
   return (
-    <DashboardShell>
-      <DashboardHeader heading="Data Jabatan">
-        <DataAddButton buttonName="Tambah Data" url="/admin/form-jabatan" />
-      </DashboardHeader>
-      <Card>
-        <CardHeader>
-          <CardTitle>Daftar Data Jabatan</CardTitle>
-          <CardDescription>Daftar data jabatan yang tersedia</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DataTable columns={columns} data={data} />
-        </CardContent>
-      </Card>
-    </DashboardShell>
+    <DashboardTableShell
+      title="Daftar Data Jabatan"
+      description="Daftar data jabatan yang tersedia"
+      buttonPath="/admin/form-jabatan"
+    >
+      <DataTable columns={columns} data={data} />
+    </DashboardTableShell>
   );
 }

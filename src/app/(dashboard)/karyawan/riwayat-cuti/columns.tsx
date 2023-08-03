@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import ActionButtonCog from "@/components/ActionButtonCog";
 import DialogBadge from "@/components/DialogBadge";
+import { Button } from "@/components/ui/Button";
+import { ArrowUpDown, FileDown } from "lucide-react";
 
 export type RiwayatType = {
   id: number;
@@ -19,6 +21,15 @@ export type RiwayatType = {
 
 export const columns: ColumnDef<RiwayatType>[] = [
   {
+    accessorKey: "no",
+    header: ({ column }) => {
+      return <div className="text-center">No</div>;
+    },
+    cell: ({ row }) => {
+      return <div className="text-center">{row.index + 1}</div>;
+    },
+  },
+  {
     accessorKey: "nip",
     header: () => {
       return <div className="text-center">NIP</div>;
@@ -30,7 +41,20 @@ export const columns: ColumnDef<RiwayatType>[] = [
   },
   {
     accessorKey: "tanggalPengajuan",
-    header: "Tanggal Pengajuan",
+    header: ({ column }) => {
+      return (
+        <div className="text-left">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            className="px-0 text-left hover:bg-transparent"
+          >
+            Tanggal Pengajuan
+            <ArrowUpDown className="w-4 h-4 ml-2" />
+          </Button>
+        </div>
+      );
+    },
     cell: ({ row }) => {
       const date = new Date(row.getValue("tanggalPengajuan"));
       const formatted = date.toLocaleDateString("id-ID", {
@@ -86,7 +110,17 @@ export const columns: ColumnDef<RiwayatType>[] = [
           </div>
         );
       } else {
-        return null;
+        return (
+          <div className="flex items-center justify-center">
+            <Button
+              variant="ghost"
+              className="w-8 h-8 p-0 cursor-not-allowed opacity-40"
+            >
+              <FileDown className="w-4 h-4" />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </div>
+        );
       }
     },
   },

@@ -76,19 +76,18 @@ export default async function SisaCutiKaryawan() {
   ];
 
   return (
-    <DashboardShell>
-      <DashboardHeader heading="Sisa Cuti" />
-      <Card>
-        <CardHeader>
-          <CardTitle>Sisa Cuti Tahunan</CardTitle>
-          <CardDescription>
+    <div className="flex flex-col p-8 space-y-8 overflow-x-hidden border rounded-md md:flex">
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">
+            Sisa Cuti Tahunan
+          </h2>
+          <p className="text-muted-foreground">
             Sisa cuti tahunan Anda pada tahun berjalan
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DataTable columns={columns} data={data} />
-        </CardContent>
-      </Card>
-    </DashboardShell>
+          </p>
+        </div>
+      </div>
+      <DataTable columns={columns} data={data} />
+    </div>
   );
 }

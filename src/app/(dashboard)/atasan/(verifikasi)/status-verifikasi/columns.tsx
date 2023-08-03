@@ -22,18 +22,8 @@ export type StatusVerifikasiAtasan = {
 export const columns: ColumnDef<StatusVerifikasiAtasan>[] = [
   {
     accessorKey: "nomor",
-    header: ({ column }) => {
-      return (
-        <div className="flex justify-center">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            No
-            <ArrowUpDown className="w-4 h-4 ml-2" />
-          </Button>
-        </div>
-      );
+    header: () => {
+      return <div className="flex justify-center">No</div>;
     },
     cell: ({ row }) => {
       return <div className="text-center">{row.index + 1}</div>;

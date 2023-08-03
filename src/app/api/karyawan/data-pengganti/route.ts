@@ -21,9 +21,7 @@ export async function GET(req: Request) {
         namaLengkap: true,
       },
       where: {
-        NOT: {
-          id: numberId,
-        },
+        NOT: [{ id: numberId }, { role: "admin" }],
       },
     });
 

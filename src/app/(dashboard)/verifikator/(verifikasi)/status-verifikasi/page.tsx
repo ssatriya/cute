@@ -14,6 +14,7 @@ import {
 } from "@/app/(dashboard)/verifikator/(verifikasi)/status-verifikasi/columns";
 import { getStatusVerifikasiBerkas } from "@/lib/actions/verifikator";
 import { Metadata } from "next/types";
+import DashboardTableShell from "@/components/layout/DashboardTableShell";
 
 export const metadata: Metadata = {
   title: "Status Verifikasi",
@@ -23,19 +24,11 @@ export default async function StatusVerifikasiBerkas() {
   const data = await getStatusVerifikasiBerkas();
 
   return (
-    <DashboardShell>
-      <DashboardHeader heading="Verifikasi Berkas"></DashboardHeader>
-      <Card>
-        <CardHeader>
-          <CardTitle>Status Verifikasi Berkas</CardTitle>
-          <CardDescription>
-            Daftar permohonan cuti yang sudah diverifikasi
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DataTable columns={columns} data={data} />
-        </CardContent>
-      </Card>
-    </DashboardShell>
+    <DashboardTableShell
+      title="Status Verifikasi Berkas"
+      description="Daftar berkas cuti yang sudah diverifikasi"
+    >
+      <DataTable columns={columns} data={data} />
+    </DashboardTableShell>
   );
 }

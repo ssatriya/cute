@@ -206,19 +206,16 @@ export async function POST(req: Request) {
 
   const addDaysWeekend = weekendArray.map((day) => day.toDateString());
 
-  let newWeekendArray: Date[] = [];
-  addDaysInterval.map((day, index) => {
-    if (addDaysWeekend[index] !== day) {
-      newWeekendArray.push(new Date(day));
-    }
-  });
+  const newWeekendArray = addDaysInterval.filter(
+    (date) => !addDaysWeekend.includes(date)
+  );
 
   const holidays = new Holidays("ID");
 
   let holidaysArr: Date[] = [];
   newWeekendArray.map((day) => {
     if (!holidays.isHoliday(day)) {
-      holidaysArr.push(day);
+      holidaysArr.push(new Date(day));
     }
   });
 
