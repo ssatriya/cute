@@ -50,6 +50,7 @@ import { CustomDropzoneUploadthing } from "../CustomDropzoneUploadthing";
 
 import { encryptId } from "@/lib/crypto";
 import id from "date-fns/locale/id";
+import { Skeleton } from "../ui/Skeleton";
 
 const arrZ = z.object({
   fileKey: z.string(),
@@ -104,7 +105,7 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
     },
   });
 
-  const { data: dataPengganti } = useQuery({
+  const { data: dataPengganti, isLoading: isLoadingPengganti } = useQuery({
     queryKey: ["pegawaiPengganti"],
     queryFn: async () => {
       const { data } = await axios.get("/api/karyawan/data-pengganti", {
@@ -203,18 +204,22 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                     name={name}
                   >
                     <FormControl>
-                      <SelectTrigger onBlur={onBlur}>
-                        <span
-                          style={{
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                          className="font-normal text-muted-foreground"
-                        >
-                          <SelectValue placeholder="Pilih jenis cuti" />
-                        </span>
-                      </SelectTrigger>
+                      {isLoadingJenisCuti ? (
+                        <Skeleton className="w-full h-10 border" />
+                      ) : (
+                        <SelectTrigger onBlur={onBlur}>
+                          <span
+                            style={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                            className="font-normal text-muted-foreground"
+                          >
+                            <SelectValue placeholder="Pilih jenis cuti" />
+                          </span>
+                        </SelectTrigger>
+                      )}
                     </FormControl>
                     <SelectContent>
                       {dataJenisCuti &&
@@ -424,9 +429,22 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                     name={name}
                   >
                     <FormControl>
-                      <SelectTrigger onBlur={onBlur}>
-                        <SelectValue placeholder="Pilih pegawai pengganti" />
-                      </SelectTrigger>
+                      {isLoadingPengganti ? (
+                        <Skeleton className="w-full h-10 border" />
+                      ) : (
+                        <SelectTrigger onBlur={onBlur}>
+                          <span
+                            style={{
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              whiteSpace: "nowrap",
+                            }}
+                            className="font-normal text-muted-foreground"
+                          >
+                            <SelectValue placeholder="Pilih pegawai pengganti" />
+                          </span>
+                        </SelectTrigger>
+                      )}
                     </FormControl>
                     <SelectContent>
                       {dataPengganti &&
