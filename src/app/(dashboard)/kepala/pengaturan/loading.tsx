@@ -9,7 +9,7 @@ import {
 import { Skeleton } from "@/components/ui/Skeleton";
 import React from "react";
 
-export default function PengaturanKaryawanLoading() {
+export default function PengaturanKepalaLoading() {
   return (
     <DashboardShell>
       <DashboardHeader heading="Pengaturan Profil" />

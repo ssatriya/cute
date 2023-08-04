@@ -43,7 +43,9 @@ export async function GET(req: Request) {
       namaLengkap: response.namaLengkap,
       nip: response.nip,
       idJabatan: response.idJabatan ? response.idJabatan : undefined,
-      tanggalLahir: response.tempatLahir ? formatDate : null,
+      tanggalLahir: response.tanggalLahir
+        ? response.tanggalLahir.toDateString()
+        : null,
       tempatLahir: response.tempatLahir,
       jenisKelamin: response.jenisKelamin,
       tandaTangan: response.tandaTangan,

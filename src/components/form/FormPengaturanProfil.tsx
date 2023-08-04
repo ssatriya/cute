@@ -38,9 +38,17 @@ import { toast } from "@/hooks/use-toast";
 import SignatureCanvas from "react-signature-canvas";
 import ReactSignatureCanvas from "react-signature-canvas";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { useTheme } from "next-themes";
+
 import { useRouter } from "next/navigation";
 import { RolePengguna } from "@prisma/client";
+
+import { DevTool } from "@hookform/devtools";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { CustomCalendar } from "../ui/custom/CustomCalendar";
+import id from "date-fns/locale/id";
 
 const formSchema = z.object({
   namaLengkap: z.string(),
@@ -73,6 +81,7 @@ export default function FormPengaturanProfil({
   const [signatureDataUrl, setSignatureDataUrl] = React.useState<
     string | undefined
   >("");
+  const [date, setDate] = React.useState<Date | undefined>();
 
   const { mutate: submitProfil, isLoading: isLoadingSubmit } = useMutation({
     mutationFn: async (data: FormData) => {
@@ -114,22 +123,19 @@ export default function FormPengaturanProfil({
     },
   });
 
-  const [formLoading, setFormLoading] = React.useState<boolean>(true);
-
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: async () => {
-      setFormLoading(true);
       const { data } = await axios.get("/api/profil", {
         params: { id: user.id },
       });
-      setFormLoading(false);
 
       if (data.result.tandaTangan) {
         setSignatureDataUrl(data.result.tandaTangan);
       }
       form.setValue("tandaTangan", data.result.tandaTangan);
-      console.log(data.result);
+
+      setDate(new Date(data.result.tanggalLahir));
       return data.result;
     },
   });
@@ -186,7 +192,7 @@ export default function FormPengaturanProfil({
               <FormField
                 control={form.control}
                 name="namaLengkap"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Nama lengkap</FormLabel>
                     <FormControl>
@@ -194,12 +200,9 @@ export default function FormPengaturanProfil({
                         <Skeleton className="w-full h-10 border" />
                       ) : (
                         <Input
-                          type="text"
-                          id="namaLengkap"
-                          name={name}
-                          onChange={onChange}
-                          onBlur={onBlur}
-                          value={value || ""}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          value={field.value}
                         />
                       )}
                     </FormControl>
@@ -211,7 +214,7 @@ export default function FormPengaturanProfil({
               <FormField
                 control={form.control}
                 name="nip"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>NIP</FormLabel>
                     <FormControl>
@@ -219,12 +222,9 @@ export default function FormPengaturanProfil({
                         <Skeleton className="w-full h-10 border" />
                       ) : (
                         <Input
-                          type="text"
-                          id="nip"
-                          name={name}
-                          onChange={onChange}
-                          onBlur={onBlur}
-                          value={value || ""}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          value={field.value}
                         />
                       )}
                     </FormControl>
@@ -232,7 +232,6 @@ export default function FormPengaturanProfil({
                   </FormItem>
                 )}
               />
-              {/* if needed later */}
               <FormField
                 control={form.control}
                 name="idJabatan"
@@ -243,13 +242,12 @@ export default function FormPengaturanProfil({
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
-                        disabled={dataJabatan ? false : true}
                       >
                         <FormControl>
-                          {isDataJabatanLoading || isLoading ? (
+                          {isLoading ? (
                             <Skeleton className="w-full h-10 border" />
                           ) : (
-                            <SelectTrigger>
+                            <SelectTrigger onBlur={field.onBlur}>
                               <SelectValue placeholder="Pilih jabatan" />
                             </SelectTrigger>
                           )}
@@ -286,7 +284,7 @@ export default function FormPengaturanProfil({
                 <FormField
                   control={form.control}
                   name="tempatLahir"
-                  render={({ field: { onChange, onBlur, value, name } }) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tempat lahir</FormLabel>
                       <FormControl>
@@ -294,12 +292,9 @@ export default function FormPengaturanProfil({
                           <Skeleton className="w-full h-10 border" />
                         ) : (
                           <Input
-                            type="text"
-                            id="tempatLahir"
-                            name={name}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            value={value || ""}
+                            onChange={field.onChange}
+                            onBlur={field.onBlur}
+                            value={field.value}
                           />
                         )}
                       </FormControl>
@@ -311,21 +306,53 @@ export default function FormPengaturanProfil({
                 <FormField
                   control={form.control}
                   name="tanggalLahir"
-                  render={({ field: { onChange, onBlur, value, name } }) => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tanggal lahir</FormLabel>
                       <FormControl>
                         {isLoading ? (
                           <Skeleton className="w-full h-10 border" />
                         ) : (
-                          <Input
-                            type="date"
-                            id="tanggalLahir"
-                            name={name}
-                            onChange={onChange}
-                            onBlur={onBlur}
-                            value={value || ""}
-                          />
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-full justify-start text-left font-normal",
+                                  !date && "text-muted-foreground"
+                                )}
+                              >
+                                <CalendarIcon className="w-4 h-4 mr-2" />
+                                {date ? (
+                                  format(date, "PPP", { locale: id })
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent align="start" className="p-0">
+                              <CustomCalendar
+                                mode="single"
+                                captionLayout="dropdown-buttons"
+                                // @ts-ignore
+                                selected={date}
+                                onSelect={(selected) => {
+                                  console.log(field.value);
+                                  if (selected)
+                                    field.onChange(selected.toDateString());
+                                  setDate(selected);
+                                }}
+                                initialFocus
+                                fromYear={1900}
+                                toYear={2023}
+                                onDayBlur={field.onBlur}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                              />
+                            </PopoverContent>
+                          </Popover>
                         )}
                       </FormControl>
                       <FormMessage />
@@ -337,19 +364,15 @@ export default function FormPengaturanProfil({
               <FormField
                 control={form.control}
                 name="jenisKelamin"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Jenis kelamin</FormLabel>
-                    <Select
-                      onValueChange={onChange}
-                      value={value || ""}
-                      name={name}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         {isLoading ? (
                           <Skeleton className="w-full h-10 border" />
                         ) : (
-                          <SelectTrigger onBlur={onBlur}>
+                          <SelectTrigger onBlur={field.onBlur}>
                             <SelectValue placeholder="Pilih jenis kelamin" />
                           </SelectTrigger>
                         )}
@@ -366,7 +389,7 @@ export default function FormPengaturanProfil({
 
               <FormField
                 name="tandaTangan"
-                render={({ field: { onChange, onBlur, name, value } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Tanda tangan</FormLabel>
                     <div className="flex flex-col items-start gap-4 lg:flex lg:items-center lg:flex-row lg:gap-4">
@@ -376,7 +399,7 @@ export default function FormPengaturanProfil({
                             <Skeleton className="absolute w-full h-full border rounded-lg" />
                           ) : (
                             <SignatureCanvas
-                              onBegin={onBlur}
+                              onBegin={field.onBlur}
                               penColor="black"
                               ref={(data) => setSignature(data)}
                               backgroundColor="#ffffff"
@@ -393,7 +416,7 @@ export default function FormPengaturanProfil({
                         <Button
                           onClick={clearSignatureHandler}
                           type="button"
-                          variant="outline"
+                          variant="destructive"
                         >
                           Reset
                         </Button>
@@ -428,7 +451,7 @@ export default function FormPengaturanProfil({
           </Card>
         </form>
       </Form>
-      {/* <DevTool control={form.control} /> */}
+      <DevTool control={form.control} />
     </>
   );
 }

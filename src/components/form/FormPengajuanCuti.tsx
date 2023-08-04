@@ -61,15 +61,6 @@ const formSchema = z.object({
   jenisCuti: z.string({
     required_error: "Jenis cuti harus dipilih",
   }),
-  // tanggalCuti: z.object(
-  //   {
-  //     from: z.date(),
-  //     to: z.date(),
-  //   },
-  //   {
-  //     required_error: "Tanggal awal dan akhir cuti harus dipilih",
-  //   }
-  // ),
   tanggalMulai: z.date(),
   tanggalSelesai: z.date(),
   keteranganCuti: z.string({
@@ -90,10 +81,7 @@ interface FormPengajuanCutiProps extends Omit<Session, "expires"> {}
 
 export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
   const router = useRouter();
-  // const [date, setDate] = useState<DateRange | undefined>({
-  //   from: undefined,
-  //   to: undefined,
-  // });
+
   const [dateFrom, setDateFrom] = React.useState<Date>();
   const [dateTo, setDateTo] = React.useState<Date>();
 
@@ -206,7 +194,7 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                       {isLoadingJenisCuti ? (
                         <Skeleton className="w-full h-10 border" />
                       ) : (
-                        <SelectTrigger>
+                        <SelectTrigger onBlur={field.onBlur}>
                           <SelectValue placeholder="Pilih jenis cuti" />
                         </SelectTrigger>
                       )}
@@ -236,7 +224,7 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                 control={form.control}
                 name="tanggalMulai"
                 rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Tanggal mulai</FormLabel>
                     <div>
@@ -257,15 +245,16 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                             )}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
+                        <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"
                             selected={dateFrom}
                             onSelect={(selected) => {
                               // @ts-ignore
-                              onChange(selected);
+                              field.onChange(selected);
                               setDateFrom(selected);
                             }}
+                            onDayBlur={field.onBlur}
                             initialFocus
                           />
                         </PopoverContent>
@@ -279,7 +268,7 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                 control={form.control}
                 name="tanggalSelesai"
                 rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Tanggal selesai</FormLabel>
                     <div>
@@ -300,21 +289,17 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                             )}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
+                        <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"
                             selected={dateTo}
-                            // onSelect={(selected) => {
-                            //   // @ts-ignore
-                            //   onChange(selected);
-                            //   setDate(selected);
-                            // }}
                             onSelect={(selected) => {
                               // @ts-ignore
-                              onChange(selected);
+                              field.onChange(selected);
                               setDateTo(selected);
                             }}
                             disabled={(date) => date < dateFrom!}
+                            onDayBlur={field.onBlur}
                             initialFocus
                           />
                         </PopoverContent>
@@ -331,15 +316,14 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                 control={form.control}
                 name="keteranganCuti"
                 rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Keterangan</FormLabel>
                     <Textarea
                       placeholder="Tulis alasan cuti Anda"
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      value={value}
-                      name={name}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      value={field.value}
                     />
                   </FormItem>
                 )}
@@ -349,15 +333,14 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                 control={form.control}
                 name="alamatSelamaCuti"
                 rules={{ required: true }}
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Alamat</FormLabel>
                     <Textarea
                       placeholder="Tulis alamat Anda selama cuti"
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      value={value}
-                      name={name}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      value={field.value}
                     />
                   </FormItem>
                 )}
@@ -428,7 +411,7 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                       {isLoadingPengganti ? (
                         <Skeleton className="w-full h-10 border" />
                       ) : (
-                        <SelectTrigger>
+                        <SelectTrigger onBlur={field.onBlur}>
                           <SelectValue placeholder="Pilih pegawai pengganti" />
                         </SelectTrigger>
                       )}

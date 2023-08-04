@@ -72,14 +72,22 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
-    height: 100vh;
   }
+}
 
-  @supports (-webkit-touch-callout: none) {
-    body {
-      height: -webkit-fill-available;
-    }
+body {
+  height: 100vh;
+}
+
+@supports (-webkit-touch-callout: none) {
+  body {
+    height: -webkit-fill-available;
   }
+}
+
+.rdp-vhidden {
+  @apply hidden;
 }

@@ -9,15 +9,15 @@ import {
 import { Skeleton } from "@/components/ui/Skeleton";
 import React from "react";
 
-export default function PengaturanLoading() {
+export default function PengaturanAdminLoading() {
   return (
     <DashboardShell>
       <DashboardHeader heading="Pengaturan Profil" />
       <div className="grid gap-8">
         <Card>
           <CardHeader>
-            <Skeleton className="w-[180px] h-6" />
-            <Skeleton className="w-[340px] h-5" />
+            <Skeleton className="w-full xs:w-[180px] h-6" />
+            <Skeleton className="w-full xs:w-[340px] h-5" />
           </CardHeader>
           <CardContent className="mt-1">
             <div>
@@ -51,11 +51,11 @@ export default function PengaturanLoading() {
             <div className="mt-[22px]">
               <Skeleton className="w-32 h-[17px]" />
               <div className="flex flex-col items-start gap-4 lg:flex lg:items-center lg:flex-row lg:gap-4">
-                <Skeleton className="w-[348px] h-[148px] mt-[11px]" />
+                <Skeleton className="w-full sm:w-[348px] h-[148px] mt-[11px]" />
                 <Skeleton className="w-20 h-10" />
                 <Skeleton className="w-20 h-10" />
               </div>
-              <Skeleton className="w-[375px] h-[15px] mt-4" />
+              <Skeleton className="w-[full] sm:w-[375px] h-[15px] mt-4" />
             </div>
           </CardContent>
           <CardFooter className="mt-[2px]">
