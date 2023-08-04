@@ -220,7 +220,14 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                         </SelectTrigger>
                       )}
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent
+                      ref={(ref) => {
+                        if (!ref) return;
+                        ref.ontouchstart = (e) => {
+                          e.preventDefault();
+                        };
+                      }}
+                    >
                       {dataJenisCuti &&
                         dataJenisCuti.result.map((cuti: any) => (
                           <SelectItem key={cuti.id} value={String(cuti.id)}>
