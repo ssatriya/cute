@@ -74,6 +74,5 @@
   }
   body {
     @apply bg-background text-foreground;
-    @apply h-[100vh];
   }
 }
