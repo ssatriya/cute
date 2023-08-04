@@ -1,7 +1,7 @@
 module.exports = {
-  // plugins: {
-  //   tailwindcss: {},
-  //   autoprefixer: {},
-  // },
-  plugins: ["postcss-100vh-fix", "tailwindcss", "autoprefixer"],
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+    "postcss-100vh-fix": {},
+  },
 };
