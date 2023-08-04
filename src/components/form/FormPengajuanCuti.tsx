@@ -195,19 +195,18 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
               control={form.control}
               name="jenisCuti"
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value, name } }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Jenis cuti</FormLabel>
                   <Select
-                    onValueChange={onChange}
-                    defaultValue={value}
-                    name={name}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
                   >
                     <FormControl>
                       {isLoadingJenisCuti ? (
                         <Skeleton className="w-full h-10 border" />
                       ) : (
-                        <SelectTrigger onBlur={onBlur}>
+                        <SelectTrigger>
                           <span
                             style={{
                               overflow: "hidden",
