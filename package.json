@@ -70,6 +70,7 @@
     "@tailwindcss/typography": "^0.5.9",
     "@types/mime": "^3.0.1",
     "encoding": "^0.1.13",
+    "postcss-100vh-fix": "^1.0.2",
     "prisma": "^5.0.0"
   }
 }
