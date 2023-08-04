@@ -247,7 +247,7 @@ export default function FormPengaturanProfil({
                         disabled={dataJabatan ? false : true}
                       >
                         <FormControl>
-                          {isDataJabatanLoading ? (
+                          {isDataJabatanLoading || isLoading ? (
                             <Skeleton className="w-full h-10 border" />
                           ) : (
                             <SelectTrigger onBlur={onBlur}>
