@@ -242,7 +242,7 @@ export default function FormPengaturanProfil({
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                         disabled={dataJabatan ? false : true}
                       >
                         <FormControl>

@@ -207,16 +207,7 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                         <Skeleton className="w-full h-10 border" />
                       ) : (
                         <SelectTrigger>
-                          <span
-                            style={{
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                            className="font-normal text-muted-foreground"
-                          >
-                            <SelectValue placeholder="Pilih jenis cuti" />
-                          </span>
+                          <SelectValue placeholder="Pilih jenis cuti" />
                         </SelectTrigger>
                       )}
                     </FormControl>
@@ -438,16 +429,7 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                         <Skeleton className="w-full h-10 border" />
                       ) : (
                         <SelectTrigger>
-                          <span
-                            style={{
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                              whiteSpace: "nowrap",
-                            }}
-                            className="font-normal text-muted-foreground"
-                          >
-                            <SelectValue placeholder="Pilih pegawai pengganti" />
-                          </span>
+                          <SelectValue placeholder="Pilih pegawai pengganti" />
                         </SelectTrigger>
                       )}
                     </FormControl>
