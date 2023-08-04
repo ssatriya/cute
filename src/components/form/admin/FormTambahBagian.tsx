@@ -125,21 +125,31 @@ export default function FormTambahBagian() {
               control={form.control}
               name="idAtasan"
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value, name } }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Nama Atasan Langsung</FormLabel>
                   <FormControl>
-                    <Select onValueChange={onChange} value={value} name={name}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <FormControl>
                         {isDataAtasanLoading ? (
                           <Skeleton className="w-full h-10 border" />
                         ) : (
-                          <SelectTrigger onBlur={onBlur}>
+                          <SelectTrigger>
                             <SelectValue placeholder="Pilih bagian" />
                           </SelectTrigger>
                         )}
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent
+                        ref={(ref) => {
+                          if (!ref) return;
+                          ref.ontouchstart = (e) => {
+                            e.preventDefault();
+                          };
+                        }}
+                      >
                         {dataAtasan &&
                           dataAtasan.map((atasan: any) => (
                             <SelectItem

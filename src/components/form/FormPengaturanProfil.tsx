@@ -236,26 +236,32 @@ export default function FormPengaturanProfil({
               <FormField
                 control={form.control}
                 name="idJabatan"
-                render={({ field: { onChange, onBlur, value, name } }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Jabatan</FormLabel>
                     <FormControl>
                       <Select
-                        onValueChange={onChange}
-                        value={value}
-                        name={name}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
                         disabled={dataJabatan ? false : true}
                       >
                         <FormControl>
                           {isDataJabatanLoading || isLoading ? (
                             <Skeleton className="w-full h-10 border" />
                           ) : (
-                            <SelectTrigger onBlur={onBlur}>
+                            <SelectTrigger>
                               <SelectValue placeholder="Pilih jabatan" />
                             </SelectTrigger>
                           )}
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent
+                          ref={(ref) => {
+                            if (!ref) return;
+                            ref.ontouchstart = (e) => {
+                              e.preventDefault();
+                            };
+                          }}
+                        >
                           {dataJabatan &&
                             dataJabatan.map((jabatan: any) => (
                               <SelectItem

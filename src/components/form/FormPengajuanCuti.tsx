@@ -377,7 +377,7 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
               control={form.control}
               name="berkas"
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, name, value } }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Berkas</FormLabel>
                   <FormControl>
@@ -426,19 +426,18 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
               control={form.control}
               name="pegawaiPengganti"
               rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value, name } }) => (
+              render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pegawai pengganti</FormLabel>
                   <Select
-                    onValueChange={onChange}
-                    defaultValue={value}
-                    name={name}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
                   >
                     <FormControl>
                       {isLoadingPengganti ? (
                         <Skeleton className="w-full h-10 border" />
                       ) : (
-                        <SelectTrigger onBlur={onBlur}>
+                        <SelectTrigger>
                           <span
                             style={{
                               overflow: "hidden",
@@ -452,7 +451,14 @@ export default function FormPengajuanCuti({ user }: FormPengajuanCutiProps) {
                         </SelectTrigger>
                       )}
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent
+                      ref={(ref) => {
+                        if (!ref) return;
+                        ref.ontouchstart = (e) => {
+                          e.preventDefault();
+                        };
+                      }}
+                    >
                       {dataPengganti &&
                         dataPengganti.result.map((pegawai: any) => (
                           <SelectItem
