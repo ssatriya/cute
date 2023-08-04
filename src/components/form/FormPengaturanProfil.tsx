@@ -106,7 +106,7 @@ export default function FormPengaturanProfil({
     },
   });
 
-  const { data: dataJabatan } = useQuery({
+  const { data: dataJabatan, isLoading: isDataJabatanLoading } = useQuery({
     queryKey: ["dataJabatan"],
     queryFn: async () => {
       const { data } = await axios.get("/api/karyawan/data-jabatan");
@@ -247,7 +247,7 @@ export default function FormPengaturanProfil({
                         disabled={dataJabatan ? false : true}
                       >
                         <FormControl>
-                          {isLoading ? (
+                          {isDataJabatanLoading ? (
                             <Skeleton className="w-full h-10 border" />
                           ) : (
                             <SelectTrigger onBlur={onBlur}>
