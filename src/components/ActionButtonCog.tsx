@@ -45,7 +45,11 @@ export default function ActionButtonCog({
           >
             Surat Permintaan Cuti
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => {}}>
+          <DropdownMenuItem
+            onClick={() => {
+              window.open(`/karyawan/berita-serah-terima/${rowId}`);
+            }}
+          >
             Berita Serah Terima
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => {}}>

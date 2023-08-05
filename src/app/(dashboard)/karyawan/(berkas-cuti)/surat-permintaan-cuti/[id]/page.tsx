@@ -4,14 +4,14 @@ import dynamic from "next/dynamic";
 import React from "react";
 import { Metadata } from "next/types";
 
-interface BerkasCutiProps {
+interface SuratPermintaanCutiProps {
   params: {
     id: string;
   };
 }
 
 const SuratPermintaanCutiRender = dynamic(
-  () => import("@/components/PDFSuratPermintaanCuti"),
+  () => import("@/components/pdf/suratPermintaanCuti"),
   {
     loading: () => <p>Loading...</p>,
     ssr: false,
@@ -22,7 +22,9 @@ export const metadata: Metadata = {
   title: "Surat Permintaan Cuti",
 };
 
-export default async function BerkasCuti({ params }: BerkasCutiProps) {
+export default async function SuratPermintaanCuti({
+  params,
+}: SuratPermintaanCutiProps) {
   const id = params.id;
 
   if (!id) {

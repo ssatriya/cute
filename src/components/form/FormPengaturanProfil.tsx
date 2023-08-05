@@ -42,7 +42,6 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { useRouter } from "next/navigation";
 import { RolePengguna } from "@prisma/client";
 
-import { DevTool } from "@hookform/devtools";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/Popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
@@ -178,280 +177,273 @@ export default function FormPengaturanProfil({
   };
 
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-          <Card>
-            <CardHeader>
-              <CardTitle>Profil Pengguna</CardTitle>
-              <CardDescription>
-                Lengkapi data diri Anda sebelum mengajukan cuti
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="namaLengkap"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nama lengkap</FormLabel>
-                    <FormControl>
-                      {isLoading ? (
-                        <Skeleton className="w-full h-10 border" />
-                      ) : (
-                        <Input
-                          onChange={field.onChange}
-                          onBlur={field.onBlur}
-                          value={field.value}
-                        />
-                      )}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="nip"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>NIP</FormLabel>
-                    <FormControl>
-                      {isLoading ? (
-                        <Skeleton className="w-full h-10 border" />
-                      ) : (
-                        <Input
-                          onChange={field.onChange}
-                          onBlur={field.onBlur}
-                          value={field.value}
-                        />
-                      )}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="idJabatan"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Jabatan</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+        <Card>
+          <CardHeader>
+            <CardTitle>Profil Pengguna</CardTitle>
+            <CardDescription>
+              Lengkapi data diri Anda sebelum mengajukan cuti
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="namaLengkap"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nama lengkap</FormLabel>
+                  <FormControl>
+                    {isLoading ? (
+                      <Skeleton className="w-full h-10 border" />
+                    ) : (
+                      <Input
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
                         value={field.value}
-                      >
-                        <FormControl>
-                          {isLoading ? (
-                            <Skeleton className="w-full h-10 border" />
-                          ) : (
-                            <SelectTrigger onBlur={field.onBlur}>
-                              <SelectValue placeholder="Pilih jabatan" />
-                            </SelectTrigger>
-                          )}
-                        </FormControl>
-                        <SelectContent
-                          ref={(ref) => {
-                            if (!ref) return;
-                            ref.ontouchstart = (e) => {
-                              e.preventDefault();
-                            };
-                          }}
-                        >
-                          {dataJabatan &&
-                            dataJabatan.map((jabatan: any) => (
-                              <SelectItem
-                                key={jabatan.id}
-                                value={String(jabatan.id)}
-                              >
-                                {jabatan.namaJabatan}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                    <small className="text-muted-foreground">
-                      Lewati pilihan jabatan apabila opsi pilihan tidak muncul
-                    </small>
-                  </FormItem>
-                )}
-              />
+                      />
+                    )}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-              <div className="grid grid-cols-1 space-y-4 2xl:grid 2xl:grid-cols-2 2xl:gap-6 2xl:space-y-0">
-                <FormField
-                  control={form.control}
-                  name="tempatLahir"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tempat lahir</FormLabel>
-                      <FormControl>
-                        {isLoading ? (
-                          <Skeleton className="w-full h-10 border" />
-                        ) : (
-                          <Input
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}
-                            value={field.value}
-                          />
-                        )}
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="tanggalLahir"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tanggal lahir</FormLabel>
-                      <FormControl>
-                        {isLoading ? (
-                          <Skeleton className="w-full h-10 border" />
-                        ) : (
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant={"outline"}
-                                className={cn(
-                                  "w-full justify-start text-left font-normal",
-                                  !date && "text-muted-foreground"
-                                )}
-                              >
-                                <CalendarIcon className="w-4 h-4 mr-2" />
-                                {date ? (
-                                  format(date, "PPP", { locale: id })
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent align="start" className="p-0">
-                              <CustomCalendar
-                                mode="single"
-                                captionLayout="dropdown-buttons"
-                                // @ts-ignore
-                                selected={date}
-                                onSelect={(selected) => {
-                                  console.log(field.value);
-                                  if (selected)
-                                    field.onChange(selected.toDateString());
-                                  setDate(selected);
-                                }}
-                                initialFocus
-                                fromYear={1900}
-                                toYear={2023}
-                                onDayBlur={field.onBlur}
-                                disabled={(date) =>
-                                  date > new Date() ||
-                                  date < new Date("1900-01-01")
-                                }
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        )}
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="jenisKelamin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Jenis kelamin</FormLabel>
+            <FormField
+              control={form.control}
+              name="nip"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>NIP</FormLabel>
+                  <FormControl>
+                    {isLoading ? (
+                      <Skeleton className="w-full h-10 border" />
+                    ) : (
+                      <Input
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        value={field.value}
+                      />
+                    )}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="idJabatan"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Jabatan</FormLabel>
+                  <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         {isLoading ? (
                           <Skeleton className="w-full h-10 border" />
                         ) : (
                           <SelectTrigger onBlur={field.onBlur}>
-                            <SelectValue placeholder="Pilih jenis kelamin" />
+                            <SelectValue placeholder="Pilih jabatan" />
                           </SelectTrigger>
                         )}
                       </FormControl>
-                      <SelectContent>
-                        <SelectItem value="pria">Pria</SelectItem>
-                        <SelectItem value="wanita">Wanita</SelectItem>
+                      <SelectContent
+                        ref={(ref) => {
+                          if (!ref) return;
+                          ref.ontouchstart = (e) => {
+                            e.preventDefault();
+                          };
+                        }}
+                      >
+                        {dataJabatan &&
+                          dataJabatan.map((jabatan: any) => (
+                            <SelectItem
+                              key={jabatan.id}
+                              value={String(jabatan.id)}
+                            >
+                              {jabatan.namaJabatan}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
+                  </FormControl>
+                  <FormMessage />
+                  <small className="text-muted-foreground">
+                    Lewati pilihan jabatan apabila opsi pilihan tidak muncul
+                  </small>
+                </FormItem>
+              )}
+            />
+
+            <div className="grid grid-cols-1 space-y-4 2xl:grid 2xl:grid-cols-2 2xl:gap-6 2xl:space-y-0">
+              <FormField
+                control={form.control}
+                name="tempatLahir"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tempat lahir</FormLabel>
+                    <FormControl>
+                      {isLoading ? (
+                        <Skeleton className="w-full h-10 border" />
+                      ) : (
+                        <Input
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          value={field.value}
+                        />
+                      )}
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
               <FormField
-                name="tandaTangan"
+                control={form.control}
+                name="tanggalLahir"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Tanda tangan</FormLabel>
-                    <div className="flex flex-col items-start gap-4 lg:flex lg:items-center lg:flex-row lg:gap-4">
-                      <FormControl>
-                        <div className="relative h-[150px] w-full xs:w-[350px]">
-                          {isLoading ? (
-                            <Skeleton className="absolute w-full h-full border rounded-lg" />
-                          ) : (
-                            <SignatureCanvas
-                              onBegin={field.onBlur}
-                              penColor="black"
-                              ref={(data) => setSignature(data)}
-                              backgroundColor="#ffffff"
-                              clearOnResize={false}
-                              canvasProps={{
-                                className:
-                                  "border rounded-lg absolute w-full h-full",
+                    <FormLabel>Tanggal lahir</FormLabel>
+                    <FormControl>
+                      {isLoading ? (
+                        <Skeleton className="w-full h-10 border" />
+                      ) : (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full justify-start text-left font-normal",
+                                !date && "text-muted-foreground"
+                              )}
+                            >
+                              <CalendarIcon className="w-4 h-4 mr-2" />
+                              {date ? (
+                                format(date, "PPP", { locale: id })
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent align="start" className="p-0">
+                            <CustomCalendar
+                              mode="single"
+                              captionLayout="dropdown-buttons"
+                              // @ts-ignore
+                              selected={date}
+                              onSelect={(selected) => {
+                                console.log(field.value);
+                                if (selected)
+                                  field.onChange(selected.toDateString());
+                                setDate(selected);
                               }}
+                              initialFocus
+                              fromYear={1900}
+                              toYear={2023}
+                              onDayBlur={field.onBlur}
+                              disabled={(date) =>
+                                date > new Date() ||
+                                date < new Date("1900-01-01")
+                              }
                             />
-                          )}
-                        </div>
-                      </FormControl>
-                      <div className="flex gap-4">
-                        <Button
-                          onClick={clearSignatureHandler}
-                          type="button"
-                          variant="destructive"
-                        >
-                          Reset
-                        </Button>
-                        <Button
-                          onClick={signatureDataHandler}
-                          type="button"
-                          variant="secondary"
-                        >
-                          Save
-                        </Button>
-                      </div>
-                    </div>
-                    <small className="text-muted-foreground">
-                      Klik save terlebih dahulu untuk menyimpan data tanda
-                      tangan
-                    </small>
+                          </PopoverContent>
+                        </Popover>
+                      )}
+                    </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
-            </CardContent>
-            <CardFooter>
-              <Button
-                disabled={isLoadingSubmit || !signatureDataUrl}
-                type="submit"
-              >
-                {isLoadingSubmit && (
-                  <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-                )}{" "}
-                Submit
-              </Button>
-            </CardFooter>
-          </Card>
-        </form>
-      </Form>
-      <DevTool control={form.control} />
-    </>
+            </div>
+
+            <FormField
+              control={form.control}
+              name="jenisKelamin"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Jenis kelamin</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      {isLoading ? (
+                        <Skeleton className="w-full h-10 border" />
+                      ) : (
+                        <SelectTrigger onBlur={field.onBlur}>
+                          <SelectValue placeholder="Pilih jenis kelamin" />
+                        </SelectTrigger>
+                      )}
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="pria">Pria</SelectItem>
+                      <SelectItem value="wanita">Wanita</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              name="tandaTangan"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tanda tangan</FormLabel>
+                  <div className="flex flex-col items-start gap-4 lg:flex lg:items-center lg:flex-row lg:gap-4">
+                    <FormControl>
+                      <div className="relative h-[150px] w-full xs:w-[350px]">
+                        {isLoading ? (
+                          <Skeleton className="absolute w-full h-full border rounded-lg" />
+                        ) : (
+                          <SignatureCanvas
+                            onBegin={field.onBlur}
+                            penColor="black"
+                            ref={(data) => setSignature(data)}
+                            backgroundColor="#ffffff"
+                            clearOnResize={false}
+                            canvasProps={{
+                              className:
+                                "border rounded-lg absolute w-full h-full",
+                            }}
+                          />
+                        )}
+                      </div>
+                    </FormControl>
+                    <div className="flex gap-4">
+                      <Button
+                        onClick={clearSignatureHandler}
+                        type="button"
+                        variant="destructive"
+                      >
+                        Reset
+                      </Button>
+                      <Button
+                        onClick={signatureDataHandler}
+                        type="button"
+                        variant="secondary"
+                      >
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                  <small className="text-muted-foreground">
+                    Klik save terlebih dahulu untuk menyimpan data tanda tangan
+                  </small>
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter>
+            <Button
+              disabled={isLoadingSubmit || !signatureDataUrl}
+              type="submit"
+            >
+              {isLoadingSubmit && (
+                <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+              )}{" "}
+              Submit
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   );
 }
