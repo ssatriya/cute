@@ -28,7 +28,7 @@ export default async function Home() {
   }
 
   return (
-    <div className="container grid items-center justify-center w-screen sm:h-[500px] lg:h-screen lg:max-w-none lg:grid-cols-2 lg:px-0">
+    <div className="container grid items-center justify-center w-screen h-screen lg:max-w-none lg:grid-cols-2 lg:px-0">
       <div className="hidden h-full bg-muted lg:block" />
       <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
