@@ -62,8 +62,9 @@ export default function FormTambahCuti() {
       return responseData;
     },
     onSuccess: () => {
-      // router.push("/admin/data-cuti");
-      window.location.href = "/admin/data-cuti";
+      // router.push cached the table data
+      router.push("/admin/data-cuti");
+      // window.location.href = "/admin/data-cuti";
     },
     onError: () => {
       toast({

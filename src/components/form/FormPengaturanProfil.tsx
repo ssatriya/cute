@@ -200,7 +200,7 @@ export default function FormPengaturanProfil({
                       <Input
                         onChange={field.onChange}
                         onBlur={field.onBlur}
-                        value={field.value}
+                        value={field.value || ""}
                       />
                     )}
                   </FormControl>
@@ -222,7 +222,7 @@ export default function FormPengaturanProfil({
                       <Input
                         onChange={field.onChange}
                         onBlur={field.onBlur}
-                        value={field.value}
+                        value={field.value || ""}
                       />
                     )}
                   </FormControl>
@@ -289,7 +289,7 @@ export default function FormPengaturanProfil({
                         <Input
                           onChange={field.onChange}
                           onBlur={field.onBlur}
-                          value={field.value}
+                          value={field.value || ""}
                         />
                       )}
                     </FormControl>

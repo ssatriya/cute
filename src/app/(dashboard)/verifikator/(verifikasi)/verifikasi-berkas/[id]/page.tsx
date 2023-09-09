@@ -43,6 +43,11 @@ export default async function VerifikasiBerkas({
     },
     select: {
       id: true,
+      jenisCuti: {
+        select: {
+          namaCuti: true,
+        },
+      },
       idJenisCuti: true,
       nip: true,
       namaLengkap: true,
@@ -67,6 +72,7 @@ export default async function VerifikasiBerkas({
   const data = {
     idCuti: response.id,
     idJenisCuti: response.idJenisCuti,
+    jenisCuti: response.jenisCuti.namaCuti,
     nip: response.nip,
     namaLengkap: response.namaLengkap,
     namaJabatan: response.pemohon.jabatan?.namaJabatan!,

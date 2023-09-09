@@ -16,6 +16,7 @@ import { DataTable } from "@/components/ui/DataTable";
 import { db } from "@/lib/db";
 import { Metadata } from "next/types";
 import DashboardTableShell from "@/components/layout/DashboardTableShell";
+import Refresher from "@/components/Refresher";
 
 export const metadata: Metadata = {
   title: "Data Bagian",
@@ -58,6 +59,7 @@ export default async function TableBagian() {
       description="Daftar semua data bagian/departemen"
       buttonPath="/admin/form-bagian"
     >
+      <Refresher />
       <DataTable columns={columns} data={data} />
     </DashboardTableShell>
   );

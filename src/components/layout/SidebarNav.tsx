@@ -28,7 +28,7 @@ export default function DashboardNav({ items, children }: DashboardNavProps) {
 
         return (
           item.href && (
-            <Link key={index} href={item.disabled ? "/" : item.href}>
+            <Link key={index} href={item.disabled ? "#" : item.href}>
               <span
                 className={cn(
                   "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",

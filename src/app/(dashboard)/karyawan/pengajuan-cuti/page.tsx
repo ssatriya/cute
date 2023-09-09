@@ -1,7 +1,9 @@
+import ProfilAlert from "@/components/ProfilAlert";
 import FormPengajuanCuti from "@/components/form/FormPengajuanCuti";
 import DashboardHeader from "@/components/layout/DashboardHeader";
 import DashboardShell from "@/components/layout/DashboardShell";
 import { getAuthSession } from "@/lib/auth";
+import { db } from "@/lib/db";
 import { Metadata } from "next/types";
 import React from "react";
 
@@ -15,6 +17,23 @@ export default async function page() {
 
   if (!session) {
     return <p>Not authorized</p>;
+  }
+
+  const checkSetup = await db.user.findUniqueOrThrow({
+    where: {
+      id: +session.user.id,
+    },
+  });
+
+  if (checkSetup.setup === 0) {
+    return (
+      <DashboardShell>
+        <DashboardHeader heading="Pengajuan Cuti" />
+        <div className="grid gap-8">
+          <ProfilAlert path="karyawan" />
+        </div>
+      </DashboardShell>
+    );
   }
 
   return (

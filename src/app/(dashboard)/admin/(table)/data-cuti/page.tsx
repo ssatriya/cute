@@ -1,37 +1,26 @@
-import DataAddButton from "@/components/DataAddButton";
-import DashboardHeader from "@/components/layout/DashboardHeader";
-import DashboardShell from "@/components/layout/DashboardShell";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
 import {
   columns,
   CutiType,
 } from "@/app/(dashboard)/admin/(table)/data-cuti/columns";
 import { DataTable } from "@/components/ui/DataTable";
-import { db } from "@/lib/db";
 import { Metadata } from "next/types";
 import DashboardTableShell from "@/components/layout/DashboardTableShell";
+import Refresher from "@/components/Refresher";
 
 export const metadata: Metadata = {
   title: "Data Cuti",
 };
 
+export const dynamic = "force-dynamic";
+
 async function getData(): Promise<CutiType[]> {
   try {
-    const response = await db.jenisCuti.findMany();
+    const request = await fetch("http://localhost:3000/api/admin/cuti", {
+      cache: "no-store",
+    });
+    const dataFetch = await request.json();
 
-    const data = response.map((cuti) => ({
-      id: cuti.id,
-      namaCuti: cuti.namaCuti,
-      lamaCuti: cuti.lamaCuti,
-    }));
-
-    return data;
+    return dataFetch.result;
   } catch (error) {
     return [];
   }
@@ -46,6 +35,7 @@ export default async function TableCuti() {
       description="Daftar jenis cuti yang tersedia"
       buttonPath="/admin/form-cuti"
     >
+      <Refresher />
       <DataTable columns={columns} data={data} />
     </DashboardTableShell>
   );

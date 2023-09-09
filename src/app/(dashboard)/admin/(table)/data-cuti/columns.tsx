@@ -13,7 +13,12 @@ export type CutiType = {
 export const columns: ColumnDef<CutiType>[] = [
   {
     accessorKey: "id",
-    header: "Nomor",
+    header: () => {
+      return <div className="text-center">No</div>;
+    },
+    cell: ({ row }) => {
+      return <div className="text-center">{row.index + 1}</div>;
+    },
   },
   {
     accessorKey: "namaCuti",
@@ -21,7 +26,7 @@ export const columns: ColumnDef<CutiType>[] = [
   },
   {
     accessorKey: "lamaCuti",
-    header: "Lama uti",
+    header: "Lama cuti",
   },
   {
     accessorKey: "aksi",

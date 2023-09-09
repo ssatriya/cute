@@ -32,7 +32,9 @@ import { useRouter } from "next/navigation";
 import { toast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
-  tandaTanganPengganti: z.string({}),
+  tandaTanganPengganti: z.string({
+    required_error: "Form konfirmasi wajib diisi",
+  }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -40,7 +42,7 @@ type FormData = z.infer<typeof formSchema>;
 interface FormPegawaiPenggantiProps {
   user: {
     id: number;
-    namaLengkap: string;
+    namaPengganti: string;
     role: string;
   };
   idCuti: number;
@@ -61,7 +63,7 @@ export default function FormPegawaiPengganti({
       };
 
       const { data: returnData } = await axios.post(
-        "/api/karyawan/data-pengganti",
+        "/api/outside/pengganti",
         payload,
         {
           headers: {
@@ -73,7 +75,7 @@ export default function FormPegawaiPengganti({
       return returnData;
     },
     onSuccess: () => {
-      router.push(`/${user.role}`);
+      router.push(`/thank-you`);
     },
     onError: () => {
       toast({
@@ -100,7 +102,7 @@ export default function FormPegawaiPengganti({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-        <Card>
+        <Card className="mx-4 xs:mx-0">
           <CardHeader>
             <CardTitle>Persetujuan Pengganti</CardTitle>
             <CardDescription>
@@ -123,7 +125,7 @@ export default function FormPegawaiPengganti({
                       onChange={onChange}
                       onBlur={onBlur}
                       value={value}
-                      placeholder={user.namaLengkap!}
+                      placeholder={user.namaPengganti!}
                     />
                   </FormControl>
                   <FormMessage />

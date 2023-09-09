@@ -4,10 +4,17 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/Card";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/Form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/Form";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +32,7 @@ import { Icons } from "@/components/Icons";
 import { Session } from "next-auth";
 
 import { encryptId } from "@/lib/crypto";
+import BerkasView from "@/components/BerkasView";
 
 interface FormVerifikasiBerkasProps {
   cuti: {
@@ -90,6 +98,7 @@ function FormVerifikasiBerkas({ cuti, session }: FormVerifikasiBerkasProps) {
       formulirCuti: "",
       beritaAcaraCuti: "",
       keteranganVerifikasiBerkas: "",
+      berkasCuti: "",
     },
     mode: "onChange",
   });
@@ -99,185 +108,201 @@ function FormVerifikasiBerkas({ cuti, session }: FormVerifikasiBerkasProps) {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-        <Card>
-          <CardHeader>
-            <CardTitle>Verifikasi Berkas</CardTitle>
-            <CardDescription>Verfikasi kelengkapan berkas</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <FormField
-              control={form.control}
-              name="suratPermintaanCuti"
-              render={({ field: { onChange, onBlur, name, value } }) => (
-                <FormItem>
-                  <FormLabel>1. Surat Permintaan Cuti</FormLabel>
-                  <RadioGroup
-                    defaultValue={value}
-                    onValueChange={onChange}
-                    onBlur={onBlur}
-                    name={name}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="2" id="permintaan1" />
-                      <Label htmlFor="permintaan1" className="font-normal">
-                        Belum Dicek
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="1" id="permintaan2" />
-                      <Label htmlFor="permintaan2" className="font-normal">
-                        Ada
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="0" id="permintaan3" />
-                      <Label htmlFor="permintaan3" className="font-normal">
-                        Tidak Ada
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </FormItem>
-              )}
-            />
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>Verifikasi Berkas</CardTitle>
+          <CardDescription>Verfikasi kelengkapan berkas</CardDescription>
+        </CardHeader>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            noValidate
+            className="space-y-4"
+          >
+            <CardContent className="space-y-4">
+              <FormField
+                control={form.control}
+                name="suratPermintaanCuti"
+                render={({ field: { onChange, onBlur, name, value } }) => (
+                  <FormItem>
+                    <FormLabel>1. Surat Permintaan Cuti</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        defaultValue={value}
+                        onValueChange={onChange}
+                        onBlur={onBlur}
+                        name={name}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="2" id="permintaan1" />
+                          <Label htmlFor="permintaan1" className="font-normal">
+                            Belum Dicek
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="1" id="permintaan2" />
+                          <Label htmlFor="permintaan2" className="font-normal">
+                            Ada
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="0" id="permintaan3" />
+                          <Label htmlFor="permintaan3" className="font-normal">
+                            Tidak Ada
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="formulirCuti"
-              render={({ field: { onChange, onBlur, name, value } }) => (
-                <FormItem>
-                  <FormLabel>
-                    2. Formulir Permintaan dan Pemberian Cuti
-                  </FormLabel>
-                  <RadioGroup
-                    defaultValue={value}
-                    onValueChange={onChange}
-                    onBlur={onBlur}
-                    name={name}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="2" id="permintaan1" />
-                      <Label htmlFor="formulir1" className="font-normal">
-                        Belum Dicek
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="1" id="permintaan2" />
-                      <Label htmlFor="formulir2" className="font-normal">
-                        Ada
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="0" id="permintaan3" />
-                      <Label htmlFor="formulir3" className="font-normal">
-                        Tidak Ada
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="formulirCuti"
+                render={({ field: { onChange, onBlur, name, value } }) => (
+                  <FormItem>
+                    <FormLabel>
+                      2. Formulir Permintaan dan Pemberian Cuti
+                    </FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        defaultValue={value}
+                        onValueChange={onChange}
+                        onBlur={onBlur}
+                        name={name}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="2" id="permintaan1" />
+                          <Label htmlFor="formulir1" className="font-normal">
+                            Belum Dicek
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="1" id="permintaan2" />
+                          <Label htmlFor="formulir2" className="font-normal">
+                            Ada
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="0" id="permintaan3" />
+                          <Label htmlFor="formulir3" className="font-normal">
+                            Tidak Ada
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="beritaAcaraCuti"
-              render={({ field: { onChange, onBlur, value, name } }) => (
-                <FormItem>
-                  <FormLabel>3. Surat Permintaan Cuti</FormLabel>
-                  <RadioGroup
-                    defaultValue={value}
-                    onValueChange={onChange}
-                    onBlur={onBlur}
-                    name={name}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="2" id="berita1" />
-                      <Label htmlFor="berita1" className="font-normal">
-                        Belum Dicek
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="1" id="berita2" />
-                      <Label htmlFor="berita2" className="font-normal">
-                        Ada
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="0" id="berita3" />
-                      <Label htmlFor="berita3" className="font-normal">
-                        Tidak Ada
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="beritaAcaraCuti"
+                render={({ field: { onChange, onBlur, value, name } }) => (
+                  <FormItem>
+                    <FormLabel>3. Surat Permintaan Cuti</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        defaultValue={value}
+                        onValueChange={onChange}
+                        onBlur={onBlur}
+                        name={name}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="2" id="berita1" />
+                          <Label htmlFor="berita1" className="font-normal">
+                            Belum Dicek
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="1" id="berita2" />
+                          <Label htmlFor="berita2" className="font-normal">
+                            Ada
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="0" id="berita3" />
+                          <Label htmlFor="berita3" className="font-normal">
+                            Tidak Ada
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="berkasCuti"
-              render={({ field: { onChange, onBlur, value, name } }) => (
-                <FormItem>
-                  <FormLabel>4. Berkas Cuti</FormLabel>
-                  <RadioGroup
-                    defaultValue={value}
-                    onValueChange={onChange}
-                    onBlur={onBlur}
-                    name={name}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="2" id="berita1" />
-                      <Label htmlFor="berita1" className="font-normal">
-                        Belum Dicek
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="1" id="berita2" />
-                      <Label htmlFor="berita2" className="font-normal">
-                        Ada
-                      </Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="0" id="berita3" />
-                      <Label htmlFor="berita3" className="font-normal">
-                        Tidak Ada
-                      </Label>
-                    </div>
-                  </RadioGroup>
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="berkasCuti"
+                render={({ field: { onChange, onBlur, value, name } }) => (
+                  <FormItem>
+                    <FormLabel>4. Berkas Cuti</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        defaultValue={value}
+                        onValueChange={onChange}
+                        onBlur={onBlur}
+                        name={name}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="2" id="berita1" />
+                          <Label htmlFor="berita1" className="font-normal">
+                            Belum Dicek
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="1" id="berita2" />
+                          <Label htmlFor="berita2" className="font-normal">
+                            Ada
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="0" id="berita3" />
+                          <Label htmlFor="berita3" className="font-normal">
+                            Tidak Ada
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="keteranganVerifikasiBerkas"
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value, name } }) => (
-                <FormItem>
-                  <FormLabel>Keterangan Verifikasi</FormLabel>
-                  <Textarea
-                    placeholder="Tulis alasan cuti Anda"
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    value={value}
-                    name={name}
-                  />
-                </FormItem>
-              )}
-            />
-
-            <Separator orientation="horizontal" />
-            <Button disabled={isLoading} type="submit">
-              {isLoading && (
-                <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
-              )}{" "}
-              Submit
-            </Button>
-          </CardContent>
-        </Card>
-      </form>
-    </Form>
+              <FormField
+                control={form.control}
+                name="keteranganVerifikasiBerkas"
+                rules={{ required: true }}
+                render={({ field: { onChange, onBlur, value, name } }) => (
+                  <FormItem>
+                    <FormLabel>Keterangan Verifikasi</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tulis alasan cuti Anda"
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        value={value}
+                        name={name}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+            <CardFooter>
+              <Button disabled={isLoading} type="submit">
+                {isLoading && (
+                  <Icons.spinner className="w-4 h-4 mr-2 animate-spin" />
+                )}{" "}
+                Submit
+              </Button>
+            </CardFooter>
+          </form>
+        </Form>
+      </Card>
+    </>
   );
 }
 

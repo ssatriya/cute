@@ -42,6 +42,7 @@ export default async function PegawaiPengganti({
           nip: true,
         },
       },
+      persetujuanPengganti: true,
     },
     where: {
       id: paramsInt,
@@ -64,12 +65,16 @@ export default async function PegawaiPengganti({
     nipPengganti: dataCuti.pengganti.nip || "",
   };
 
+  if (dataCuti.persetujuanPengganti === 1) {
+    return <p>Cuti sudah dikonfirmasi</p>;
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <FormPegawaiPengganti
         user={{
           id: data.idPemohon,
-          namaLengkap: data.namaLengkap,
+          namaPengganti: data.namaPengganti,
           role: data.rolePemohon,
         }}
         idCuti={paramsInt}

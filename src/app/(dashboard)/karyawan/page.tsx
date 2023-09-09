@@ -2,7 +2,6 @@ import DashboardHeader from "@/components/layout/DashboardHeader";
 import DashboardShell from "@/components/layout/DashboardShell";
 import { getAuthSession } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { redirect } from "next/navigation";
 import React from "react";
 import { Metadata } from "next/types";
 import PersetujuanAlert from "@/components/PersetujuanAlert";
@@ -32,17 +31,6 @@ export default async function KaryawanPage() {
       statusAkhir: "proses",
       tahapVerifikasi: 0,
       persetujuanPengganti: null,
-    },
-  });
-
-  const userProfil = await db.user.findUnique({
-    select: {
-      id: true,
-      setup: true,
-      role: true,
-    },
-    where: {
-      id: numberId,
     },
   });
 

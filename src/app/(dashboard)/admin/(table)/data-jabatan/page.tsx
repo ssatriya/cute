@@ -1,13 +1,3 @@
-import DataAddButton from "@/components/DataAddButton";
-import DashboardHeader from "@/components/layout/DashboardHeader";
-import DashboardShell from "@/components/layout/DashboardShell";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/Card";
 import { DataTable } from "@/components/ui/DataTable";
 import {
   JabatanType,
@@ -17,6 +7,7 @@ import { db } from "@/lib/db";
 
 import { Metadata } from "next/types";
 import DashboardTableShell from "@/components/layout/DashboardTableShell";
+import Refresher from "@/components/Refresher";
 
 export const metadata: Metadata = {
   title: "Data Jabatan",
@@ -56,6 +47,7 @@ export default async function TableJabatan() {
       description="Daftar data jabatan yang tersedia"
       buttonPath="/admin/form-jabatan"
     >
+      <Refresher />
       <DataTable columns={columns} data={data} />
     </DashboardTableShell>
   );

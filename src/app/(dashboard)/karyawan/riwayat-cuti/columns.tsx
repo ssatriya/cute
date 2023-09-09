@@ -22,7 +22,7 @@ export type RiwayatType = {
 export const columns: ColumnDef<RiwayatType>[] = [
   {
     accessorKey: "no",
-    header: ({ column }) => {
+    header: () => {
       return <div className="text-center">No</div>;
     },
     cell: ({ row }) => {

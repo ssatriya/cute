@@ -5,7 +5,7 @@ import { Icons } from "./Icons";
 interface VerifikatorDetailProps {
   cuti: {
     idCuti: number;
-    idJenisCuti: number;
+    jenisCuti: string;
     nip: string;
     namaLengkap: string;
     namaJabatan: string;
@@ -76,33 +76,57 @@ export default function VerifikatorDetail({ cuti }: VerifikatorDetailProps) {
                   1. Cuti Tahunan
                 </td>
                 <td className="p-1" width="10%" align="center">
-                  {cuti.idJenisCuti === 1 ? <Icons.check /> : <Icons.close />}
+                  {cuti.jenisCuti === "Cuti Tahunan" ? (
+                    <Icons.check />
+                  ) : (
+                    <Icons.close />
+                  )}
                 </td>
                 <td className="p-1" width="40%">
                   2. Cuti Besar
                 </td>
                 <td className="p-1" width="10%" align="center">
-                  {cuti.idJenisCuti === 2 ? <Icons.check /> : <Icons.close />}
+                  {cuti.jenisCuti === "Cuti Besar" ? (
+                    <Icons.check />
+                  ) : (
+                    <Icons.close />
+                  )}
                 </td>
               </tr>
               <tr className="border">
                 <td className="p-1">3. Cuti Sakit</td>
                 <td className="p-1" align="center">
-                  {cuti.idJenisCuti === 3 ? <Icons.check /> : <Icons.close />}
+                  {cuti.jenisCuti === "Cuti Sakit" ? (
+                    <Icons.check />
+                  ) : (
+                    <Icons.close />
+                  )}
                 </td>
                 <td className="p-1">4. Cuti Melahirkan</td>
                 <td className="p-1" align="center">
-                  {cuti.idJenisCuti === 4 ? <Icons.check /> : <Icons.close />}
+                  {cuti.jenisCuti === "Cuti Melahirkan" ? (
+                    <Icons.check />
+                  ) : (
+                    <Icons.close />
+                  )}
                 </td>
               </tr>
               <tr className="border">
-                <td className="p-1">5. Cuti Karena Alasan Penting</td>
+                <td className="p-1">5. Cuti Alasan Penting</td>
                 <td className="p-1" align="center">
-                  {cuti.idJenisCuti === 5 ? <Icons.check /> : <Icons.close />}
+                  {cuti.jenisCuti === "Cuti Alasan Penting" ? (
+                    <Icons.check />
+                  ) : (
+                    <Icons.close />
+                  )}
                 </td>
                 <td className="p-1">6. Cuti di Luar Tanggungan Negara</td>
                 <td className="p-1" align="center">
-                  {cuti.idJenisCuti === 6 ? <Icons.check /> : <Icons.close />}
+                  {cuti.jenisCuti === "Cuti di Luar Tanggungan Negara" ? (
+                    <Icons.check />
+                  ) : (
+                    <Icons.close />
+                  )}
                 </td>
               </tr>
             </tbody>
@@ -159,7 +183,7 @@ export default function VerifikatorDetail({ cuti }: VerifikatorDetailProps) {
                   1. CUTI TAHUNAN
                 </td>
                 <td className="p-1" width="40%">
-                  2. BESAR
+                  2. CUTI BESAR
                 </td>
                 <td className="p-1" width="10%"></td>
               </tr>

@@ -40,14 +40,16 @@ export default function ActionButtonCog({
         <DropdownMenuContent align="end">
           <DropdownMenuItem
             onClick={() => {
-              window.open(`/karyawan/surat-permintaan-cuti/${rowId}`);
+              window.open(`http://cute.ssatriya.codes/index.php?id=${rowId}`);
             }}
           >
             Surat Permintaan Cuti
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
-              window.open(`/karyawan/berita-serah-terima/${rowId}`);
+              window.open(
+                `http://cute.ssatriya.codes/berita-serah-terima.php?id=${rowId}`
+              );
             }}
           >
             Berita Serah Terima

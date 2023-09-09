@@ -166,6 +166,13 @@ export async function GET() {
         id: true,
         namaLengkap: true,
       },
+      where: {
+        role: {
+          not: {
+            equals: "admin",
+          },
+        },
+      },
     });
 
     return NextResponse.json({ data: response });
